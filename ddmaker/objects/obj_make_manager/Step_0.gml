@@ -8,3 +8,7 @@ if (make_state != State.NONE) {
 	mouse_floor_x = floor(mouse_x / 32) * 32;
 	mouse_floor_y = floor(mouse_y / 32) * 32;
 }
+
+if (mouse_check_button(mb_left)) {
+	make_obj();
+}

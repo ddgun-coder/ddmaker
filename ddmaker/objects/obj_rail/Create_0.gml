@@ -2,11 +2,8 @@
 // You can write your code in this editor
 enum Way { 
 	NONE,
-	OPEN,
-	CLOSE
+	INPUT,
+	OUPUT,
 }
-rail_item = [];		
-up_way = Way.NONE;
-down_way = Way.NONE;
-left_way = Way.NONE;
-right_way = Way.NONE;
+rail_item = [];
+way = [Way.NONE, Way.NONE, Way.NONE, Way.NONE];
