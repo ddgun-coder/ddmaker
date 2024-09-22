@@ -40,7 +40,7 @@ function make_obj() {
 			}
 			//obj exists;
 			if (dir != Direct.NONE and _id != noone) {
-				_id.way[dir] = Way.OPEN;
+				_id.way[dir] = Way.INPUT;
 				show_debug_message(dir);
 			}	
 			break;
