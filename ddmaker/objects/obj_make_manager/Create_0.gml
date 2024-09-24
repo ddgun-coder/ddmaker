@@ -20,6 +20,7 @@ current_valible_dir = Direct.RIGHT;
 previous_rail_id = noone;
 
 function make_obj() {
+	//get direction
 	current_dir = Direct.NONE;
 	if (mouse_previous_x > mouse_floor_x) {
 		current_dir = Direct.LEFT;
@@ -27,7 +28,7 @@ function make_obj() {
 	else if (mouse_previous_x < mouse_floor_x) {
 		current_dir = Direct.RIGHT;	
 	}
-	else if (mouse_previous_y > mouse_floo	r_y) {
+	else if (mouse_previous_y > mouse_floor_y) {
 		current_dir = Direct.UP;	
 	}
 	else if (mouse_previous_y < mouse_floor_y) {
@@ -42,23 +43,24 @@ function make_obj() {
 			break;
 		}
 	}
-	
+	//make obj
 	switch (make_state) {
 		case State.RAIL :
 			//Create rail at current location
 			if (_current_obj_id == noone) {
 				_id =instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_rail);
 				_id.set_one_way_direction(current_dir);
+				//Reorient rail from previous location 
 				if (previous_rail_id != noone) {
-					previous_rail_id.set_one_way_direction(current_dir);
+					previous_rail_id.change_output(current_dir);
 				}
 				previous_rail_id = _id;
 			}
-			else if (_current_obj_id != previous_rail_id) {
-				if(previous_rail_id != noone) previous_rail_id.set_one_way_direction(current_dir);
+			else if (_current_obj_id != previous_rail_id and previous_rail_id != noone) {
+				_current_obj_id.change_input((current_dir + 2) % 4);
+				previous_rail_id.change_output(current_dir);
 				previous_rail_id = noone;
 			}
-			//Reorient rail from previous location 
 			break;
 		case State.WAY_CHANGER :
 			//obj exists;

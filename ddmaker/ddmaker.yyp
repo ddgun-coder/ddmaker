@@ -47,6 +47,8 @@
     {"id":{"name":"spr_no_way_rail","path":"sprites/spr_no_way_rail/spr_no_way_rail.yy",},},
     {"id":{"name":"spr_one_way_rail_show","path":"sprites/spr_one_way_rail_show/spr_one_way_rail_show.yy",},},
     {"id":{"name":"spr_one_way_rail","path":"sprites/spr_one_way_rail/spr_one_way_rail.yy",},},
+    {"id":{"name":"spr_one_way_rail2","path":"sprites/spr_one_way_rail2/spr_one_way_rail2.yy",},},
+    {"id":{"name":"spr_one_way_rail3","path":"sprites/spr_one_way_rail3/spr_one_way_rail3.yy",},},
     {"id":{"name":"spr_repository","path":"sprites/spr_repository/spr_repository.yy",},},
     {"id":{"name":"spr_three_way_rail","path":"sprites/spr_three_way_rail/spr_three_way_rail.yy",},},
     {"id":{"name":"spr_three_way_rail2","path":"sprites/spr_three_way_rail2/spr_three_way_rail2.yy",},},
