@@ -5,20 +5,47 @@ enum Way {
 	INPUT,
 	OUTPUT,
 }
-rail_item = [];
-way = [Way.OUTPUT, Way.NONE, Way.OUTPUT, Way.INPUT];
+rail_item = [];//현재 rail가 가지고 있는 item
+way = [Way.OUTPUT, Way.NONE, Way.INPUT, Way.NONE];
 way_number = 4;
 input_number = 1;
 output_number = 1;
 
-function cal() {
-	static get_spined_array = function() {
+function set_one_way_direction(_Direct) { 
+	input_number = 1;
+	output_number = 1;
+	switch (_Direct) {
+		case Direct.RIGHT :
+			way = [Way.OUTPUT, Way.NONE, Way.INPUT, Way.NONE];
+		break;
+		case Direct.LEFT :
+			way = [Way.INPUT, Way.NONE, Way.OUTPUT, Way.NONE];
+		break;
+		case Direct.UP :
+			way = [Way.NONE, Way.OUTPUT, Way.NONE, Way.INPUT];
+		break;
+		case Direct.DOWN :
+			way = [Way.NONE, Way.INPUT, Way.NONE, Way.OUTPUT];
+		break;
+	}
+	cal_sprite_and_angle();
+}
+
+function cal_sprite_and_angle() {
+	static get_spined_array = function(is_INPUT) {
+		var if_checker;
+		if (is_INPUT) {
+			if_checker = Way.INPUT;
+		}
+		else {
+			if_checker = Way.OUTPUT;
+		}
 		var result_array = [];
 		var _input_index = 0;
 		array_copy(result_array, 0, way, 0, array_length(way));
 	
 		for (var i = 0; i < way_number; i++) {
-			if (result_array[i] == Way.INPUT) {
+			if (result_array[i] == if_checker) {
 				_input_index = i;
 				break;
 			}
@@ -30,6 +57,7 @@ function cal() {
 		}
 		return result_array;
 	}
+	
 	var _out_number = 0;
 	var _input_number = 0;
 	//cal input/output number
@@ -43,18 +71,17 @@ function cal() {
 	}
 	output_number = _out_number;
 	input_number = _input_number;
-	
+	//default
+	sprite_index = spr_no_way_rail;	
+	image_angle = 0;
 	switch (input_number) {
-		case 0 : 
-			sprite_index = spr_no_way_rail;
-			break;
 		case 1 :
 			switch (output_number) {
 				case 1 :
 					sprite_index = spr_one_way_rail;	
 					break;
 				case 2 :
-					var _array = get_spined_array();
+					var _array = get_spined_array(true);
 					switch (array_get_index(_array, Way.NONE)) {
 						case 1 :
 							sprite_index = spr_two_way_rail2;
@@ -73,7 +100,29 @@ function cal() {
 			}
 			image_angle = (array_get_index(way, Way.INPUT) - 2) * 90;
 			break;
+		case 2 :
+			if (output_number == 1) {
+				var _array = get_spined_array(false);
+				switch (array_get_index(_array, Way.NONE)) {
+					case 1 :
+						sprite_index = spr_two_way_rail5;
+						break;
+					case 2 :
+						sprite_index = spr_two_way_rail4;
+						break;
+					case 3 :
+						sprite_index = spr_two_way_rail6;
+						break;
+				}
+				image_angle = (array_get_index(way, Way.OUTPUT) - 2) * 90;
+			}
+			//input, output 각각 2개 인 경우는 cross로 사용
+			break;
+		case 3 :
+			if (output_number == 1) {
+				sprite_index = spr_three_way_rail2;
+				image_angle = (array_get_index(way, Way.OUTPUT) - 2) * 90;
+			}
+			break;
 	}
 }
-
-cal();

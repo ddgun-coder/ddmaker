@@ -2,7 +2,8 @@
 // You can write your code in this editor
 enum State {
 	NONE,
-	RAIL
+	RAIL,
+	WAY_CHANGER
 }
 
 enum Direct {
@@ -13,45 +14,72 @@ enum Direct {
 	NONE
 }
 
+mouse_sprite = noone;
+mouse_sprite_angle = 0;
+current_valible_dir = Direct.RIGHT;
+previous_rail_id = noone;
+
 function make_obj() {
-	var dir = Direct.NONE;
+	current_dir = Direct.NONE;
 	if (mouse_previous_x > mouse_floor_x) {
-		dir = Direct.LEFT;
+		current_dir = Direct.LEFT;
 	}
 	else if (mouse_previous_x < mouse_floor_x) {
-		dir = Direct.RIGHT;	
+		current_dir = Direct.RIGHT;	
 	}
-	else if (mouse_previous_y > mouse_floor_y) {
-		dir = Direct.UP;	
+	else if (mouse_previous_y > mouse_floo	r_y) {
+		current_dir = Direct.UP;	
 	}
 	else if (mouse_previous_y < mouse_floor_y) {
-		dir = Direct.DOWN;	
+		current_dir = Direct.DOWN;	
 	}
-
-	var _id = noone;
+	if (current_dir != Direct.NONE) current_valible_dir = current_dir;
+	var _current_obj_id = noone;
+	//found obj
+	with (obj_rail) {
+		if (point_in_rectangle(other.mouse_floor_x, other.mouse_floor_y, bbox_left, bbox_top, bbox_right, bbox_bottom)) {
+			_current_obj_id = id;
+			break;
+		}
+	}
+	
 	switch (make_state) {
 		case State.RAIL :
-			//found obj
-			with (obj_rail) {
-				if (collision_point(other.mouse_previous_x, other.mouse_previous_y, obj_rail, false, false)) {
-					_id = id;
-					break;
+			//Create rail at current location
+			if (_current_obj_id == noone) {
+				_id =instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_rail);
+				_id.set_one_way_direction(current_dir);
+				if (previous_rail_id != noone) {
+					previous_rail_id.set_one_way_direction(current_dir);
+				}
+				previous_rail_id = _id;
+			}
+			else if (_current_obj_id != previous_rail_id) {
+				if(previous_rail_id != noone) previous_rail_id.set_one_way_direction(current_dir);
+				previous_rail_id = noone;
+			}
+			//Reorient rail from previous location 
+			break;
+		case State.WAY_CHANGER :
+			//obj exists;
+			if (current_dir != Direct.NONE) {
+				if (_current_obj_id != noone) {
+					if (_id.way[current_dir] == Way.NONE) {
+						_id.way[current_dir] = Way.OUTPUT;
+						_id.cal_sprite_and_angle();
+						return;
+					}
 				}
 			}
-			//obj exists;
-			if (dir != Direct.NONE and _id != noone) {
-				_id.way[dir] = Way.INPUT;
-				show_debug_message(dir);
-			}	
 			break;
-	
 	}
 }
 
 
 make_state = State.NONE;
+//현재의 위치
 mouse_floor_x = 0;
 mouse_floor_y = 0;
-
+//이전의 위치
 mouse_previous_x = 0;
 mouse_previous_y = 0;
