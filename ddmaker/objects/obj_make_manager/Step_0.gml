@@ -12,12 +12,29 @@ if (make_state != State.NONE) {
 	mouse_floor_y = floor((mouse_y + 16) / 32) * 32;
 }
 
+if (mouse_check_button_pressed(mb_left)) {
+	clicked_id = noone;
+	with (obj_rail) {
+		if (point_in_rectangle(other.mouse_floor_x, other.mouse_floor_y, bbox_left, bbox_top, bbox_right, bbox_bottom)) {
+			other.clicked_id = id;
+			break;
+		}
+	}
+	if (clicked_id != noone) {
+		start_smae_shape = false;	
+	}
+}
+
 if (mouse_check_button(mb_left)) {
 	make_obj();
 }
 else {
 	current_valible_dir = Direct.NONE;
+	if (previous_rail_id != noone) {
+		previous_rail_id.is_completed = true;	
+	}
 	previous_rail_id = noone;
+	start_smae_shape = true;
 }
 
 switch(make_state) {

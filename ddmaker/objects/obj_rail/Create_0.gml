@@ -10,6 +10,7 @@ way = [Way.OUTPUT, Way.NONE, Way.INPUT, Way.NONE];
 way_number = 4;
 input_number = 1;
 output_number = 1;
+is_completed = false;
 
 function change_input(_Direct) {
 	if (input_number == 1) {
@@ -18,6 +19,16 @@ function change_input(_Direct) {
 		way[_Direct] = Way.INPUT;
 		way[_index] = Way.NONE;
 	}
+	cal_sprite_and_angle();
+}
+
+function add_output(_Direct) {
+	way[_Direct] = Way.OUTPUT;
+	cal_sprite_and_angle();
+}
+
+function add_input(_Direct) {
+	way[_Direct] = Way.INPUT;
 	cal_sprite_and_angle();
 }
 
@@ -129,6 +140,25 @@ function cal_sprite_and_angle() {
 					sprite_index = spr_two_way_rail4;
 				}
 				image_angle = (array_get_index(way, Way.OUTPUT) - 2) * 90;
+			}
+			else if (output_number == 2) {
+				sprite_index = spr_cross_way_normal;
+				if (way[0] == way[1]) {
+					if (way[0] == Way.OUTPUT) {
+						image_angle = 0;
+					}
+					else {
+						image_angle = 180;
+					}
+				}
+				else {
+					if (way[0] == Way.OUTPUT) {
+						image_angle = 270;
+					}
+					else {
+						image_angle = 90;
+					}
+				}
 			}
 			//input, output 각각 2개 인 경우는 cross로 사용
 			break;
