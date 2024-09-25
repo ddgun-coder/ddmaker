@@ -1,5 +1,6 @@
 /// @description Insert description here
 // You can write your code in this editor
+event_inherited();
 image_speed = 0;
 item_maked = false;
 item_extract_speed = 1;

@@ -1,21 +1,17 @@
 {
   "$GMObject":"",
-  "%Name":"obj_extractor",
+  "%Name":"obj_abs_component",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_extractor",
+  "name":"obj_abs_component",
   "overriddenProperties":[],
   "parent":{
     "name":"오브젝트",
     "path":"folders/오브젝트.yy",
   },
-  "parentObjectId":{
-    "name":"obj_abs_component",
-    "path":"objects/obj_abs_component/obj_abs_component.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -33,10 +29,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_extractor",
-    "path":"sprites/spr_extractor/spr_extractor.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

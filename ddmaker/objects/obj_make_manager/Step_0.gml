@@ -14,8 +14,8 @@ if (make_state != State.NONE) {
 
 if (mouse_check_button_pressed(mb_left)) {
 	clicked_id = noone;
-	with (obj_rail) {
-		if (point_in_rectangle(other.mouse_floor_x, other.mouse_floor_y, bbox_left, bbox_top, bbox_right, bbox_bottom)) {
+	with (obj_abs_component) {
+		if (collision_point(other.mouse_floor_x, other.mouse_floor_y, id, false, false)) {
 			other.clicked_id = id;
 			break;
 		}

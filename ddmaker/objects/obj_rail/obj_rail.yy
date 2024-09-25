@@ -12,7 +12,10 @@
     "name":"오브젝트",
     "path":"folders/오브젝트.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_abs_component",
+    "path":"objects/obj_abs_component/obj_abs_component.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

@@ -1,21 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"obj_extractor",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "%Name":"obj_box",
+  "eventList":[],
   "managed":true,
-  "name":"obj_extractor",
+  "name":"obj_box",
   "overriddenProperties":[],
   "parent":{
     "name":"오브젝트",
     "path":"folders/오브젝트.yy",
   },
-  "parentObjectId":{
-    "name":"obj_abs_component",
-    "path":"objects/obj_abs_component/obj_abs_component.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -34,8 +28,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_extractor",
-    "path":"sprites/spr_extractor/spr_extractor.yy",
+    "name":"spr_box",
+    "path":"sprites/spr_box/spr_box.yy",
   },
   "spriteMaskId":null,
   "visible":true,

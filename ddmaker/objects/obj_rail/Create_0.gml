@@ -23,12 +23,12 @@ function change_input(_Direct) {
 }
 
 function add_output(_Direct) {
-	way[_Direct] = Way.OUTPUT;
+	if (way[_Direct] == Way.NONE) way[_Direct] = Way.OUTPUT;
 	cal_sprite_and_angle();
 }
 
 function add_input(_Direct) {
-	way[_Direct] = Way.INPUT;
+	if (way[_Direct] == Way.NONE) way[_Direct] = Way.INPUT;
 	cal_sprite_and_angle();
 }
 
