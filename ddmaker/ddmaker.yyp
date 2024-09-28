@@ -41,6 +41,7 @@
     {"id":{"name":"obj_rail","path":"objects/obj_rail/obj_rail.yy",},},
     {"id":{"name":"obj_repository","path":"objects/obj_repository/obj_repository.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
+    {"id":{"name":"scr_item","path":"scripts/scr_item/scr_item.yy",},},
     {"id":{"name":"spr_box","path":"sprites/spr_box/spr_box.yy",},},
     {"id":{"name":"spr_cross_way_normal","path":"sprites/spr_cross_way_normal/spr_cross_way_normal.yy",},},
     {"id":{"name":"spr_cross_way_rail1","path":"sprites/spr_cross_way_rail1/spr_cross_way_rail1.yy",},},

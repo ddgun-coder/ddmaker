@@ -6,6 +6,7 @@ enum Way {
 	OUTPUT,
 }
 rail_item = [];//현재 rail가 가지고 있는 item
+rail_item_limit = 3;
 way = [Way.OUTPUT, Way.NONE, Way.INPUT, Way.NONE];
 way_number = 4;
 input_number = 1;
