@@ -2,11 +2,9 @@
 // You can write your code in this editor
 image_index = item_maked;
 if (item_maked) {
+	check_linked_obj();
 	if (is_linked) {
 		extract_obj();
-	}
-	else {
-		check_linked_obj();
 	}
 }
 else {

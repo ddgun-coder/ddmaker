@@ -61,7 +61,7 @@ function make_obj() {
 				//Reorient rail from previous location 
 				_id.set_one_way_direction(current_dir);
 				//클릭해서 이어준 경우는 변경이 아닌 추가 형태
-				if (clicked_id != noone) {
+				if (clicked_id != noone and clicked_id.object_index == obj_rail) {
 					clicked_id.add_output(current_dir);
 					clicked_id = noone;
 				}
@@ -87,10 +87,12 @@ function make_obj() {
 			}
 			else if (_current_obj_id != previous_rail_id and previous_rail_id != noone) {
 				//마지막 끝맺음을 완벽하게 만들기 위한 부분
-				_current_obj_id.add_input((current_dir + 2) % 4);
-				previous_rail_id.change_output(current_dir);
-				previous_rail_id.is_completed = true;
-				previous_rail_id = _current_obj_id;
+				if (_current_obj_id.object_index == obj_rail) {
+					_current_obj_id.add_input((current_dir + 2) % 4);
+					previous_rail_id.change_output(current_dir);
+					previous_rail_id.is_completed = true;
+					previous_rail_id = _current_obj_id;
+				}
 			}
 			break;
 		case State.WAY_CHANGER :
