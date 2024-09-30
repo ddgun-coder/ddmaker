@@ -5,13 +5,32 @@ enum Way {
 	INPUT,
 	OUTPUT,
 }
-rail_item = [];//현재 rail가 가지고 있는 item
-rail_item_limit = 3;
 way = [Way.OUTPUT, Way.NONE, Way.INPUT, Way.NONE];
 way_number = 4;
 input_number = 1;
 output_number = 1;
 is_completed = false;
+current_direction = Direct.NONE;
+connected_output = array_create(4, noone);
+connected_input = array_create(4, noone);
+cur_output = 0;
+
+function cycle_output(_box_id) {
+	var _cur_order = 0;
+	for (var i = 0; i < way_number; i++) {
+		if (connected_output[i] != noone) {
+			if (_cur_order < cur_output) {
+				_cur_order++;
+				continue;
+			}
+			_box_id.direct = i;
+			_box_id.next_tile = connected_output[i];
+			cur_output = (cur_output + 1) mod output_number;
+			return;
+		}
+	}
+}
+
 
 function change_input(_Direct) {
 	if (input_number == 1) {
@@ -61,6 +80,34 @@ function set_one_way_direction(_Direct) {
 		break;
 	}
 	cal_sprite_and_angle();
+}
+
+function check_output_connected() {
+	for (var i = 0; i < way_number; i++) {
+		connected_output[i] = noone;
+		if (way[i] == Way.OUTPUT) {
+			var _dxy = get_direction_dxdy(i);
+			var _id = instance_place(x + _dxy[0], y + _dxy[1], obj_rail);
+			if (_id != noone and _id.way[direction_reverse(i)] == Way.INPUT) {
+				connected_output[i] = _id;
+				_id.connected_input[direction_reverse(i)] = id;
+			}
+		}
+	}
+}
+
+function check_input_connected() {
+	for (var i = 0; i < way_number; i++) {
+		connected_input[i] = noone;
+		if (way[i] == Way.INPUT) {
+			var _dxy = get_direction_dxdy(i);
+			var _id = instance_place(x + _dxy[0], y + _dxy[1], obj_rail);
+			if (_id != noone and _id.way[direction_reverse(i)] == Way.OUTPUT) {
+				connected_input[i] = _id;
+				_id.connected_output[direction_reverse(i)] = id;
+			}
+		}
+	}
 }
 
 function cal_sprite_and_angle() {
@@ -170,4 +217,6 @@ function cal_sprite_and_angle() {
 			}
 			break;
 	}
+	check_output_connected();
+	check_input_connected();
 }

@@ -6,27 +6,41 @@ item_maked = false;
 item_extract_speed = 1;
 item_extract_max_time = 60;
 item_extract_time = 0;
-
+cur_output = 0;
 item_type = global.wood;
 
-function extract_obj() {
-	var _is_created = false;
+function cycle_output() {
+	var _cur_order = 0;
 	for (var i = 0; i < way_number; i++) {
-		if (linked_obj[i] == noone) continue;
-		with (linked_obj[i]) {
-			if (object_index == obj_rail) {
-				if (way[direction_reverse(i)] == Way.INPUT) {
-					if (array_length(rail_item) < rail_item_limit) {
-						_id = instance_create_depth(other.x, other.y, depth - 1, obj_box);
-						array_push(rail_item, _id);
-						_is_created = true;
-					}
-				}
+		if (linked_obj[i].object_index == obj_rail and linked_obj[i] != noone) {
+			if (_cur_order < cur_output) {
+				_cur_order++;
+				continue;
+			}
+			cur_output = (cur_output + 1) mod linked_number;
+			return i;
+		}
+	}
+	return noone;
+}
+
+function extract_obj() {
+	var _dir = cycle_output();
+	if (_dir == noone) return;
+	
+	var _is_created = false;
+
+	with (linked_obj[_dir]) {
+		if (way[direction_reverse(_dir)] == Way.INPUT) {
+			if (!place_meeting(other.x, other.y, obj_box)) {
+				_id = instance_create_depth(other.x, other.y, depth - 1, obj_box);
+				_id.direct = _dir;
+				_id.next_tile = id;
+				_is_created = true;
 			}
 		}
-		if (_is_created) {
-			item_maked = false;
-			break;
-		}
-	}	
+	}
+	if (_is_created) {
+		item_maked = false;
+	}
 }
