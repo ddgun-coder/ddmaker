@@ -5,4 +5,5 @@ if (is_completed) {
 }
 else {
 	image_blend = c_red;
+	temp_dir = cal_direction(x, y, , );
 }

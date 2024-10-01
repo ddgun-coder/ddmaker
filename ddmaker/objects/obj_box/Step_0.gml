@@ -22,27 +22,33 @@ if (!place_meeting(x + _dx, y + _dy, object_index)) {
 }
 
 if (place_meeting(x, y, next_tile)) {
+	var is_completed = false;
 	switch(direct) {
 		case Direct.RIGHT :
 			if (x > next_tile.x) {
-				direct = Direct.NONE;
+				is_completed = true;
 			}
 			break;
 		case Direct.LEFT :
 			if (x < next_tile.x) {
-				direct = Direct.NONE;
+				is_completed = true;
 			}
 			break;
 		case Direct.DOWN :
 			if (y > next_tile.y) {
-				direct = Direct.NONE;
+				is_completed = true;
 			}
 			break;
 		case Direct.UP :
 			if (y < next_tile.y) {
-				direct = Direct.NONE;
+				is_completed = true;
 			}
 			break;
+	}
+	if (is_completed) {
+		x = next_tile.x;
+		y = next_tile.y;
+		direct = Direct.NONE;
 	}
 }
 

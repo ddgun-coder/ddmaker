@@ -14,6 +14,18 @@ current_direction = Direct.NONE;
 connected_output = array_create(4, noone);
 connected_input = array_create(4, noone);
 cur_output = 0;
+temp_dir = Direct.NONE;
+
+function finalize_output(_Direct) {
+	 if (is_completed) {
+		add_output(_Direct);
+	}
+	else {
+		change_output(_Direct);
+	}
+	is_completed = true;
+}
+
 
 function cycle_output(_box_id) {
 	var _cur_order = 0;
@@ -29,6 +41,7 @@ function cycle_output(_box_id) {
 			return;
 		}
 	}
+	cur_output = (cur_output + 1) mod output_number;
 }
 
 

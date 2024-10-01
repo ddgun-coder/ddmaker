@@ -12,7 +12,7 @@ item_type = global.wood;
 function cycle_output() {
 	var _cur_order = 0;
 	for (var i = 0; i < way_number; i++) {
-		if (linked_obj[i].object_index == obj_rail and linked_obj[i] != noone) {
+		if (linked_obj[i] != noone and linked_obj[i].object_index == obj_rail) {
 			if (_cur_order < cur_output) {
 				_cur_order++;
 				continue;

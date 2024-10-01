@@ -20,3 +20,19 @@ function get_direction_dxdy(_Direct, _len = 32) {
 			return [_len, 0];
 	}
 }
+
+function cal_direction(x2, y2, x1, y1) {
+	if (x2 > x1) {
+		return Direct.LEFT;
+	}
+	else if (x2 < x1) {
+		return Direct.RIGHT;	
+	}
+	else if (y2 > y1) {
+		return Direct.UP;	
+	}
+	else if (y2 < y1) {
+		return Direct.DOWN;	
+	}
+	return Direct.NONE;
+}

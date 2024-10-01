@@ -19,45 +19,45 @@ mouse_sprite_angle = 0;
 current_valible_dir = Direct.RIGHT;
 previous_rail_id = noone;
 start_smae_shape = true;
+current_dir = Direct.NONE;
 
 function make_obj() {
 	//get direction
 	current_dir = Direct.NONE;
-	if (mouse_previous_x > mouse_floor_x) {
-		current_dir = Direct.LEFT;
-	}
-	else if (mouse_previous_x < mouse_floor_x) {
-		current_dir = Direct.RIGHT;	
-	}
-	else if (mouse_previous_y > mouse_floor_y) {
-		current_dir = Direct.UP;	
-	}
-	else if (mouse_previous_y < mouse_floor_y) {
-		current_dir = Direct.DOWN;	
-	}
+	current_dir = cal_direction(mouse_previous_x, mouse_previous_y, mouse_floor_x, mouse_floor_y);
 	if (current_dir != Direct.NONE) {
 		current_valible_dir = current_dir;
 	}
-	var _current_obj_id = noone;
 	//found obj
-	with (obj_abs_component) {
-		if (collision_point(other.mouse_floor_x, other.mouse_floor_y, id, false, false)) {
-			_current_obj_id = id;
-			break;
-		}
-	}
-	
+	var _current_obj_id = collision_point(mouse_floor_x, mouse_floor_y, obj_abs_component, false, false);
 	//make obj
 	switch (make_state) {
 		case State.RAIL :
+			//이미 존재하는 rail 기억하는 부분
+			if (previous_rail_id == noone and _current_obj_id != noone) {
+				if (_current_obj_id.object_index == obj_rail) {
+					previous_rail_id = _current_obj_id;	
+				}
+			}
 			//변화가 없으면 return
-			if (_current_obj_id != noone and current_dir == Direct.NONE) {
-				return;
+			if (_current_obj_id != noone) {
+			    // current_dir이 NONE일 때
+			    if (current_dir == Direct.NONE) {
+			        if (_current_obj_id.object_index == obj_rail && previous_rail_id != noone) {
+			            start_same_shape = false;
+			        }
+			        return; // 더 이상 처리할 게 없으니 return
+			    }
+
+			    // current_dir이 NONE이 아닐 때
+			    if (_current_obj_id.object_index != obj_rail && previous_rail_id != noone) {
+			        previous_rail_id.finalize_output(current_dir);
+			    }
 			}
 			
 			if (_current_obj_id == noone) {
 				//Create rail at current location
-				_id =instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_rail);
+				var _id =instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_rail);
 				//Reorient rail from previous location 
 				_id.set_one_way_direction(current_dir);
 				//클릭해서 이어준 경우는 변경이 아닌 추가 형태
@@ -71,16 +71,11 @@ function make_obj() {
 					if (start_smae_shape) {
 						start_smae_shape = false;
 						previous_rail_id.set_one_way_direction(current_dir);
+						previous_rail_id.is_completed = true;
 					}
 					else {
-						if (previous_rail_id.is_completed) {
-							previous_rail_id.add_output(current_dir);
-						}
-						else {
-							previous_rail_id.change_output(current_dir);		
-						}
+						previous_rail_id.finalize_output(current_dir);
 					}
-					previous_rail_id.is_completed = true;
 				}
 				//이전의 레일을 기억
 				previous_rail_id = _id;
@@ -89,8 +84,13 @@ function make_obj() {
 				//마지막 끝맺음을 완벽하게 만들기 위한 부분
 				if (_current_obj_id.object_index == obj_rail) {
 					_current_obj_id.add_input((current_dir + 2) % 4);
-					previous_rail_id.change_output(current_dir);
-					previous_rail_id.is_completed = true;
+					if (previous_rail_id.is_completed) {
+						previous_rail_id.add_output(current_dir);
+					}
+					else {
+						previous_rail_id.change_output(current_dir);
+						previous_rail_id.is_completed = true;
+					}
 					previous_rail_id = _current_obj_id;
 				}
 			}
@@ -99,11 +99,7 @@ function make_obj() {
 			//obj exists;
 			if (current_dir != Direct.NONE) {
 				if (_current_obj_id != noone) {
-					if (_id.way[current_dir] == Way.NONE) {
-						_id.way[current_dir] = Way.OUTPUT;
-						_id.cal_sprite_and_angle();
-						return;
-					}
+					
 				}
 			}
 			break;
