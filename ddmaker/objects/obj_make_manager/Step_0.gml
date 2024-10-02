@@ -6,10 +6,18 @@ if (keyboard_check_pressed(ord("Q"))) {
 else if (keyboard_check_pressed(ord("S"))) {
 	make_state = State.WAY_CHANGER;
 }
+else if (keyboard_check_pressed(ord("C"))) {
+	make_state = State.WAY_MAGNIFIER;
+}
 
 if (make_state != State.NONE) {
 	mouse_floor_x = floor((mouse_x + 16) / 32) * 32;
 	mouse_floor_y = floor((mouse_y + 16) / 32) * 32;
+	//found obj
+	current_obj_id = collision_point(mouse_floor_x, mouse_floor_y, obj_abs_component, false, false);
+}
+if (make_state == State.WAY_MAGNIFIER) {
+	check_obj();
 }
 
 if (mouse_check_button_pressed(mb_left)) {
@@ -44,5 +52,8 @@ switch(make_state) {
 		break;
 	case State.WAY_CHANGER : 
 		mouse_sprite =  spr_way_changer;
+		break;
+	case State.WAY_MAGNIFIER : 
+		mouse_sprite =  spr_way_magnifier;
 		break;
 }

@@ -26,6 +26,19 @@ function finalize_output(_Direct) {
 	is_completed = true;
 }
 
+function get_cur_output_direction() {
+	var _cur_order = 0;
+	for (var i = 0; i < way_number; i++) {
+		if (connected_output[i] != noone) {
+			if (_cur_order < cur_output) {
+				_cur_order++;
+				continue;
+			}
+			return i;
+		}
+	}
+	return noone;
+}
 
 function cycle_output(_box_id) {
 	var _cur_order = 0;
