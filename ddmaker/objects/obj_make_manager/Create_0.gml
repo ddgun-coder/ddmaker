@@ -23,7 +23,17 @@ start_smae_shape = true;
 current_dir = Direct.NONE;
 magnifier_time = 0;
 magnifier_id = noone;
-current_obj_id = noone
+current_obj_id = noone;
+
+function delete_obj() {
+	switch (make_state) {
+		case State.RAIL :
+			if (current_obj_id != noone and current_obj_id.object_index == obj_rail) {
+				current_obj_id.delete_obj_with_box();	
+			}
+			break;	
+	}
+}
 
 function check_obj() {
 	if (current_obj_id == noone) {
@@ -41,7 +51,6 @@ function check_obj() {
 	
 	switch(current_obj_id.object_index) {
 		case obj_rail :
-			show_debug_message(magnifier_time);
 			break;
 	}
 }

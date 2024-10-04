@@ -11,8 +11,10 @@ item_type = global.wood;
 
 function cycle_output() {
 	var _cur_order = 0;
+	var _id = noone;
 	for (var i = 0; i < way_number; i++) {
-		if (linked_obj[i] != noone and linked_obj[i].object_index == obj_rail) {
+		_id = linked_obj[i];
+		if (_id != noone and (_id.object_index == obj_rail or _id.object_index == obj_repository)) {
 			if (_cur_order < cur_output) {
 				_cur_order++;
 				continue;
@@ -35,7 +37,7 @@ function extract_obj() {
 			if (!place_meeting(other.x, other.y, obj_box)) {
 				_id = instance_create_depth(other.x, other.y, depth - 1, obj_box);
 				_id.direct = _dir;
-				_id.next_tile = id;
+				_id.set_next_tile(id);
 				_is_created = true;
 			}
 		}

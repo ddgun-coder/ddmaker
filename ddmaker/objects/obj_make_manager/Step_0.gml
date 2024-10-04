@@ -45,6 +45,10 @@ else {
 	start_smae_shape = true;
 }
 
+if (mouse_check_button(mb_right)) {
+	delete_obj();	
+}
+
 switch(make_state) {
 	case State.RAIL : 
 		mouse_sprite =  spr_one_way_rail_show;

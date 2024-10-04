@@ -16,6 +16,17 @@ connected_input = array_create(4, noone);
 cur_output = 0;
 temp_dir = Direct.NONE;
 
+function delete_obj_with_box() {
+	var ds_list = ds_list_create();
+	var _num = instance_place_list(x, y, obj_box, ds_list, false);
+	for (var i = 0; i < _num; i++;)
+    {
+        instance_destroy(ds_list[| i]);
+    }
+	ds_list_destroy(ds_list);
+	instance_destroy();
+}
+
 function finalize_output(_Direct) {
 	 if (is_completed) {
 		add_output(_Direct);
@@ -41,6 +52,7 @@ function get_cur_output_direction() {
 }
 
 function cycle_output(_box_id) {
+	verify_output_object();
 	var _cur_order = 0;
 	for (var i = 0; i < way_number; i++) {
 		if (connected_output[i] != noone) {
@@ -49,7 +61,7 @@ function cycle_output(_box_id) {
 				continue;
 			}
 			_box_id.direct = i;
-			_box_id.next_tile = connected_output[i];
+			_box_id.set_next_tile(connected_output[i]);
 			cur_output = (cur_output + 1) mod output_number;
 			return;
 		}
@@ -113,11 +125,26 @@ function check_output_connected() {
 		connected_output[i] = noone;
 		if (way[i] == Way.OUTPUT) {
 			var _dxy = get_direction_dxdy(i);
-			var _id = instance_place(x + _dxy[0], y + _dxy[1], obj_rail);
-			if (_id != noone and _id.way[direction_reverse(i)] == Way.INPUT) {
-				connected_output[i] = _id;
-				_id.connected_input[direction_reverse(i)] = id;
+			var _id = instance_place(x + _dxy[0], y + _dxy[1], obj_abs_component);
+			if (_id != noone) {
+				if (_id.object_index == obj_rail) {
+					if (_id.way[direction_reverse(i)] == Way.INPUT) {
+						connected_output[i] = _id;
+						_id.connected_input[direction_reverse(i)] = id;
+					}
+				}
+				else {
+					connected_output[i] = _id;
+				}
 			}
+		}
+	}
+}
+
+function verify_output_object() {
+	for (var i = 0; i < way_number; i++) {
+		if (!instance_exists(connected_output[i])) {
+			connected_output[i] = noone;
 		}
 	}
 }

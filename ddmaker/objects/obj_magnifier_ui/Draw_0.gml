@@ -2,10 +2,10 @@
 // You can write your code in this editor
 draw_set_alpha(image_alpha);
 draw_self();
-var _id =obj_make_manager.current_obj_id
+var _id = obj_make_manager.current_obj_id
 var _draw_x = x + 64;
 var _draw_y = y + 64;
-if (_id != noone) {
+if (_id != noone and instance_exists(_id)) {
 	draw_sprite_ext(_id.sprite_index, _id.image_index, _draw_x, _draw_y, _id.image_xscale, _id.image_yscale, _id.image_angle, _id.image_blend, image_alpha);
 	switch (_id.object_index) {
 		case obj_rail :
