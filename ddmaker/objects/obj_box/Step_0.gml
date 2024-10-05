@@ -3,6 +3,9 @@
 if (direct == Direct.NONE) {
 	image_index = 1;
 }
+else if (is_moved == false) {
+	image_index = 2;
+}
 else {
 	image_index = 0;	
 }
@@ -22,42 +25,23 @@ switch(direct) {
 		_dx += 1;
 		break;
 }
-if (!place_meeting(x + _dx, y + _dy, object_index)) {
-	x += _dx;
-	y += _dy;
+
+if (_dx != 0 or _dy != 0) {
+	if (!place_meeting(x + _dx, y + _dy, object_index)) {
+		x += _dx;
+		y += _dy;
+	}
 }
 //움직이는 부분
 
-if (place_meeting(x, y, next_tile)) {
-	var is_completed = false;
-	switch(direct) {
-		case Direct.RIGHT :
-			if (x > next_tile.x) {
-				is_completed = true;
-			}
-			break;
-		case Direct.LEFT :
-			if (x < next_tile.x) {
-				is_completed = true;
-			}
-			break;
-		case Direct.DOWN :
-			if (y > next_tile.y) {
-				is_completed = true;
-			}
-			break;
-		case Direct.UP :
-			if (y < next_tile.y) {
-				is_completed = true;
-			}
-			break;
-	}
-	if (is_completed) {
-		x = next_tile.x;
-		y = next_tile.y;
-		direct = Direct.NONE;
-	}
+if (x != xprevious or y != yprevious) {
+	is_moved = true;
+}	
+else {
+	is_moved = false;	
 }
+
+metting_next_tile();
 //next_tile에 도착했는지 확인
 if (next_tile != noone and !instance_exists(next_tile)) {
 	direct = Direct.NONE;
@@ -72,17 +56,25 @@ if (direct == Direct.NONE) {
 		}
 	}
 	else {
-		switch (next_tile.object_index) {
-			case obj_rail :
-				if (place_meeting(x, y, next_tile)) {
+		if (place_meeting(x, y, next_tile)) {
+			switch (next_tile.object_index) {
+				case obj_rail :
 					next_tile.cycle_output(id);
-				}
-				break;
-			case obj_repository :
-				
-				break;
-		}
+					break;
+			}
 
+		}
 	}
 }
 //다음 tile 찾기
+
+if (repository_id) {
+	image_xscale -= 0.02;
+	image_yscale -= 0.02;
+	if (image_xscale <= 0) {
+		with (repository_id) {
+			array_push(item_array, other.item_type);
+		}
+		instance_destroy();
+	}
+}
