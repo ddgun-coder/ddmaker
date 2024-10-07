@@ -15,6 +15,7 @@ connected_output = array_create(4, noone);
 connected_input = array_create(4, noone);
 cur_output = 0;
 temp_dir = Direct.NONE;
+is_opposite_input = false;
 
 function delete_obj_with_box() {
 	var ds_list = ds_list_create();
@@ -166,6 +167,8 @@ function check_input_connected() {
 function cal_sprite_and_angle() {
 	var _out_number = 0;
 	var _input_number = 0;
+	var _pre_input_index = noone;
+	is_opposite_input = false;
 	//cal input/output number
 	for (i = 0; i < way_number; i++) {
 		if (way[i] == Way.OUTPUT) {
@@ -173,6 +176,13 @@ function cal_sprite_and_angle() {
 		}
 		else if (way[i] == Way.INPUT) {
 			_input_number++;	
+			if (_pre_input_index == noone) {
+				_pre_input_index = i;	
+			}
+			else if (is_opposite_direction(_pre_input_index, i)) {
+				is_opposite_input = true;
+				show_debug_message("is_opposite_input");
+			}
 		}
 	}
 	output_number = _out_number;

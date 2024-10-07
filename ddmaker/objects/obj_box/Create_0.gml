@@ -28,29 +28,29 @@ function metting_next_tile() {
 		var is_completed = false;
 		switch(direct) {
 			case Direct.RIGHT :
-				if (x > next_tile.x) {
+				if (x > next_tile_x) {
 					is_completed = true;
 				}
 				break;
 			case Direct.LEFT :
-				if (x < next_tile.x) {
+				if (x < next_tile_x) {
 					is_completed = true;
 				}
 				break;
 			case Direct.DOWN :
-				if (y > next_tile.y) {
+				if (y > next_tile_y) {
 					is_completed = true;
 				}
 				break;
 			case Direct.UP :
-				if (y < next_tile.y) {
+				if (y < next_tile_y) {
 					is_completed = true;
 				}
 				break;
 		}
 		if (is_completed) {
-			x = next_tile.x;
-			y = next_tile.y;
+			x = next_tile_x;
+			y = next_tile_y;
 			direct = Direct.NONE;
 		}
 	}	

@@ -4,6 +4,16 @@ function scr_item_movement(){
 
 }
 
+function is_opposite_direction(dir1, dir2) {
+	if (dir1 == 0 and dir2 == 2) or (dir1 == 2 and dir2 == 0) {
+		return true;	
+	}
+	if (dir1 == 1 and dir2 == 3) or (dir1 == 3 and dir2 == 1) {
+		return true;	
+	}
+	return false;
+}
+
 function direction_reverse(_Direct){
 	return (_Direct + 2) mod 4;
 }
