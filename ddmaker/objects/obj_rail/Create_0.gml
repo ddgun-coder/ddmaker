@@ -14,8 +14,28 @@ current_direction = Direct.NONE;
 connected_output = array_create(4, noone);
 connected_input = array_create(4, noone);
 cur_output = 0;
+cur_input = 0;
 temp_dir = Direct.NONE;
 is_opposite_input = false;
+opened_opposite_input = Direct.NONE;
+box_is_out = true;
+no_request = false;
+
+function set_opposite() {
+	is_opposite_input = true;
+	opened_opposite_input = get_cur_input();
+	box_is_out = true;
+}
+
+function delete_box() {
+	var ds_list = ds_list_create();
+	var _num = instance_place_list(x, y, obj_box, ds_list, false);
+	for (var i = 0; i < _num; i++;)
+    {
+        instance_destroy(ds_list[| i]);
+    }
+	ds_list_destroy(ds_list);
+}
 
 function delete_obj_with_box() {
 	var ds_list = ds_list_create();
@@ -38,6 +58,14 @@ function finalize_output(_Direct) {
 	is_completed = true;
 }
 
+function get_ouput_direction() {
+	for (var i = 0; i < way_number; i++) {
+		if (way[i] == Way.OUTPUT) {
+			return i;	
+		}
+	}
+}
+
 function get_cur_output_direction() {
 	var _cur_order = 0;
 	for (var i = 0; i < way_number; i++) {
@@ -52,22 +80,84 @@ function get_cur_output_direction() {
 	return noone;
 }
 
+function connect_box_to_next_tile(_box_id, _dir, exception = false) {
+	_box_id.direct = _dir;
+	_box_id.set_next_tile(connected_output[_dir], exception);
+}
+
 function cycle_output(_box_id) {
+	if (is_opposite_input) {
+		if (box_is_out) {
+			if (_box_id.opposite_in and _box_id.opposite_in_direction == opened_opposite_input) {
+				no_request = false;
+				_box_id.next_tile_x = x;
+				_box_id.next_tile_y = y;
+				_box_id.opposite_in = false;
+				_box_id.opposite_out = true;
+				_box_id.next_tile = id;
+				_box_id.direct = opened_opposite_input;
+				_box_id.opposite_in_direction = Direct.NONE;
+				box_is_out = false;
+			}
+		}
+		else if (_box_id.opposite_out == true) {
+			var _output_dir = get_cur_output();
+			if (_output_dir != noone) {
+				connect_box_to_next_tile(_box_id, _output_dir);
+				_box_id.opposite_out = false;
+				box_is_out = true;
+				opened_opposite_input = get_cur_input();
+			}
+			
+		}
+		return;
+	}
+	
+	var _output_dir = get_cur_output();
+	if (_output_dir != noone) {
+		connect_box_to_next_tile(_box_id, _output_dir);
+	}
+}
+
+function get_cur_output() {
 	verify_output_object();
 	var _cur_order = 0;
+	var _result = noone;
 	for (var i = 0; i < way_number; i++) {
 		if (connected_output[i] != noone) {
 			if (_cur_order < cur_output) {
 				_cur_order++;
 				continue;
 			}
-			_box_id.direct = i;
-			_box_id.set_next_tile(connected_output[i]);
-			cur_output = (cur_output + 1) mod output_number;
-			return;
+			_result = i;
+			break;
 		}
 	}
-	cur_output = (cur_output + 1) mod output_number;
+	
+	if (_result != noone) {
+		cur_output = (cur_output + 1) mod output_number;
+	}
+	return _result;
+}
+
+function get_cur_input() {
+	var _cur_order = 0;
+	var _result = noone;
+	for (var i = 0; i < way_number; i++) {
+		if (way[i] == Way.INPUT) {
+			if (_cur_order < cur_input) {
+				_cur_order++;
+				continue;
+			}
+			_result = i;
+			break;
+		}
+	}
+	
+	if (_result != noone) {
+		cur_input = (cur_input + 1) mod input_number;
+	}
+	return _result;
 }
 
 
@@ -164,6 +254,7 @@ function check_input_connected() {
 	}
 }
 
+
 function cal_sprite_and_angle() {
 	var _out_number = 0;
 	var _input_number = 0;
@@ -181,9 +272,12 @@ function cal_sprite_and_angle() {
 			}
 			else if (is_opposite_direction(_pre_input_index, i)) {
 				is_opposite_input = true;
-				show_debug_message("is_opposite_input");
 			}
 		}
+	}
+	if (is_opposite_input) {
+		set_opposite();
+		delete_box();
 	}
 	output_number = _out_number;
 	input_number = _input_number;

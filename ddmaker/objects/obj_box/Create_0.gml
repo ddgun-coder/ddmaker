@@ -8,13 +8,33 @@ image_speed = 0;
 is_moved = false;
 repository_id = noone;
 item_type = noone;
+opposite_in = false;
+opposite_in_direction = Direct.NONE;
+opposite_out = false;
+opposite_out_direction = Direct.NONE;
 
-function set_next_tile(_id) {
+function set_next_tile(_id, exception = false) {
+	//direct 를먼저 할 것.
 	next_tile = _id;
 	if (_id == noone) return;
 	
-	next_tile_x = _id.x;
-	next_tile_y = _id.y;
+	if (exception) {
+		next_tile_x = _id.x;
+		next_tile_y = _id.y;
+		return;
+	}
+	
+	if (next_tile.object_index == obj_rail and next_tile.is_opposite_input) {
+		var _dxy = get_direction_dxdy(direction_reverse(direct), 18);
+		next_tile_x = _id.x + _dxy[0];
+		next_tile_y = _id.y + _dxy[1];
+		opposite_in = true;
+		opposite_in_direction = direct;
+	}
+	else {
+		next_tile_x = _id.x;
+		next_tile_y = _id.y;
+	}
 }
 
 function metting_next_tile() {
@@ -26,7 +46,7 @@ function metting_next_tile() {
 		}
 		
 		var is_completed = false;
-		switch(direct) {
+		switch(direct) {	
 			case Direct.RIGHT :
 				if (x > next_tile_x) {
 					is_completed = true;
