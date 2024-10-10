@@ -20,11 +20,13 @@ is_opposite_input = false;
 opened_opposite_input = Direct.NONE;
 box_is_out = true;
 no_request = false;
+opposite_array = array_create(4, noone);
 
 function set_opposite() {
 	is_opposite_input = true;
 	opened_opposite_input = get_cur_input();
 	box_is_out = true;
+	opposite_array = [noone, noone, noone, noone];
 }
 
 function delete_box() {
@@ -87,6 +89,22 @@ function connect_box_to_next_tile(_box_id, _dir, exception = false) {
 
 function cycle_output(_box_id) {
 	if (is_opposite_input) {
+		if (_box_id.x == x and _box_id.y == y and _box_id.opposite_in == false) {
+			var _output_dir = get_cur_output();
+			connect_box_to_next_tile(_box_id, _output_dir);
+			box_is_out = true;
+			return;
+		}
+		
+		var _dir = cal_direction(_box_id.x, _box_id.y, x, y);
+		if (_dir != noone and way[_dir] == Way.INPUT) {
+			opposite_array[_dir] = _box_id;
+			return;
+		}	
+	}
+	
+	/*
+	if (is_opposite_input) {
 		if (box_is_out) {
 			if (_box_id.opposite_in and _box_id.opposite_in_direction == opened_opposite_input) {
 				no_request = false;
@@ -113,6 +131,7 @@ function cycle_output(_box_id) {
 		return;
 	}
 	
+	*/
 	var _output_dir = get_cur_output();
 	if (_output_dir != noone) {
 		connect_box_to_next_tile(_box_id, _output_dir);
@@ -144,7 +163,7 @@ function get_cur_input() {
 	var _cur_order = 0;
 	var _result = noone;
 	for (var i = 0; i < way_number; i++) {
-		if (way[i] == Way.INPUT) {
+		if (connected_input[i] != noone) {
 			if (_cur_order < cur_input) {
 				_cur_order++;
 				continue;
@@ -245,10 +264,17 @@ function check_input_connected() {
 		connected_input[i] = noone;
 		if (way[i] == Way.INPUT) {
 			var _dxy = get_direction_dxdy(i);
-			var _id = instance_place(x + _dxy[0], y + _dxy[1], obj_rail);
-			if (_id != noone and _id.way[direction_reverse(i)] == Way.OUTPUT) {
-				connected_input[i] = _id;
-				_id.connected_output[direction_reverse(i)] = id;
+			var _id = instance_place(x + _dxy[0], y + _dxy[1], obj_abs_component);
+			if (_id != noone) {
+				if (_id.object_index == obj_rail) {
+					if (_id != noone and _id.way[direction_reverse(i)] == Way.OUTPUT) {
+						connected_input[i] = _id;
+						_id.connected_output[direction_reverse(i)] = id;
+					}
+				}
+				else {
+					connected_input[i] = _id;
+				}
 			}
 		}
 	}
