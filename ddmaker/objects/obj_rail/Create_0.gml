@@ -19,7 +19,6 @@ temp_dir = Direct.NONE;
 is_opposite_input = false;
 opened_opposite_input = Direct.NONE;
 box_is_out = true;
-no_request = false;
 opposite_array = array_create(4, noone);
 
 function set_opposite() {
@@ -90,6 +89,7 @@ function connect_box_to_next_tile(_box_id, _dir, exception = false) {
 function cycle_output(_box_id) {
 	if (is_opposite_input) {
 		if (_box_id.x == x and _box_id.y == y and _box_id.opposite_in == false) {
+			//중앙인지 확인
 			var _output_dir = get_cur_output();
 			connect_box_to_next_tile(_box_id, _output_dir);
 			box_is_out = true;
@@ -98,40 +98,12 @@ function cycle_output(_box_id) {
 		
 		var _dir = cal_direction(_box_id.x, _box_id.y, x, y);
 		if (_dir != noone and way[_dir] == Way.INPUT) {
+			//중앙이 아니면 id추가
 			opposite_array[_dir] = _box_id;
 			return;
 		}	
 	}
 	
-	/*
-	if (is_opposite_input) {
-		if (box_is_out) {
-			if (_box_id.opposite_in and _box_id.opposite_in_direction == opened_opposite_input) {
-				no_request = false;
-				_box_id.next_tile_x = x;
-				_box_id.next_tile_y = y;
-				_box_id.opposite_in = false;
-				_box_id.opposite_out = true;
-				_box_id.next_tile = id;
-				_box_id.direct = opened_opposite_input;
-				_box_id.opposite_in_direction = Direct.NONE;
-				box_is_out = false;
-			}
-		}
-		else if (_box_id.opposite_out == true) {
-			var _output_dir = get_cur_output();
-			if (_output_dir != noone) {
-				connect_box_to_next_tile(_box_id, _output_dir);
-				_box_id.opposite_out = false;
-				box_is_out = true;
-				opened_opposite_input = get_cur_input();
-			}
-			
-		}
-		return;
-	}
-	
-	*/
 	var _output_dir = get_cur_output();
 	if (_output_dir != noone) {
 		connect_box_to_next_tile(_box_id, _output_dir);

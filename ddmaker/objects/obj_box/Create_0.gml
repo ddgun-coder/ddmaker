@@ -9,9 +9,6 @@ is_moved = false;
 repository_id = noone;
 item_type = noone;
 opposite_in = false;
-opposite_in_direction = Direct.NONE;
-opposite_out = false;
-opposite_out_direction = Direct.NONE;
 
 function set_next_tile(_id, exception = false) {
 	//direct 를먼저 할 것.
@@ -25,11 +22,10 @@ function set_next_tile(_id, exception = false) {
 	}
 	
 	if (next_tile.object_index == obj_rail and next_tile.is_opposite_input) {
-		var _dxy = get_direction_dxdy(direction_reverse(direct), 18);
+		var _dxy = get_direction_dxdy(direction_reverse(direct), 17);
 		next_tile_x = _id.x + _dxy[0];
 		next_tile_y = _id.y + _dxy[1];
 		opposite_in = true;
-		opposite_in_direction = direct;
 	}
 	else {
 		next_tile_x = _id.x;
