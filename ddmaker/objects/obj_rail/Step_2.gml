@@ -7,6 +7,7 @@ if (is_opposite_input) {
 			var _dir = get_cur_input();
 			var _bool = _dir != noone 
 				and opposite_array[_dir] != noone 
+				and instance_exists(opposite_array[_dir])
 				and opposite_array[_dir].opposite_in
 			if (_bool) {
 				var _box_id = opposite_array[_dir];

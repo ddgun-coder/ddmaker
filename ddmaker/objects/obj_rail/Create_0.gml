@@ -104,9 +104,13 @@ function cycle_output(_box_id) {
 		}	
 	}
 	
-	var _output_dir = get_cur_output();
-	if (_output_dir != noone) {
-		connect_box_to_next_tile(_box_id, _output_dir);
+	var _output_dir = noone;
+	repeat (output_number) {
+		_output_dir = get_cur_output();
+		if (_output_dir != noone) {
+			connect_box_to_next_tile(_box_id, _output_dir);
+			break;
+		}
 	}
 }
 
