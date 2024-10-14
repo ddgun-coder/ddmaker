@@ -7,7 +7,6 @@ item_extract_speed = 1;
 item_extract_max_time = 60;
 item_extract_time = 0;
 cur_output = 0;
-item_type = global.wood;
 
 function cycle_output() {
 	var _cur_order = 0;
@@ -39,6 +38,7 @@ function extract_obj() {
 				_id.direct = _dir;
 				_id.set_next_tile(id);
 				_id.item_type = other.item_type;
+				_id.sprite_index = _id.item_type.spr;
 				_is_created = true;
 			}
 		}

@@ -73,7 +73,7 @@ if (repository_id) {
 	image_yscale -= 0.02;
 	if (image_xscale <= 0) {
 		with (repository_id) {
-			array_push(item_array, other.item_type);
+			add_item(other.item_type);
 		}
 		instance_destroy();
 	}
