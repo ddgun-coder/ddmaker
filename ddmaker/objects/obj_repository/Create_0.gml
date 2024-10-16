@@ -14,7 +14,6 @@ function a(num, _type) constructor {
 
 function add_item(_item) {
 	array_push(item_array, _item);
-	show_debug_message(struct_exists_from_hash(item_hash, _item.hash))
 	if (struct_exists_from_hash(item_hash, _item.hash)) {
 		item_hash[$ _item.item_name].number += 1;
 	}

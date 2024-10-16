@@ -17,7 +17,6 @@ function check_linked_obj() {
 function verify_linked_obj() {
 	for (var i = 0; i < 4; i++) {
 		if (!instance_exists(linked_obj[i])) {
-			show_debug_message("not exist!");
 			linked_obj[i] = noone;
 		}
 	}
