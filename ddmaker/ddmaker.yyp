@@ -37,6 +37,8 @@
     {"id":{"name":"obj_abs_component","path":"objects/obj_abs_component/obj_abs_component.yy",},},
     {"id":{"name":"obj_box","path":"objects/obj_box/obj_box.yy",},},
     {"id":{"name":"obj_extractor","path":"objects/obj_extractor/obj_extractor.yy",},},
+    {"id":{"name":"obj_factory_abs","path":"objects/obj_factory_abs/obj_factory_abs.yy",},},
+    {"id":{"name":"obj_furniture_fac","path":"objects/obj_furniture_fac/obj_furniture_fac.yy",},},
     {"id":{"name":"obj_magnifier_ui","path":"objects/obj_magnifier_ui/obj_magnifier_ui.yy",},},
     {"id":{"name":"obj_make_manager","path":"objects/obj_make_manager/obj_make_manager.yy",},},
     {"id":{"name":"obj_rail","path":"objects/obj_rail/obj_rail.yy",},},

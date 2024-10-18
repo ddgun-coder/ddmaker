@@ -4,7 +4,8 @@ enum State {
 	NONE,
 	RAIL,
 	WAY_CHANGER,
-	WAY_MAGNIFIER
+	WAY_MAGNIFIER,
+	FACTORY
 }
 
 enum Direct {
@@ -24,6 +25,9 @@ current_dir = Direct.NONE;
 magnifier_time = 0;
 magnifier_id = noone;
 current_obj_id = noone;
+facetory_placeable = false;
+factory_index = global.furniture_factory;
+mouse_blend = c_white;
 
 function delete_obj() {
 	switch (make_state) {
@@ -134,6 +138,9 @@ function make_obj() {
 					
 				}
 			}
+			break;
+		case State.FACTORY :
+			
 			break;
 	}
 }

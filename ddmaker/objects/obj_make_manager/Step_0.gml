@@ -9,16 +9,25 @@ else if (keyboard_check_pressed(ord("S"))) {
 else if (keyboard_check_pressed(ord("C"))) {
 	make_state = State.WAY_MAGNIFIER;
 }
+else if (keyboard_check_pressed(ord("F"))) {
+	make_state = State.FACTORY;
+}
 
 if (make_state != State.NONE) {
 	mouse_floor_x = floor((mouse_x + 16) / 32) * 32;
 	mouse_floor_y = floor((mouse_y + 16) / 32) * 32;
 	//found obj
-	current_obj_id = collision_point(mouse_floor_x, mouse_floor_y, obj_abs_component, false, false);
+	current_obj_id = collision_point(mouse_floor_x, mouse_floor_y, obj_abs_component, false, false)
+	switch(make_state) {
+		case State.FACTORY :
+			facetory_placeable = place_meeting(mouse_floor_x, mouse_floor_y, factory_index.obj_facetory_index);
+			break;
+		case State.WAY_MAGNIFIER :
+			check_obj();
+			break;
+	}		
 }
-if (make_state == State.WAY_MAGNIFIER) {
-	check_obj();
-}
+
 
 if (mouse_check_button_pressed(mb_left)) {
 	clicked_id = noone;
@@ -48,7 +57,7 @@ else {
 if (mouse_check_button(mb_right)) {
 	delete_obj();	
 }
-
+mouse_blend = c_white;
 switch(make_state) {
 	case State.RAIL : 
 		mouse_sprite =  spr_one_way_rail_show;
@@ -59,5 +68,9 @@ switch(make_state) {
 		break;
 	case State.WAY_MAGNIFIER : 
 		mouse_sprite =  spr_way_magnifier;
+		break;
+	case State.FACTORY :
+		mouse_blend = c_red;
+		mouse_sprite = factory_index.spr;
 		break;
 }
