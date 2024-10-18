@@ -1,5 +1,6 @@
 /// @description Insert description here
 // You can write your code in this editor
+if (!is_set) exit;
 if (keyboard_check_pressed(ord("Q"))) {
 	make_state = State.RAIL;
 }
@@ -11,6 +12,7 @@ else if (keyboard_check_pressed(ord("C"))) {
 }
 else if (keyboard_check_pressed(ord("F"))) {
 	make_state = State.FACTORY;
+	obj_factory_id = global.furniture_factory;
 }
 
 if (make_state != State.NONE) {
@@ -20,7 +22,9 @@ if (make_state != State.NONE) {
 	current_obj_id = collision_point(mouse_floor_x, mouse_floor_y, obj_abs_component, false, false)
 	switch(make_state) {
 		case State.FACTORY :
-			facetory_placeable = place_meeting(mouse_floor_x, mouse_floor_y, factory_index.obj_facetory_index);
+			var dx = floor(mouse_floor_x / 32) - 1;
+			var dy = floor(mouse_floor_y / 32) - 1;
+			factory_placeable = ds_grid_get_sum(place_grid, dx, dy, dx + obj_factory_id.width - 1, dy + obj_factory_id.height - 1) == 0;
 			break;
 		case State.WAY_MAGNIFIER :
 			check_obj();
@@ -70,7 +74,7 @@ switch(make_state) {
 		mouse_sprite =  spr_way_magnifier;
 		break;
 	case State.FACTORY :
-		mouse_blend = c_red;
+		if(!factory_placeable) mouse_blend =  c_red;
 		mouse_sprite = factory_index.spr;
 		break;
 }

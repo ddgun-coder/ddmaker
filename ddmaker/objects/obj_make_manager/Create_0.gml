@@ -16,6 +16,18 @@ enum Direct {
 	NONE
 }
 
+function set_place_grid(_id) {
+	var dx, dy, w, h;
+	with (_id) {
+		dx = floor((x - 32) / 32);
+		dy = floor((y - 32) / 32);
+		w = floor(sprite_get_width(sprite_index) / 32) - 1;
+		h = floor(sprite_get_height(sprite_index) / 32) - 1;
+		ds_grid_set_region(other.place_grid, dx, dy, dx + w, dy + h, 1);	
+	}
+}
+
+place_grid = ds_grid_create(150, 150);
 mouse_sprite = noone;
 mouse_sprite_angle = 0;
 current_valible_dir = Direct.RIGHT;
@@ -25,9 +37,12 @@ current_dir = Direct.NONE;
 magnifier_time = 0;
 magnifier_id = noone;
 current_obj_id = noone;
-facetory_placeable = false;
+factory_placeable = false;
 factory_index = global.furniture_factory;
 mouse_blend = c_white;
+obj_factory_id = noone;
+alarm[0] = 1;
+is_set = false;
 
 function delete_obj() {
 	switch (make_state) {
@@ -94,6 +109,7 @@ function make_obj() {
 			if (current_obj_id == noone) {
 				//Create rail at current location
 				var _id =instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_rail);
+				set_place_grid(_id);
 				//Reorient rail from previous location 
 				_id.set_one_way_direction(current_dir);
 				//클릭해서 이어준 경우는 변경이 아닌 추가 형태

@@ -19,6 +19,10 @@ function Factory(spr, input_item, output_item, name, input_index, output_index, 
 	self.input_index = input_index;
 	self.output_index = output_index;
 	self.obj_facetory_index = obj_facetory_index;
+	width = floor(sprite_get_width(spr) / 32);
+	height = floor(sprite_get_height(spr) / 32);
+	show_debug_message(width);
+	show_debug_message(height);
 }
 
 global.furniture_factory = new Factory(spr_furniture_fac, [global.wood, global.wood], [global.furniture], "furniture_factory", [0, 1], [1, 1], obj_furniture_fac);

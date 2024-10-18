@@ -1,7 +1,10 @@
 {
   "$GMObject":"",
   "%Name":"obj_furniture_fac",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"obj_furniture_fac",
   "overriddenProperties":[],
@@ -9,7 +12,10 @@
     "name":"오브젝트",
     "path":"folders/오브젝트.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_factory_abs",
+    "path":"objects/obj_factory_abs/obj_factory_abs.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
