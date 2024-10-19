@@ -7,7 +7,7 @@ item_array = [];
 repository_limit = 100;
 item_hash = {};
 
-function a(num, _type) constructor {
+function item_stock(num, _type) constructor {
 	number = num;
 	type = _type;
 }
@@ -15,10 +15,11 @@ function a(num, _type) constructor {
 function add_item(_item) {
 	array_push(item_array, _item);
 	if (struct_exists_from_hash(item_hash, _item.hash)) {
-		item_hash[$ _item.item_name].number += 1;
+		var _str = struct_get_from_hash(item_hash, _item.hash);
+		_str.number += 1;
 	}
 	else {
-		item_hash[$ _item.item_name] = new a(1 , _item);
+		struct_set_from_hash(item_hash, _item.hash, new item_stock(1 , _item));
 	}
 }
 

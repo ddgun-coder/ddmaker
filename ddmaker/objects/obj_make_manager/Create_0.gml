@@ -161,7 +161,8 @@ function make_obj() {
 	}
 }
 
-
+mouse_grid_x = 0;
+mouse_grid_y = 0;
 make_state = State.NONE;
 //현재의 위치
 mouse_floor_x = 0;

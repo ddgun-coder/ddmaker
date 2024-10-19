@@ -1,5 +1,6 @@
 /// @description Insert description here
 // You can write your code in this editor
+
 if (!is_set) exit;
 if (keyboard_check_pressed(ord("Q"))) {
 	make_state = State.RAIL;
@@ -18,13 +19,13 @@ else if (keyboard_check_pressed(ord("F"))) {
 if (make_state != State.NONE) {
 	mouse_floor_x = floor((mouse_x + 16) / 32) * 32;
 	mouse_floor_y = floor((mouse_y + 16) / 32) * 32;
+	mouse_grid_x = floor(mouse_floor_x / 32) - 1;
+	mouse_grid_y = floor(mouse_floor_y / 32) - 1;
 	//found obj
 	current_obj_id = collision_point(mouse_floor_x, mouse_floor_y, obj_abs_component, false, false)
 	switch(make_state) {
 		case State.FACTORY :
-			var dx = floor(mouse_floor_x / 32) - 1;
-			var dy = floor(mouse_floor_y / 32) - 1;
-			factory_placeable = ds_grid_get_sum(place_grid, dx, dy, dx + obj_factory_id.width - 1, dy + obj_factory_id.height - 1) == 0;
+			factory_placeable = ds_grid_get_sum(place_grid, mouse_grid_x, mouse_grid_y, mouse_grid_x + obj_factory_id.width - 1, mouse_grid_y + obj_factory_id.height - 1) == 0;
 			break;
 		case State.WAY_MAGNIFIER :
 			check_obj();
