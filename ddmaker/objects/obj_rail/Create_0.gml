@@ -136,6 +136,7 @@ function get_cur_output() {
 }
 
 function get_cur_input() {
+	verify_input_object();
 	var _cur_order = 0;
 	var _result = noone;
 	for (var i = 0; i < way_number; i++) {
@@ -234,6 +235,15 @@ function verify_output_object() {
 		}
 	}
 }
+
+function verify_input_object() {
+	for (var i = 0; i < way_number; i++) {
+		if (!instance_exists(connected_input[i])) {
+			connected_input[i] = noone;
+		}
+	}
+}
+
 
 function check_input_connected() {
 	for (var i = 0; i < way_number; i++) {

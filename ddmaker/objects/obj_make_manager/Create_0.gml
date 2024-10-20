@@ -156,7 +156,11 @@ function make_obj() {
 			}
 			break;
 		case State.FACTORY :
-			
+			if (factory_placeable) {
+				var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_factory_id.obj_facetory_index);
+				set_place_grid(_id);
+				_id.init_factory(obj_factory_id);
+			}
 			break;
 	}
 }
