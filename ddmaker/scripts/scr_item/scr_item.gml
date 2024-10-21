@@ -13,6 +13,7 @@ global.furniture = new Item(spr_furniture, "furniture");
 
 function Factory(spr, input_item, output_item, name, input_index, output_index, obj_facetory_index) constructor  {
 	self.spr = spr;
+	show_spr = asset_get_index(sprite_get_name(spr) + "_frame");
 	self.input_item = input_item;
 	self.output_item = output_item;
 	hash = variable_get_hash(name);
@@ -21,6 +22,31 @@ function Factory(spr, input_item, output_item, name, input_index, output_index, 
 	self.obj_facetory_index = obj_facetory_index;
 	width = floor(sprite_get_width(spr) / 32);
 	height = floor(sprite_get_height(spr) / 32);
+	
+	function is_output_index(_x, _y) {
+		if (is_array(output_index[0])) {
+			
+		}	
+		else {
+			if (_x == output_index[0] and _y == output_index[1]) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	function is_input_index(_x, _y) {
+		if (is_array(input_index[0])) {
+			
+		}	
+		else {
+			if (_x == input_index[0] and _y == input_index[1]) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }
 
 global.furniture_factory = new Factory(spr_furniture_fac, [global.wood, global.wood], [global.furniture], "furniture_factory", [0, 1], [1, 1], obj_furniture_fac);

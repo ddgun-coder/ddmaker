@@ -4,6 +4,7 @@
 // Inherit the parent event
 event_inherited();
 obj_factory_id = noone;
+show_sprite_index = noone;
 
 input_tile = [[]];
 output_tile = [[]];
