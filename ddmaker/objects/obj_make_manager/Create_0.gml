@@ -43,6 +43,19 @@ mouse_blend = c_white;
 obj_factory_id = noone;
 alarm[0] = 1;
 is_set = false;
+place_able = false;
+
+function rail_end_action() {
+	if (previous_rail_id != noone and previous_rail_id.output_number == 1) {
+		var _dir = get_linked_output_way(mouse_floor_x, mouse_floor_y, true);
+		if (_dir[0] != Direct.NONE and _dir[1] == Io.INPUT) {
+			previous_rail_id.change_output(_dir[0]);
+		}
+		previous_rail_id.is_completed = true;
+	}
+	previous_rail_id = noone;
+	start_smae_shape = true;
+}
 
 function delete_obj() {
 	switch (make_state) {
@@ -76,10 +89,27 @@ function check_obj() {
 
 function make_obj() {
 	//get direction
-	current_dir = Direct.NONE;
 	current_dir = cal_direction(mouse_previous_x, mouse_previous_y, mouse_floor_x, mouse_floor_y);
 	if (current_dir != Direct.NONE) {
 		current_valible_dir = current_dir;
+	}
+	else {
+		if (previous_rail_id == noone) { 
+			var _dir = get_linked_output_way(mouse_floor_x, mouse_floor_y, true);
+			if (_dir[0] != Direct.NONE and _dir[1] == Io.OUTPUT) {
+				current_dir = _dir[0];
+				start_smae_shape = false;
+				current_valible_dir = current_dir;
+			}
+		}
+		else {
+			var _dir = get_linked_output_way(mouse_floor_x, mouse_floor_y, true);
+			if (_dir[0] != Direct.NONE and _dir[1] == Io.INPUT) {
+				current_dir = _dir[0];
+				start_smae_shape = false;
+				current_valible_dir = current_dir;
+			}
+		}
 	}
 	//make obj
 	switch (make_state) {
@@ -157,7 +187,8 @@ function make_obj() {
 			break;
 		case State.FACTORY :
 			if (factory_placeable) {
-				var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_factory_id.obj_facetory_index);
+				var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_factory);
+				_id.sprite_index = obj_factory_id.spr;
 				set_place_grid(_id);
 				_id.init_factory(obj_factory_id);
 			}

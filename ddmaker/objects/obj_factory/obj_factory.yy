@@ -1,20 +1,19 @@
 {
   "$GMObject":"",
-  "%Name":"obj_furniture_fac",
+  "%Name":"obj_factory",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_furniture_fac",
+  "name":"obj_factory",
   "overriddenProperties":[],
   "parent":{
     "name":"오브젝트",
     "path":"folders/오브젝트.yy",
   },
   "parentObjectId":{
-    "name":"obj_factory_abs",
-    "path":"objects/obj_factory_abs/obj_factory_abs.yy",
+    "name":"obj_abs_component",
+    "path":"objects/obj_abs_component/obj_abs_component.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -33,10 +32,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_furniture_fac",
-    "path":"sprites/spr_furniture_fac/spr_furniture_fac.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }
