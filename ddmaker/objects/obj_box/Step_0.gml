@@ -68,13 +68,10 @@ if (direct == Direct.NONE) {
 }
 //다음 tile 찾기
 
-if (repository_id) {
+if (repository_id != noone) {
 	image_xscale -= 0.02;
 	image_yscale -= 0.02;
 	if (image_xscale <= 0) {
-		with (repository_id) {
-			add_item(other.item_type);
-		}
 		instance_destroy();
 	}
 }

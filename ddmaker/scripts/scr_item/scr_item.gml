@@ -46,6 +46,11 @@ function Factory(spr, input_item, output_item, name, input_index, output_index) 
 		
 		return false;
 	}
+	function get_tile_IO(_x, _y) {
+		if (is_output_index(_x, _y)) return Io.OUTPUT;
+		if (is_input_index(_x, _y)) return Io.INPUT;
+		return noone;
+	}
 }
 
 global.furniture_factory = new Factory(spr_furniture_fac, [global.wood, global.wood], [global.furniture], "furniture_factory", [0, 1], [1, 1]);

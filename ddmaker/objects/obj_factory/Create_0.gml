@@ -14,6 +14,17 @@ input_tile_y = [];
 outpu_tile_y = [];
 input_type_number = -1;
 output_type_number = -1;
+center_x = 0;
+center_y = 0;
+left_top_x = 0;
+left_top_y = 0;
+
+function get_factory_IO(_x, _y, _check_outside = true) {
+	if (_check_outside) if (!position_meeting(_x, _y, id)) return noone;
+	var _tile_x = floor((_x - left_top_x) / 32);
+	var _tile_y = floor((_y - left_top_y) / 32);
+	return obj_factory_id.get_tile_IO(_tile_x, _tile_y);
+}
 
 
 function init_factory(_obj_factory_id) {
@@ -24,12 +35,14 @@ function init_factory(_obj_factory_id) {
 	input_type_number = array_length(_unieuq_array);
 	if (!is_array(obj_factory_id.input_index[0])) {
 		input_tile = obj_factory_id.input_index;
-		input_tile_x = [x + input_tile[0] * 32];
-		input_tile_y = [y + input_tile[1] * 32];
+
 	}
 	if (!is_array(obj_factory_id.output_index[0])) {
 		output_tile = obj_factory_id.output_index;
-		output_tile_x = [x + output_tile[0] * 32];
-		output_tile_y = [y + output_tile[1] * 32];
+
 	}
+	left_top_x = x - 16;
+	left_top_y = y - 16;
+	center_x = left_top_x + sprite_get_height(sprite_index) / 2;
+	center_y = left_top_y + sprite_get_width(sprite_index) / 2;
 }

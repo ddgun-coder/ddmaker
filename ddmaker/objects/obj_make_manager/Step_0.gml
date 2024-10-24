@@ -79,6 +79,7 @@ if (mouse_check_button(mb_right)) {
 }
 
 mouse_blend = c_white;
+mouse_sprite_angle = 0;
 image_angle = 0;
 switch(make_state) {
 	case State.RAIL : 

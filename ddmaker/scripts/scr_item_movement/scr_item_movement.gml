@@ -45,6 +45,8 @@ function get_IO(_id, _dx, _dy) {
 			return Io.INPUT
 		case obj_extractor :
 			return Io.OUTPUT
+		case obj_factory :
+			return _id.get_factory_IO(_dx, _dy);
 	}
 }
 

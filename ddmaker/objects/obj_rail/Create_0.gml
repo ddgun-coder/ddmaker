@@ -82,11 +82,14 @@ function get_cur_output_direction() {
 }
 
 function connect_box_to_next_tile(_box_id, _dir, exception = false) {
+	//obj_box에게 방향과 다음 위치 보내줌
 	_box_id.direct = _dir;
 	_box_id.set_next_tile(connected_output[_dir], exception);
+	_box_id.pre_tile_id = id;
 }
 
 function cycle_output(_box_id) {
+	//현재 obj_box에 있는 rail에 다음 rail방향 + id 제공
 	if (is_opposite_input) {
 		if (_box_id.x == x and _box_id.y == y and _box_id.opposite_in == false) {
 			//중앙인지 확인
