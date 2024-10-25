@@ -12,7 +12,9 @@ output_number = 1;
 is_completed = false;
 current_direction = Direct.NONE;
 connected_output = array_create(4, noone);
+connected_output_number = 0;
 connected_input = array_create(4, noone);
+connected_input_number = 0;
 cur_output = 0;
 cur_input = 0;
 temp_dir = Direct.NONE;
@@ -84,12 +86,13 @@ function get_cur_output_direction() {
 function connect_box_to_next_tile(_box_id, _dir, exception = false) {
 	//obj_box에게 방향과 다음 위치 보내줌
 	_box_id.direct = _dir;
-	_box_id.set_next_tile(connected_output[_dir], exception);
 	_box_id.pre_tile_id = id;
+	_box_id.set_next_tile(connected_output[_dir], exception);
 }
 
 function cycle_output(_box_id) {
 	//현재 obj_box에 있는 rail에 다음 rail방향 + id 제공
+	//첫번째 if은 서로 부딪히는 문제 때문에 따로존재 함
 	if (is_opposite_input) {
 		if (_box_id.x == x and _box_id.y == y and _box_id.opposite_in == false) {
 			//중앙인지 확인
@@ -107,6 +110,7 @@ function cycle_output(_box_id) {
 		}	
 	}
 	
+	//서로 안부딪히는 경우 + output이여러개
 	var _output_dir = noone;
 	repeat (output_number) {
 		_output_dir = get_cur_output();
@@ -119,6 +123,7 @@ function cycle_output(_box_id) {
 
 function get_cur_output() {
 	verify_output_object();
+	if (cur_output >= connected_output_number) cur_output = 0;
 	var _cur_order = 0;
 	var _result = noone;
 	for (var i = 0; i < way_number; i++) {
@@ -133,7 +138,7 @@ function get_cur_output() {
 	}
 	
 	if (_result != noone) {
-		cur_output = (cur_output + 1) mod output_number;
+		cur_output = (cur_output + 1) mod connected_output_number;
 	}
 	return _result;
 }
@@ -148,6 +153,7 @@ function get_cur_input() {
 				_cur_order++;
 				continue;
 			}
+			
 			_result = i;
 			break;
 		}
@@ -232,11 +238,16 @@ function check_output_connected() {
 }
 
 function verify_output_object() {
+	var _num = 0;
 	for (var i = 0; i < way_number; i++) {
 		if (!instance_exists(connected_output[i])) {
 			connected_output[i] = noone;
 		}
+		else {
+			_num++;
+		}
 	}
+	connected_output_number = _num;
 }
 
 function verify_input_object() {

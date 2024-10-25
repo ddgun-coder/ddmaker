@@ -41,12 +41,12 @@ else {
 	is_moved = false;	
 }
 
-metting_next_tile();
-//next_tile에 도착했는지 확인
 if (next_tile != noone and !instance_exists(next_tile)) {
 	direct = Direct.NONE;
 	set_next_tile(noone); 
 }
+metting_next_tile();
+//next_tile에 도착했는지 확인
 
 if (direct == Direct.NONE) {
 	if (next_tile == noone) {
@@ -62,15 +62,14 @@ if (direct == Direct.NONE) {
 					next_tile.cycle_output(id);
 					break;
 			}
-
 		}
 	}
 }
 //다음 tile 찾기
 
 if (repository_id != noone) {
-	image_xscale -= 0.02;
-	image_yscale -= 0.02;
+	image_xscale -= 0.03;
+	image_yscale -= 0.03;
 	if (image_xscale <= 0) {
 		instance_destroy();
 	}

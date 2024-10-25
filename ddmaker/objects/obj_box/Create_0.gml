@@ -1,5 +1,6 @@
 /// @description Insert description here
 // You can write your code in this editor
+
 direct = Direct.NONE;
 next_tile = noone;
 next_tile_x = 0;
@@ -48,7 +49,6 @@ function position_meeting_next_tile() {
 	
 	if (next_tile.object_index == obj_factory and repository_id == noone) {
 		var _io = next_tile.get_factory_IO(x, y, false);
-		show_debug_message(_io);
 		if (_io == Io.INPUT) {
 			repository_id = next_tile;
 		}

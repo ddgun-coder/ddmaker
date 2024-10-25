@@ -18,6 +18,9 @@ center_x = 0;
 center_y = 0;
 left_top_x = 0;
 left_top_y = 0;
+cur_item_array = [];
+need_item_array = [];
+
 
 function get_factory_IO(_x, _y, _check_outside = true) {
 	if (_check_outside) if (!position_meeting(_x, _y, id)) return noone;
