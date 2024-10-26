@@ -30,6 +30,16 @@ if (_dx != 0 or _dy != 0) {
 	if (!place_meeting(x + _dx, y + _dy, object_index)) {
 		x += _dx;
 		y += _dy;
+		moved = true;
+		moved_frame = 0;
+	}
+	else {
+		moved_frame++; 
+		if (moved_frame > 5) {
+			direct = Direct.NONE;
+			set_next_tile(noone); 
+			moved = false;
+		}
 	}
 }
 //움직이는 부분
@@ -38,7 +48,7 @@ if (x != xprevious or y != yprevious) {
 	is_moved = true;
 }	
 else {
-	is_moved = false;	
+	is_moved = false;
 }
 
 if (next_tile != noone and !instance_exists(next_tile)) {

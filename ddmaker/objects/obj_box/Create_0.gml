@@ -12,6 +12,8 @@ factory_id = noone;
 item_type = noone;
 opposite_in = false;
 pre_tile_id = noone;
+moved = false;
+moved_frame = 0;
 
 function set_next_tile(_id, exception = false) {
 	//direct 를먼저 할 것 또한 이 _id는 자신의 밑에 있는 obj_rail을 의미
