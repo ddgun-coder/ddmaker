@@ -51,7 +51,8 @@ function position_meeting_next_tile() {
 	
 	if (next_tile.object_index == obj_factory and repository_id == noone) {
 		var _io = next_tile.get_factory_IO(x, y, false);
-		if (_io == Io.INPUT) {
+		if (_io == Io.INPUT and next_tile.obj_making == false and next_tile.can_add_item(item_type)) {
+			next_tile.add_item(item_type);
 			repository_id = next_tile;
 		}
 		else {

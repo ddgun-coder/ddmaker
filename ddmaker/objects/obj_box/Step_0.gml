@@ -34,12 +34,14 @@ if (_dx != 0 or _dy != 0) {
 		moved_frame = 0;
 	}
 	else {
+		/*
 		moved_frame++; 
 		if (moved_frame > 5) {
 			direct = Direct.NONE;
-			set_next_tile(noone); 
+			set_next_tile(noone);
 			moved = false;
 		}
+		*/
 	}
 }
 //움직이는 부분

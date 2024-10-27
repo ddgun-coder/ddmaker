@@ -20,12 +20,18 @@ cur_item_array = [];
 cur_item_stock = {};
 need_item_array = [];
 need_item_stock = {};
+obj_making = false;
+
+function item_stock(num, _type) constructor {
+	number = num;
+	type = _type;
+}
 
 function can_add_item(_item) {
 	var _names = struct_get_names(need_item_stock);
 	var _num = array_length(_names);
 	for (var i = 0; i < _num; i++) {
-		if (_names[i] == _item.item_name and need_item_stock[$ _names[i]] > cur_item_stock[$ _names[i]]) {
+		if (_names[i] == _item.item_name and need_item_stock[$ _names[i]].number > cur_item_stock[$ _names[i]].number) {
 			return true;
 		}
 	}
@@ -33,7 +39,7 @@ function can_add_item(_item) {
 }
 
 function add_item(_item) {
-	cur_item_stock[$ _item.item_name] += 1;
+	cur_item_stock[$ _item.item_name].number += 1;
 }
 
 function array_to_stock(_array) {
@@ -43,10 +49,11 @@ function array_to_stock(_array) {
 	for (var i = 0; i < _num; i++) {
 		_item = _array[i];
 		if (struct_exists_from_hash(_result, _item.hash)) {
-			struct_set_from_hash(_result, _item.hash, struct_get_from_hash(_result, _item.hash) + 1);
+			var _str = struct_get_from_hash(_result, _item.hash);
+			_str.number += 1;
 		}
 		else {
-			struct_set_from_hash(_result, _item.hash, 1);
+			struct_set_from_hash(_result, _item.hash, new item_stock(1, _item));
 		}
 	}
 	return _result;
@@ -54,7 +61,7 @@ function array_to_stock(_array) {
 
 function reset_cur_item_stock() {
 	struct_foreach(need_item_stock, function(name, val) {
-		cur_item_stock[$ name] = 0;
+		cur_item_stock[$ name] = new item_stock(0, val.type);
 	});
 }
 
@@ -85,7 +92,6 @@ function init_factory(_obj_factory_id) {
 	need_item_array = obj_factory_id.input_item;
 	need_item_stock = array_to_stock(need_item_array);
 	reset_cur_item_stock();
-	
-	show_debug_message(cur_item_stock);
+
 	show_debug_message(can_add_item(global.wood));
 }

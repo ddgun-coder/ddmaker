@@ -19,9 +19,11 @@ else {
 }
 
 var _draw_x = x + 64;
-var _draw_y = y + 64;
+var _draw_y = y + 48;
 
 draw_sprite_ext(_spr, _id.image_index, _draw_x, _draw_y, _id.image_xscale, _id.image_yscale, _id.image_angle, _id.image_blend, image_alpha);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
 switch (_id.object_index) {
 	case obj_rail :
 		var _dxy;
@@ -45,19 +47,9 @@ switch (_id.object_index) {
 		}
 		break;
 	case obj_repository :
-		draw_set_halign(fa_center);
-		draw_set_valign(fa_middle)
 		draw_text(_draw_x, _draw_y + 24, string("{0} / {1}", _id.repository_limit, array_length(_id.item_array)));
 		var _str;
-		with (_id) {
-			var _names = struct_get_names(item_hash);
-			var _num = array_length(_names);
-			for (var i = 0; i < _num; i++) {
-				_str = item_hash[$ _names[i]];
-				draw_sprite(_str.type.spr, 0, _draw_x - 32, _draw_y + 64 + i * 16);
-				draw_text(_draw_x, _draw_y + 64 + i * 16, string(" : {0}", _str.number));
-			}
-		}
+		draw_stock(_id.item_hash, _draw_x, _draw_y + 64);
 		break;
 	case obj_factory :
 		var _str = _id.obj_factory_id;
@@ -79,6 +71,10 @@ switch (_id.object_index) {
 				}
 			}
 		}
+		draw_sprite(spr_need, 0,_draw_x, _draw_y + 48);
+		draw_stock(_id.need_item_stock, _draw_x, _draw_y + 64);
+		draw_sprite(spr_cur, 0, _draw_x, _draw_y + 112);
+		draw_stock(_id.cur_item_stock, _draw_x, _draw_y + 128);
 		break;
 }
 draw_set_alpha(1);
