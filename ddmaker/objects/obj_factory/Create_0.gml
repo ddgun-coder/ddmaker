@@ -21,7 +21,9 @@ cur_item_stock = {};
 need_item_array = [];
 need_item_stock = {};
 obj_making = false;
-
+making_process = 0;
+making_process_max = 60 * 2;
+output_number = 0;
 function item_stock(num, _type) constructor {
 	number = num;
 	type = _type;
@@ -38,8 +40,30 @@ function can_add_item(_item) {
 	return false;
 }
 
+function can_make_output() {
+	var _names = struct_get_names(need_item_stock);
+	var _num = array_length(_names);
+	for (var i = 0; i < _num; i++) {
+		if (need_item_stock[$ _names[i]].number > cur_item_stock[$ _names[i]].number) {
+			return false;
+		}
+	}
+	return true;
+}
+
+function make_output() {
+	var _names = struct_get_names(need_item_stock);
+	var _num = array_length(_names);
+	for (var i = 0; i < _num; i++) {
+		cur_item_stock[$ _names[i]].number -= need_item_stock[$ _names[i]].number;
+	}
+	output_number++;
+	obj_making = false;
+}
+
 function add_item(_item) {
 	cur_item_stock[$ _item.item_name].number += 1;
+	if (can_make_output()) obj_making = true;
 }
 
 function array_to_stock(_array) {
@@ -92,6 +116,4 @@ function init_factory(_obj_factory_id) {
 	need_item_array = obj_factory_id.input_item;
 	need_item_stock = array_to_stock(need_item_array);
 	reset_cur_item_stock();
-
-	show_debug_message(can_add_item(global.wood));
 }
