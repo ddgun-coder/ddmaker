@@ -9,9 +9,9 @@ show_sprite_index = noone;
 input_tile = [[]];
 output_tile = [[]];
 input_tile_x = [];
-outpu_tile_x = [];
+output_tile_x = [];
 input_tile_y = [];
-outpu_tile_y = [];
+output_tile_y = [];
 center_x = 0;
 center_y = 0;
 left_top_x = 0;
@@ -24,6 +24,49 @@ obj_making = false;
 making_process = 0;
 making_process_max = 60 * 2;
 output_number = 0;
+item_type = noone;
+cur_output = 0;
+
+function cycle_output() {
+	var _cur_order = 0;
+	var _id = noone;
+	for (var i = 0; i < way_number; i++) {
+		_id = linked_obj[i];
+		if (_id != noone and (_id.object_index == obj_rail or _id.object_index == obj_repository)) {
+			if (_cur_order < cur_output) {
+				_cur_order++;
+				continue;
+			}
+			cur_output = (cur_output + 1) mod linked_number;
+			return i;
+		}
+	}
+	return noone;
+}
+
+function extract_obj() {
+	var _dir = cycle_output();
+	if (_dir == noone) return;
+	
+	var _is_created = false;
+
+	with (linked_obj[_dir]) {
+		if (way[direction_reverse(_dir)] == Way.INPUT) {
+			if (!place_meeting(other.output_tile_x, other.output_tile_y, obj_box)) {
+				_id = instance_create_depth(other.output_tile_x, other.output_tile_y, depth - 1, obj_box);
+				_id.direct = _dir;
+				_id.set_next_tile(id);
+				_id.item_type = other.item_type;
+				_id.sprite_index = _id.item_type.spr;
+				_is_created = true;
+			}
+		}
+	}
+	if (_is_created) {
+		output_number--;
+	}
+}
+
 function item_stock(num, _type) constructor {
 	number = num;
 	type = _type;
@@ -96,21 +139,29 @@ function get_factory_IO(_x, _y, _check_outside = true) {
 	return obj_factory_id.get_tile_IO(_tile_x, _tile_y);
 }
 
+function get_output_x(_tilex) {
+	return _tilex * 32 + x;
+}
+function get_output_y(_tiley) {
+	return _tiley * 32 + y;
+}
 
 function init_factory(_obj_factory_id) {
 	obj_factory_id = _obj_factory_id;
 	if (obj_factory_id == noone or obj_factory_id == undefined) return;
-
+	left_top_x = x - 16;
+	left_top_y = y - 16;
+	item_type = obj_factory_id.output_item[0];
 	if (!is_array(obj_factory_id.input_index[0])) {
 		input_tile = obj_factory_id.input_index;
 
 	}
 	if (!is_array(obj_factory_id.output_index[0])) {
 		output_tile = obj_factory_id.output_index;
-
+		output_tile_x = get_output_x(output_tile[0]);
+		output_tile_y = get_output_y(output_tile[1]);
+		check_linked_obj(output_tile_x, output_tile_y);
 	}
-	left_top_x = x - 16;
-	left_top_y = y - 16;
 	center_x = left_top_x + sprite_get_height(sprite_index) / 2;
 	center_y = left_top_y + sprite_get_width(sprite_index) / 2;
 	need_item_array = obj_factory_id.input_item;

@@ -76,7 +76,7 @@ function get_cur_output_direction() {
 			if (_cur_order < cur_output) {
 				_cur_order++;
 				continue;
-			}
+			}	
 			return i;
 		}
 	}

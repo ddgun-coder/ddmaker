@@ -6,11 +6,13 @@ way_number = 4;
 linked_number = 0;
 direction_index = Direct.NONE;
 
-function check_linked_obj() {
-	linked_obj[Direct.RIGHT] = instance_position(x + 32, y, obj_abs_component);
-	linked_obj[Direct.LEFT] = instance_position(x - 32, y, obj_abs_component);
-	linked_obj[Direct.DOWN] = instance_position(x, y + 32, obj_abs_component);
-	linked_obj[Direct.UP] = instance_position(x, y - 32, obj_abs_component);
+function check_linked_obj(_x = x, _y = y) {
+	var _id = noone;
+	
+	linked_obj[Direct.RIGHT] = collision_point(_x + 32, _y, obj_abs_component, false, true);
+	linked_obj[Direct.LEFT] = collision_point(_x - 32, _y, obj_abs_component, false, true);
+	linked_obj[Direct.DOWN] = collision_point(_x, _y + 32, obj_abs_component, false, true);
+	linked_obj[Direct.UP] = collision_point(_x, _y - 32, obj_abs_component, false, true);
 	check_is_linked();
 }
 

@@ -11,3 +11,10 @@ if (obj_making) {
 else {
 	image_blend = c_white;	
 }
+
+if (output_number > 0) {
+	check_linked_obj(output_tile_x, output_tile_y);
+	if (is_linked) {
+		extract_obj();
+	}
+}

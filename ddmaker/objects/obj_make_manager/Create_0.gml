@@ -21,8 +21,8 @@ function set_place_grid(_id, val = 1) {
 	with (_id) {
 		dx = floor((x - 32) / 32);
 		dy = floor((y - 32) / 32);
-		w = floor(sprite_get_width(sprite_index) / 32) - 1;
-		h = floor(sprite_get_height(sprite_index) / 32) - 1;
+		w = ceil(sprite_get_width(sprite_index) / 32) - 1;
+		h = ceil(sprite_get_height(sprite_index) / 32) - 1;
 		ds_grid_set_region(other.place_grid, dx, dy, dx + w, dy + h, val);	
 	}
 }

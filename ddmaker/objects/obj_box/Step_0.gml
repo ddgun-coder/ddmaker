@@ -9,41 +9,8 @@ else if (is_moved == false) {
 else {
 	image_index = 0;	
 }
-var _dx = 0;
-var _dy = 0;
-switch(direct) {
-	case Direct.DOWN :
-		_dy += 1;
-		break;
-	case Direct.UP :
-		_dy -= 1;
-		break;
-	case Direct.LEFT :
-		_dx -= 1;
-		break;
-	case Direct.RIGHT :
-		_dx += 1;
-		break;
-}
 
-if (_dx != 0 or _dy != 0) {
-	if (!place_meeting(x + _dx, y + _dy, object_index)) {
-		x += _dx;
-		y += _dy;
-		moved = true;
-		moved_frame = 0;
-	}
-	else {
-		/*
-		moved_frame++; 
-		if (moved_frame > 5) {
-			direct = Direct.NONE;
-			set_next_tile(noone);
-			moved = false;
-		}
-		*/
-	}
-}
+box_movement();
 //움직이는 부분
 
 if (x != xprevious or y != yprevious) {

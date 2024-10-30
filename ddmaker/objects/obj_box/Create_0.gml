@@ -15,6 +15,54 @@ pre_tile_id = noone;
 moved = false;
 moved_frame = 0;
 
+function box_movement() {
+	var _is_stop = false;
+	with (next_tile) {
+		if (object_index == obj_factory and obj_making) {
+			_is_stop = true;
+		}
+	}
+	
+	if (_is_stop) {
+		return;	
+	}
+	var _dx = 0;
+	var _dy = 0;
+	switch(direct) {
+		case Direct.DOWN :
+			_dy += 1;
+			break;
+		case Direct.UP :
+			_dy -= 1;
+			break;
+		case Direct.LEFT :
+			_dx -= 1;
+			break;
+		case Direct.RIGHT :
+			_dx += 1;
+			break;
+	}
+
+	if (_dx != 0 or _dy != 0) {
+		if (!place_meeting(x + _dx, y + _dy, object_index)) {
+			x += _dx;
+			y += _dy;
+			moved = true;
+			moved_frame = 0;
+		}
+		else {
+			/*
+			moved_frame++; 
+			if (moved_frame > 5) {
+				direct = Direct.NONE;
+				set_next_tile(noone);
+				moved = false;
+			}
+			*/
+		}
+	}
+}
+
 function set_next_tile(_id, exception = false) {
 	//direct 를먼저 할 것 또한 이 _id는 자신의 밑에 있는 obj_rail을 의미
 	next_tile = _id;
