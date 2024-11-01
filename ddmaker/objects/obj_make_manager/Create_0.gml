@@ -38,12 +38,27 @@ magnifier_time = 0;
 magnifier_id = noone;
 current_obj_id = noone;
 factory_placeable = false;
-factory_index = global.furniture_factory;
 mouse_blend = c_white;
 obj_factory_id = noone;
 alarm[0] = 1;
 is_set = false;
 place_able = false;
+buil_ui_y_init = -100;
+buil_ui_y = buil_ui_y_init;
+ani_cur = animcurve_get(ani_incre1);
+ani_channel = ani_cur.channels[0];
+curve = 0;
+build_ui_id = noone;
+
+function create_buil_ui() {
+	if (instance_exists(obj_build_ui)) return;
+	
+	build_ui_id = instance_create_depth(255, buil_ui_y, depth, obj_build_ui);
+}
+
+function delete_buil_ui() {
+	if (build_ui_id != noone) instance_destroy(build_ui_id);
+}
 
 function rail_end_action() {
 	if (previous_rail_id != noone and previous_rail_id.output_number == 1) {

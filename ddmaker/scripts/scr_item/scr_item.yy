@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_item",
   "parent":{
-    "name":"스크립트",
-    "path":"folders/스크립트.yy",
+    "name":"ddmaker",
+    "path":"ddmaker.yyp",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

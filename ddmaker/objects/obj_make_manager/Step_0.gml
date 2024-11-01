@@ -24,6 +24,11 @@ if (_pre_make_state != make_state) {
 }
 
 if (make_state != State.NONE) {
+	create_buil_ui();
+	if (make_state != State.FACTORY) {
+		buil_ui_y = buil_ui_y_init;
+		curve = 0;
+	}
 	mouse_floor_x = floor((mouse_x + 16) / 32) * 32;
 	mouse_floor_y = floor((mouse_y + 16) / 32) * 32;
 	mouse_grid_x = floor(mouse_floor_x / 32) - 1;
@@ -44,6 +49,8 @@ if (make_state != State.NONE) {
 			break;
 		case State.FACTORY :
 			factory_placeable = ds_grid_get_sum(place_grid, mouse_grid_x, mouse_grid_y, mouse_grid_x + obj_factory_id.width - 1, mouse_grid_y + obj_factory_id.height - 1) == 0;
+			if (curve < 1) curve += 1 / 60;
+			buil_ui_y = animcurve_channel_evaluate(ani_channel, curve) * 125 + buil_ui_y_init;
 			break;
 		case State.WAY_MAGNIFIER :
 			check_obj();
@@ -64,9 +71,11 @@ if (mouse_check_button_pressed(mb_left)) {
 		start_smae_shape = false;	
 	}
 }
-
+var mouse_on_ui = build_ui_id == noone or position_meeting(mouse_x, mouse_y, build_ui_id);
 if (mouse_check_button(mb_left)) {
-	make_obj();
+	if (!mouse_on_ui) {
+		make_obj();
+	}
 }
 else {
 	if (make_state == State.RAIL) {
@@ -81,19 +90,25 @@ if (mouse_check_button(mb_right)) {
 mouse_blend = c_white;
 mouse_sprite_angle = 0;
 image_angle = 0;
-switch(make_state) {
-	case State.RAIL : 
-		mouse_sprite =  spr_one_way_rail_show;
-		mouse_sprite_angle = current_valible_dir * 90;
-		break;
-	case State.WAY_CHANGER : 
-		mouse_sprite =  spr_way_changer;
-		break;
-	case State.WAY_MAGNIFIER : 
-		mouse_sprite =  spr_way_magnifier;
-		break;
-	case State.FACTORY :
-		if(!factory_placeable) mouse_blend =  c_red;
-		mouse_sprite = factory_index.spr;
-		break;
+if (mouse_on_ui) {
+	mouse_sprite = noone;
+}
+else {
+	switch(make_state) {
+		case State.RAIL : 
+			mouse_sprite =  spr_one_way_rail_show;
+			mouse_sprite_angle = current_valible_dir * 90;
+			break;
+		case State.WAY_CHANGER : 
+			mouse_sprite =  spr_way_changer;
+			break;
+		case State.WAY_MAGNIFIER : 
+			mouse_sprite =  spr_way_magnifier;
+			break;
+		case State.FACTORY :
+			if(!factory_placeable) mouse_blend =  c_red;
+			mouse_sprite = obj_factory_id.spr;
+			break;
+	
+	}
 }
