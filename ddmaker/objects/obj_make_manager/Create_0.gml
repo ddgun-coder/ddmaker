@@ -16,6 +16,23 @@ enum Direct {
 	NONE
 }
 
+function set_make_type(_type) {
+	if (make_state == _type) {
+		make_state = State.NONE;
+	}
+	else {
+		make_state = _type;
+		switch(make_state) {
+			case State.FACTORY :
+				obj_factory_id = global.factory_array[0];
+				break;
+			case State.RAIL :
+				rail_index = global.rail_array[0];
+				break;
+		}
+	}
+}
+
 function set_place_grid(_id, val = 1) {
 	var dx, dy, w, h;
 	with (_id) {
@@ -40,6 +57,7 @@ current_obj_id = noone;
 factory_placeable = false;
 mouse_blend = c_white;
 obj_factory_id = noone;
+rail_index = noone;
 alarm[0] = 1;
 is_set = false;
 place_able = false;

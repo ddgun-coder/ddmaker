@@ -4,17 +4,16 @@ if (!is_set) exit;
 
 var _pre_make_state = make_state;
 if (keyboard_check_pressed(ord("Q"))) {
-	make_state = State.RAIL;
+	set_make_type(State.RAIL);
 }
 else if (keyboard_check_pressed(ord("S"))) {
-	make_state = State.WAY_CHANGER;
+	set_make_type(State.WAY_CHANGER);
 }
 else if (keyboard_check_pressed(ord("C"))) {
-	make_state = State.WAY_MAGNIFIER;
+	set_make_type(State.WAY_MAGNIFIER);
 }
 else if (keyboard_check_pressed(ord("F"))) {
-	make_state = State.FACTORY;
-	obj_factory_id = global.furniture_factory;
+	set_make_type(State.FACTORY);
 }
 
 if (_pre_make_state != make_state) {
@@ -25,10 +24,8 @@ if (_pre_make_state != make_state) {
 
 if (make_state != State.NONE) {
 	create_buil_ui();
-	if (make_state != State.FACTORY) {
-		buil_ui_y = buil_ui_y_init;
-		curve = 0;
-	}
+	if (curve < 1) curve += 1 / 60;
+	buil_ui_y = animcurve_channel_evaluate(ani_channel, curve) * 125 + buil_ui_y_init;
 	mouse_floor_x = floor((mouse_x + 16) / 32) * 32;
 	mouse_floor_y = floor((mouse_y + 16) / 32) * 32;
 	mouse_grid_x = floor(mouse_floor_x / 32) - 1;
@@ -49,13 +46,15 @@ if (make_state != State.NONE) {
 			break;
 		case State.FACTORY :
 			factory_placeable = ds_grid_get_sum(place_grid, mouse_grid_x, mouse_grid_y, mouse_grid_x + obj_factory_id.width - 1, mouse_grid_y + obj_factory_id.height - 1) == 0;
-			if (curve < 1) curve += 1 / 60;
-			buil_ui_y = animcurve_channel_evaluate(ani_channel, curve) * 125 + buil_ui_y_init;
 			break;
 		case State.WAY_MAGNIFIER :
 			check_obj();
 			break;
 	}		
+}
+else {
+	if (curve > 0) curve -= 1 / 60;
+	buil_ui_y = animcurve_channel_evaluate(ani_channel, curve) * 125 + buil_ui_y_init;
 }
 //각 make_satet에 따른 step 부분
 

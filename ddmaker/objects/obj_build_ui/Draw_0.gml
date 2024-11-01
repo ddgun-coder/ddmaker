@@ -1,14 +1,33 @@
 /// @description Insert description here
 // You can write your code in this editor
-if (obj_make_manager.make_state == State.FACTORY) {
-	var _dx = x;
-	var num = array_length(global.factory_array);
-	draw_self();
-	for (var i = 0; i < num; i++) {
-		if (obj_make_manager.obj_factory_id == global.factory_array[i]){
-			draw_sprite(spr_fac_2x2_glow, 0, _dx, y);	
+var _dx, _num, _dy;
+set_cur_array();
+draw_self();
+switch (cur_state) {
+	case State.FACTORY : 
+		_dx = x;
+		_dy = y + 16;
+		_num = array_length(cur_array);
+		for (var i = 0; i < _num; i++) {
+			if (cur_index == i){
+				draw_sprite(spr_fac_2x2_glow, 0, _dx, _dy);	
+			}
+			draw_sprite(cur_array[i].spr, 0, _dx, _dy);
+			_dx += sprite_get_width(cur_array[i].spr) + 10;	
 		}
-		draw_sprite(global.factory_array[i].spr, 0, _dx, y);
-		_dx += sprite_get_width(global.factory_array[i].spr) + 10;	
-	}
-}
+		break;
+	case State.RAIL :
+		_dx = x;
+		_dy = y + 32;
+		_num = array_length(cur_array);
+		var _spr;
+		for (var i = 0; i < _num; i++) {
+			if (cur_index == i){
+				draw_sprite(spr_fac_1x1_glow, 0, _dx, _dy);	
+			}
+			_spr = object_get_sprite(cur_array[i]);
+			draw_sprite(_spr, 0, _dx, _dy);
+			_dx += sprite_get_width(_spr) + 10;	
+		}
+		break;
+}	

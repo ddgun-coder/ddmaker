@@ -34,11 +34,7 @@ function extract_obj() {
 	with (linked_obj[_dir]) {
 		if (way[direction_reverse(_dir)] == Way.INPUT) {
 			if (!place_meeting(other.x, other.y, obj_box)) {
-				_id = instance_create_depth(other.x, other.y, depth - 1, obj_box);
-				_id.direct = _dir;
-				_id.set_next_tile(id);
-				_id.item_type = other.item_type;
-				_id.sprite_index = _id.item_type.spr;
+				create_item(other.x, other.y, depth - 1, _dir, id, other.item_type);
 				_is_created = true;
 			}
 		}
