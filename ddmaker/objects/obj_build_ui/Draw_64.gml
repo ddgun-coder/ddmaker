@@ -5,7 +5,7 @@ set_cur_array();
 draw_self();
 switch (cur_state) {
 	case State.FACTORY : 
-		_dx = x;
+		_dx = xstart;
 		_dy = y + 16;
 		_num = array_length(cur_array);
 		for (var i = 0; i < _num; i++) {
@@ -17,7 +17,7 @@ switch (cur_state) {
 		}
 		break;
 	case State.RAIL :
-		_dx = x;
+		_dx = xstart;
 		_dy = y + 32;
 		_num = array_length(cur_array);
 		var _spr;
@@ -25,7 +25,7 @@ switch (cur_state) {
 			if (cur_index == i){
 				draw_sprite(spr_fac_1x1_glow, 0, _dx, _dy);	
 			}
-			_spr = object_get_sprite(cur_array[i]);
+			_spr = cur_array[i].spr;
 			draw_sprite(_spr, 0, _dx, _dy);
 			_dx += sprite_get_width(_spr) + 10;	
 		}

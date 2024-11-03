@@ -10,12 +10,12 @@ else {
 
 if (obj_make_manager.make_state != State.NONE) cur_state = obj_make_manager.make_state;
 set_cur_array();
-show_debug_message(cur_state);
-y = obj_make_manager.buil_ui_y;
+x = camera_get_view_x(view_camera[0]) + xstart;
+y = obj_make_manager.buil_ui_y + camera_get_view_y(view_camera[0]);
 
 if (mouse_check_button_pressed(mb_left) and position_meeting(mouse_x, mouse_y, id)) {
 	var _dx;
-	_dx = floor((mouse_x - x) / (spr_width + 10));
+	_dx = floor((mouse_x - x + 16) / (spr_width + 10));
 	if (0 <= _dx and _dx < array_length(cur_array)) {
 		cur_index = _dx;
 		switch (obj_make_manager.make_state) {

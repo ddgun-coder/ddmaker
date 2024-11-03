@@ -1,6 +1,13 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
+function Rail(spr, show_spr, obj) constructor {
+	self.spr = spr;
+	self.show_spr = show_spr;
+	self.obj = obj;
+	array_push(global.rail_array, self);
+}
+
 function create_item(_x, _y, _depth, _dir, _next_tile_id, _item_type) {
 	_id = instance_create_depth(_x, _y, _depth, obj_box);
 	_id.direct = _dir;
@@ -10,7 +17,10 @@ function create_item(_x, _y, _depth, _dir, _next_tile_id, _item_type) {
 }
 
 global.factory_array = [];
-global.rail_array = [obj_rail, obj_rail_input, obj_rail_output]; 
+global.rail_array = [];
+new Rail(spr_one_way_rail, spr_one_way_rail_show, obj_rail);
+new Rail(spr_rail_input, spr_rail_input_show, obj_rail_input);
+new Rail(spr_rail_output, spr_rail_output_show, obj_rail_output);
 function Item(spr, item_name) constructor  {
 	self.spr = spr;
 	self.item_name = item_name;

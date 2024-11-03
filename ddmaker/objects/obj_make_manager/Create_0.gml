@@ -44,6 +44,8 @@ function set_place_grid(_id, val = 1) {
 	}
 }
 
+init_direction = Direct.RIGHT;
+rail_array_index = 0;
 place_grid = ds_grid_create(150, 150);
 mouse_sprite = noone;
 mouse_sprite_angle = 0;
@@ -61,7 +63,8 @@ rail_index = noone;
 alarm[0] = 1;
 is_set = false;
 place_able = false;
-buil_ui_y_init = -100;
+ui_dy = 200;
+buil_ui_y_init = camera_get_view_height(view_camera[0]) + ui_dy - sprite_get_height(spr_make_ui) + sprite_get_yoffset(spr_make_ui);
 buil_ui_y = buil_ui_y_init;
 ani_cur = animcurve_get(ani_incre1);
 ani_channel = ani_cur.channels[0];
@@ -97,6 +100,9 @@ function delete_obj() {
 				current_obj_id.delete_obj_with_box();	
 			}
 			break;	
+		default :
+			instance_destroy()
+			break;
 	}
 }
 
@@ -147,67 +153,72 @@ function make_obj() {
 	//make obj
 	switch (make_state) {
 		case State.RAIL :
-			//이미 존재하는 rail 기억하는 부분
-			if (previous_rail_id == noone and current_obj_id != noone) {
-				if (current_obj_id.object_index == obj_rail) {
-					previous_rail_id = current_obj_id;	
+			if (rail_index.obj == obj_rail) {
+				//이미 존재하는 rail 기억하는 부분
+				if (previous_rail_id == noone and current_obj_id != noone) {
+					if (current_obj_id.object_index == obj_rail) {
+						previous_rail_id = current_obj_id;	
+					}
 				}
-			}
-			//변화가 없으면 return
-			if (current_obj_id != noone) {
-			    // current_dir이 NONE일 때
-			    if (current_dir == Direct.NONE) {
-			        if (current_obj_id.object_index == obj_rail && previous_rail_id != noone) {
-			            start_same_shape = false;
-			        }
-			        return; // 더 이상 처리할 게 없으니 return
-			    }
+				//변화가 없으면 return
+				if (current_obj_id != noone) {
+				    // current_dir이 NONE일 때
+				    if (current_dir == Direct.NONE) {
+				        if (current_obj_id.object_index == obj_rail && previous_rail_id != noone) {
+				            start_same_shape = false;
+				        }
+				        return; // 더 이상 처리할 게 없으니 return
+				    }
 
-			    // current_dir이 NONE이 아닐 때
-			    if (current_obj_id.object_index != obj_rail && previous_rail_id != noone) {
-			        previous_rail_id.finalize_output(current_dir);
-			    }
-			}
+				    // current_dir이 NONE이 아닐 때
+				    if (current_obj_id.object_index != obj_rail && previous_rail_id != noone) {
+				        previous_rail_id.finalize_output(current_dir);
+				    }
+				}
 			
-			if (current_obj_id == noone) {
-				//Create rail at current location
-				var _id =instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_rail);
-				set_place_grid(_id);
-				//Reorient rail from previous location 
-				_id.set_one_way_direction(current_dir);
-				//클릭해서 이어준 경우는 변경이 아닌 추가 형태
-				if (clicked_id != noone and clicked_id.object_index == obj_rail) {
-					clicked_id.add_output(current_dir);
-					clicked_id = noone;
-				}
+				if (current_obj_id == noone) {
+					//Create rail at current location
+					var _id =instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_rail);
+					set_place_grid(_id);
+					//Reorient rail from previous location 
+					_id.set_one_way_direction(current_dir);
+					//클릭해서 이어준 경우는 변경이 아닌 추가 형태
+					if (clicked_id != noone and clicked_id.object_index == obj_rail) {
+						clicked_id.add_output(current_dir);
+						clicked_id = noone;
+					}
 				
-				//꺾을때 마다 방향 변경
-				if (previous_rail_id != noone) {
-					if (start_smae_shape) {
-						start_smae_shape = false;
-						previous_rail_id.set_one_way_direction(current_dir);
-						previous_rail_id.is_completed = true;
+					//꺾을때 마다 방향 변경
+					if (previous_rail_id != noone) {
+						if (start_smae_shape) {
+							start_smae_shape = false;
+							previous_rail_id.set_one_way_direction(current_dir);
+							previous_rail_id.is_completed = true;
+						}
+						else {
+							previous_rail_id.finalize_output(current_dir);
+						}
 					}
-					else {
-						previous_rail_id.finalize_output(current_dir);
+					//이전의 레일을 기억
+					previous_rail_id = _id;
+				}
+				else if (current_obj_id != previous_rail_id and previous_rail_id != noone) {
+					//마지막 끝맺음을 완벽하게 만들기 위한 부분
+					if (current_obj_id.object_index == obj_rail) {
+						current_obj_id.add_input((current_dir + 2) % 4);
+						if (previous_rail_id.is_completed) {
+							previous_rail_id.add_output(current_dir);
+						}
+						else {
+							previous_rail_id.change_output(current_dir);
+							previous_rail_id.is_completed = true;
+						}
+						previous_rail_id = current_obj_id;
 					}
 				}
-				//이전의 레일을 기억
-				previous_rail_id = _id;
 			}
-			else if (current_obj_id != previous_rail_id and previous_rail_id != noone) {
-				//마지막 끝맺음을 완벽하게 만들기 위한 부분
-				if (current_obj_id.object_index == obj_rail) {
-					current_obj_id.add_input((current_dir + 2) % 4);
-					if (previous_rail_id.is_completed) {
-						previous_rail_id.add_output(current_dir);
-					}
-					else {
-						previous_rail_id.change_output(current_dir);
-						previous_rail_id.is_completed = true;
-					}
-					previous_rail_id = current_obj_id;
-				}
+			else {
+				var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, rail_index.obj);
 			}
 			break;
 		case State.WAY_CHANGER :

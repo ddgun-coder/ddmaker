@@ -15,6 +15,10 @@ else if (keyboard_check_pressed(ord("C"))) {
 else if (keyboard_check_pressed(ord("F"))) {
 	set_make_type(State.FACTORY);
 }
+else if (keyboard_check_pressed(ord("R"))) {
+	init_direction = init_direction + 1 mod 4;
+	current_valible_dir = init_direction; 
+}
 
 if (_pre_make_state != make_state) {
 	if (_pre_make_state == State.RAIL) {
@@ -25,7 +29,7 @@ if (_pre_make_state != make_state) {
 if (make_state != State.NONE) {
 	create_buil_ui();
 	if (curve < 1) curve += 1 / 60;
-	buil_ui_y = animcurve_channel_evaluate(ani_channel, curve) * 125 + buil_ui_y_init;
+	buil_ui_y = buil_ui_y_init - animcurve_channel_evaluate(ani_channel, curve) * ui_dy ;
 	mouse_floor_x = floor((mouse_x + 16) / 32) * 32;
 	mouse_floor_y = floor((mouse_y + 16) / 32) * 32;
 	mouse_grid_x = floor(mouse_floor_x / 32) - 1;
@@ -39,9 +43,6 @@ if (make_state != State.NONE) {
 				if (_dir[0] != Direct.NONE and _dir[1] == Io.OUTPUT) {
 					current_valible_dir = _dir[0];
 				}
-				else {
-					current_valible_dir = Direct.RIGHT;	
-				}
 			}
 			break;
 		case State.FACTORY :
@@ -53,8 +54,8 @@ if (make_state != State.NONE) {
 	}		
 }
 else {
-	if (curve > 0) curve -= 1 / 60;
-	buil_ui_y = animcurve_channel_evaluate(ani_channel, curve) * 125 + buil_ui_y_init;
+	if (curve > 0) curve -= 1 / 40;
+	buil_ui_y = buil_ui_y_init - animcurve_channel_evaluate(ani_channel, curve) * ui_dy ;
 }
 //각 make_satet에 따른 step 부분
 
@@ -76,9 +77,10 @@ if (mouse_check_button(mb_left)) {
 		make_obj();
 	}
 }
-else {
+else if (mouse_check_button_released(mb_left)) {
 	if (make_state == State.RAIL) {
 		rail_end_action();	
+		current_valible_dir = init_direction; 
 	}
 }
 
@@ -95,7 +97,8 @@ if (mouse_on_ui) {
 else {
 	switch(make_state) {
 		case State.RAIL : 
-			mouse_sprite =  spr_one_way_rail_show;
+			show_debug_message(rail_index);
+			mouse_sprite =  rail_index.show_spr;
 			mouse_sprite_angle = current_valible_dir * 90;
 			break;
 		case State.WAY_CHANGER : 

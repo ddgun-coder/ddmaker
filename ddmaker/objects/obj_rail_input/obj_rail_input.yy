@@ -1,11 +1,7 @@
 {
   "$GMObject":"",
   "%Name":"obj_rail_input",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":1,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "eventList":[],
   "managed":true,
   "name":"obj_rail_input",
   "overriddenProperties":[],
@@ -14,8 +10,8 @@
     "path":"folders/오브젝트.yy",
   },
   "parentObjectId":{
-    "name":"obj_rail",
-    "path":"objects/obj_rail/obj_rail.yy",
+    "name":"obj_abs_component",
+    "path":"objects/obj_abs_component/obj_abs_component.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
