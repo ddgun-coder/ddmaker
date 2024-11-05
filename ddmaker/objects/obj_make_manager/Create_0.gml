@@ -33,15 +33,47 @@ function set_make_type(_type) {
 	}
 }
 
-function set_place_grid(_id, val = 1) {
+function set_place_grid(_id, val = 1, dir = 0) {
 	var dx, dy, w, h;
 	with (_id) {
-		dx = floor((x - 32) / 32);
-		dy = floor((y - 32) / 32);
-		w = ceil(sprite_get_width(sprite_index) / 32) - 1;
-		h = ceil(sprite_get_height(sprite_index) / 32) - 1;
-		ds_grid_set_region(other.place_grid, dx, dy, dx + w, dy + h, val);	
+		switch (image_angle) {
+	        case 0: // 오른쪽(0도)
+	            dx = floor((_id.x - 16) / 32);
+	            dy = floor((_id.y - 16) / 32);
+	            w = ceil(sprite_width / 32) - 1;
+	            h = ceil(sprite_height / 32) - 1;
+	            break;
+        
+	        case 270: // 아래쪽(90도)
+	            dx = floor((_id.x - 16) / 32) - ceil(sprite_height / 32) + 1;
+	            dy = floor((_id.y - 16) / 32);
+	            w = ceil(sprite_height / 32) - 1;
+	            h = ceil(sprite_width / 32) - 1;
+	            break;
+        
+	        case 180: // 왼쪽(180도)
+	            dx = floor((_id.x - 16) / 32) - ceil(sprite_width / 32) + 1;
+	            dy = floor((_id.y - 16) / 32) - ceil(sprite_height / 32) + 1;
+	            w = ceil(sprite_width / 32) - 1;
+	            h = ceil(sprite_height / 32) - 1;
+	            break;
+        
+	        case 90: // 위쪽(270도)
+	            dx = floor((_id.x - 16) / 32);
+	            dy = floor((_id.y - 16) / 32) - ceil(sprite_width / 32) + 1;
+	            w = ceil(sprite_height / 32) - 1;
+	            h = ceil(sprite_width / 32) - 1;
+	            break;
+        
+	        default:
+	            dx = floor((_id.x - 16) / 32);
+	            dy = floor((_id.y - 16) / 32);
+	            w = ceil(sprite_width / 32) - 1;
+	            h = ceil(sprite_height / 32) - 1;
+	            break;
+	    }
 	}
+	ds_grid_set_region(place_grid, dx, dy, dx + w, dy + h, val);	
 }
 
 init_direction = Direct.RIGHT;
@@ -233,7 +265,8 @@ function make_obj() {
 			if (factory_placeable) {
 				var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_factory);
 				_id.sprite_index = obj_factory_id.spr;
-				set_place_grid(_id);
+				_id.image_angle = mouse_sprite_angle;
+				set_place_grid(_id, , mouse_sprite_angle);
 				_id.init_factory(obj_factory_id);
 			}
 			break;

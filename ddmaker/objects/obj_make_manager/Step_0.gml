@@ -97,7 +97,6 @@ if (mouse_on_ui) {
 else {
 	switch(make_state) {
 		case State.RAIL : 
-			show_debug_message(rail_index);
 			mouse_sprite =  rail_index.show_spr;
 			mouse_sprite_angle = current_valible_dir * 90;
 			break;
@@ -110,6 +109,7 @@ else {
 		case State.FACTORY :
 			if(!factory_placeable) mouse_blend =  c_red;
 			mouse_sprite = obj_factory_id.spr;
+			mouse_sprite_angle = current_valible_dir * 90;
 			break;
 	
 	}
