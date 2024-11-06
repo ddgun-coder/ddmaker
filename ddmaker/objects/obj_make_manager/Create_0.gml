@@ -265,7 +265,7 @@ function make_obj() {
 			if (factory_placeable) {
 				var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_factory);
 				_id.sprite_index = obj_factory_id.spr;
-				_id.image_angle = mouse_sprite_angle;
+				_id.image_angle = mouse_sprite_angle mod 360;
 				set_place_grid(_id, , mouse_sprite_angle);
 				_id.init_factory(obj_factory_id);
 			}

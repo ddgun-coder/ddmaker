@@ -27,6 +27,37 @@ output_number = 0;
 item_type = noone;
 cur_output = 0;
 
+function is_output_tile(_x, _y) {
+	if (is_array(output_tile[0])) {
+			
+	}	
+	else {
+		if (_x == output_tile[0] and _y == output_tile[1]) {
+			return true;
+		}
+	}
+		
+	return false;
+}
+function is_input_tile(_x, _y) {
+	if (is_array(input_tile[0])) {
+			
+	}	
+	else {
+		if (_x == input_tile[0] and _y == input_tile[1]) {
+			return true;
+		}
+	}
+		
+	return false;
+}
+function get_tile_IO(_x, _y) {
+	show_debug_message(string($"x : {_x}, y : {_y}"));
+	if (is_output_tile(_x, _y)) return Io.OUTPUT;
+	if (is_input_tile(_x, _y)) return Io.INPUT;
+	return noone;
+}
+
 function cycle_output() {
 	var _cur_order = 0;
 	var _id = noone;
@@ -132,7 +163,7 @@ function get_factory_IO(_x, _y, _check_outside = true) {
 	if (_check_outside) if (!position_meeting(_x, _y, id)) return noone;
 	var _tile_x = floor((_x - left_top_x) / 32);
 	var _tile_y = floor((_y - left_top_y) / 32);
-	return obj_factory_id.get_tile_IO(_tile_x, _tile_y);
+	return get_tile_IO(_tile_x, _tile_y);
 }
 
 function get_output_x(_tilex) {
@@ -142,6 +173,30 @@ function get_output_y(_tiley) {
 	return _tiley * 32 + y;
 }
 
+function get_array_spin(_x, _y, _angle, _factory_id) {
+	_result = [];
+	switch (_angle) {
+		case 0:	
+			_result[0] = _x;
+			_result[1] = _y;
+			break;
+		case 90:
+			_result[0] = _y;
+			_result[1] = _factory_id.width - _x - 1;
+			break;
+		case 180:	
+			_result[0] = _factory_id.width - _x - 1;
+			_result[1] = _factory_id.height - _y - 1;
+			break;
+		case 270	:	
+			_result[0] = _factory_id.height - _y - 1; 
+			_result[1] = _x;
+			break;
+		
+	}
+	return _result;
+}
+
 function init_factory(_obj_factory_id) {
 	obj_factory_id = _obj_factory_id;
 	if (obj_factory_id == noone or obj_factory_id == undefined) return;
@@ -149,11 +204,10 @@ function init_factory(_obj_factory_id) {
 	left_top_y = y - 16;
 	item_type = obj_factory_id.output_item[0];
 	if (!is_array(obj_factory_id.input_index[0])) {
-		input_tile = obj_factory_id.input_index;
-
+		input_tile = get_array_spin(obj_factory_id.input_index[0], obj_factory_id.input_index[1], image_angle, obj_factory_id);
 	}
 	if (!is_array(obj_factory_id.output_index[0])) {
-		output_tile = obj_factory_id.output_index;
+		output_tile = get_array_spin(obj_factory_id.output_index[0], obj_factory_id.output_index[1], image_angle, obj_factory_id);
 		output_tile_x = get_output_x(output_tile[0]);
 		output_tile_y = get_output_y(output_tile[1]);
 		check_linked_obj(output_tile_x, output_tile_y);

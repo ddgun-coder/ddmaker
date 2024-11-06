@@ -43,6 +43,9 @@ if (make_state != State.NONE) {
 				if (_dir[0] != Direct.NONE and _dir[1] == Io.OUTPUT) {
 					current_valible_dir = _dir[0];
 				}
+				else {
+					current_valible_dir = init_direction;
+				}
 			}
 			break;
 		case State.FACTORY :

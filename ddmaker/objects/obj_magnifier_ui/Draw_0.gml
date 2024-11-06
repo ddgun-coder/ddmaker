@@ -48,7 +48,6 @@ switch (_id.object_index) {
 		break;
 	case obj_repository :
 		draw_text(_draw_x, _draw_y + 24, string("{0} / {1}", _id.repository_limit, array_length(_id.item_array)));
-		var _str;
 		draw_stock(_id.item_hash, _draw_x, _draw_y + 64);
 		break;
 	case obj_factory :
@@ -60,10 +59,10 @@ switch (_id.object_index) {
 			for (var j = 0; j < _str.height; j++) {
 				_tilex = _draw_x + (i - 1) * 32 + 16;
 				_tiley = _draw_y + (j - 1) * 32 + 16;
-				if (_str.is_output_index(i, j)) {
+				if (_id.is_output_tile(i, j)) {
 					draw_sprite(spr_rail_check_ui, 2, _tilex, _tiley);
 				}
-				else if(_str.is_input_index(i, j)) {
+				else if(_id.is_input_tile(i, j)) {
 					draw_sprite(spr_rail_check_ui, 1, _tilex, _tiley);
 				}
 				else {
