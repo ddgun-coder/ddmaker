@@ -16,7 +16,7 @@ else if (keyboard_check_pressed(ord("F"))) {
 	set_make_type(State.FACTORY);
 }
 else if (keyboard_check_pressed(ord("R"))) {
-	init_direction = init_direction + 1 mod 4;
+	init_direction = init_direction + 3 mod 4;
 	current_valible_dir = init_direction; 
 }
 

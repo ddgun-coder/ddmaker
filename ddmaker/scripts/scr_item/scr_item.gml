@@ -33,7 +33,7 @@ global.wool = new Item(spr_wool, "wool");
 global.furniture = new Item(spr_furniture, "furniture");
 global.furniture2 = new Item(spr_furniture2, "furniture2");
 
-function Factory(spr, input_item, output_item, name, input_index, output_index, _show_spr = noone) constructor  {
+function Factory(spr, input_item, output_item, name, input_index, output_index, _show_spr = noone, _origin_index = [0, 0]) constructor  {
 	self.spr = spr;
 	if (_show_spr == noone) {
 		show_spr = asset_get_index(sprite_get_name(spr) + "_frame");
@@ -48,6 +48,7 @@ function Factory(spr, input_item, output_item, name, input_index, output_index, 
 	self.output_index = output_index;
 	width = floor(sprite_get_width(spr) / 32);
 	height = floor(sprite_get_height(spr) / 32);
+	origin_index= _origin_index;
 	array_push(global.factory_array, self);
 	function is_output_index(_x, _y) {
 		if (is_array(output_index[0])) {

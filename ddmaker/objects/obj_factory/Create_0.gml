@@ -52,7 +52,6 @@ function is_input_tile(_x, _y) {
 	return false;
 }
 function get_tile_IO(_x, _y) {
-	show_debug_message(string($"x : {_x}, y : {_y}"));
 	if (is_output_tile(_x, _y)) return Io.OUTPUT;
 	if (is_input_tile(_x, _y)) return Io.INPUT;
 	return noone;
@@ -167,10 +166,10 @@ function get_factory_IO(_x, _y, _check_outside = true) {
 }
 
 function get_output_x(_tilex) {
-	return _tilex * 32 + x;
+	return _tilex * 32 + left_top_x + 16;
 }
 function get_output_y(_tiley) {
-	return _tiley * 32 + y;
+	return _tiley * 32 + left_top_y + 16;
 }
 
 function get_array_spin(_x, _y, _angle, _factory_id) {
@@ -200,8 +199,9 @@ function get_array_spin(_x, _y, _angle, _factory_id) {
 function init_factory(_obj_factory_id) {
 	obj_factory_id = _obj_factory_id;
 	if (obj_factory_id == noone or obj_factory_id == undefined) return;
-	left_top_x = x - 16;
-	left_top_y = y - 16;
+	var _top = get_array_spin(obj_factory_id.origin_index[0], obj_factory_id.origin_index[1],image_angle, obj_factory_id);
+	left_top_x = x - _top[0] * 32 - 16;
+	left_top_y = y - _top[1] * 32 - 16;
 	item_type = obj_factory_id.output_item[0];
 	if (!is_array(obj_factory_id.input_index[0])) {
 		input_tile = get_array_spin(obj_factory_id.input_index[0], obj_factory_id.input_index[1], image_angle, obj_factory_id);

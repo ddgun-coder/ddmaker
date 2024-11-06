@@ -18,4 +18,3 @@ if (output_number > 0) {
 		extract_obj();
 	}
 }
-
