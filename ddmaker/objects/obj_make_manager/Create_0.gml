@@ -1,6 +1,8 @@
-	/// @description Insert description here
+/// @description Insert description here
 // You can write your code in this editor
-
+underground_distance = 4;
+matched_underground_id = noone;
+current_io = Io.BOTH;
 enum State {
 	NONE,
 	RAIL,
@@ -15,6 +17,20 @@ enum Direct {
 	LEFT,
 	DOWN,
 	NONE
+}
+
+function found_matched_rail() {
+	current_io = rail_index.io;
+	var _rail_id = noone;
+	var _xy = get_direction_dxdy(init_direction, 1);
+	for (var i = 1; i < underground_distance; i++) {
+		_rail_id = collision_point(mouse_floor_x + _xy[0] * 32 * i, mouse_floor_y + _xy[1] * 32 * i, [obj_rail_input, obj_rail_output], false, false)
+		if (_rail_id != noone and _rail_id.connected_rail_id == noone and current_io != _rail_id.io) {
+			matched_underground_id = _rail_id;
+			return;
+		}
+	}
+	matched_underground_id = noone;
 }
 
 function set_make_type(_type) {
@@ -103,7 +119,7 @@ function get_spined_array_index(_x, _y, _angle, _array_width, _array_height) {
 			_result = [-1, -1];
 			break;
 	}
-	return _result = [];
+	return _result;
 }
 
 
@@ -217,7 +233,7 @@ current_obj_id = noone;
 factory_placeable = false;
 mouse_blend = c_white;
 obj_factory_id = noone;
-rail_index = noone;
+rail_index = global.rail_array[0];
 alarm[0] = 1;
 is_set = false;
 place_able = false;
@@ -283,8 +299,7 @@ function check_obj() {
 	}
 }
 
-function make_obj() {
-	//get direction
+function rotateRailToMouse() {
 	current_dir = cal_direction(mouse_previous_x, mouse_previous_y, mouse_floor_x, mouse_floor_y);
 	if (current_dir != Direct.NONE) {
 		current_valible_dir = current_dir;
@@ -306,6 +321,13 @@ function make_obj() {
 				current_valible_dir = current_dir;
 			}
 		}
+	}
+}
+
+function make_obj() {
+	//get direction
+	if (rail_index.obj == obj_rail and make_state == State.RAIL) {
+		rotateRailToMouse();
 	}
 	//make obj
 	switch (make_state) {

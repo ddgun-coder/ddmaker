@@ -77,6 +77,7 @@
     {"id":{"name":"spr_rail_cur_output_ui","path":"sprites/spr_rail_cur_output_ui/spr_rail_cur_output_ui.yy",},},
     {"id":{"name":"spr_rail_input_show","path":"sprites/spr_rail_input_show/spr_rail_input_show.yy",},},
     {"id":{"name":"spr_rail_input","path":"sprites/spr_rail_input/spr_rail_input.yy",},},
+    {"id":{"name":"spr_rail_line","path":"sprites/spr_rail_line/spr_rail_line.yy",},},
     {"id":{"name":"spr_rail_output_show","path":"sprites/spr_rail_output_show/spr_rail_output_show.yy",},},
     {"id":{"name":"spr_rail_output","path":"sprites/spr_rail_output/spr_rail_output.yy",},},
     {"id":{"name":"spr_repository","path":"sprites/spr_repository/spr_repository.yy",},},

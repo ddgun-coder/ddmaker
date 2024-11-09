@@ -2,7 +2,11 @@
 // You can write your code in this editor
 if (make_state != State.NONE and mouse_sprite != noone) {
 	draw_sprite_ext(mouse_sprite, 0, mouse_floor_x, mouse_floor_y, 1, 1, mouse_sprite_angle, mouse_blend, 1);	
+	if (matched_underground_id != noone) {
+		draw_sprite(spr_rail_line, 0, mouse_floor_x, mouse_floor_y);
+	}
 }
+
 
 /*
 //place_grid 확인용
