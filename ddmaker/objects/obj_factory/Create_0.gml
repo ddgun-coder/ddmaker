@@ -172,7 +172,33 @@ function get_output_y(_tiley) {
 	return _tiley * 32 + left_top_y + 16;
 }
 
-function get_array_spin(_x, _y, _angle, _factory_id) {
+function get_spined_array_index(_x, _y, _angle, _array_width, _array_height) {
+	var _result;
+	switch (_angle) {
+		case 0:	
+			_result[0] = _x;
+			_result[1] = _y;
+			break;
+		case 90:
+			_result[0] = _y;
+			_result[1] = _array_width - _x - 1;
+			break;
+		case 180:	
+			_result[0] = _array_width - _x - 1;
+			_result[1] = _array_height - _y - 1;
+			break;
+		case 270:	
+			_result[0] = _array_height - _y - 1; 
+			_result[1] = _x;
+			break;
+		default :
+			_result = [-1, -1];
+			break;
+	}
+	return _result = [];
+}
+
+function get_factory_spined_array(_x, _y, _angle, _factory_id) {
 	_result = [];
 	switch (_angle) {
 		case 0:	
@@ -199,15 +225,15 @@ function get_array_spin(_x, _y, _angle, _factory_id) {
 function init_factory(_obj_factory_id) {
 	obj_factory_id = _obj_factory_id;
 	if (obj_factory_id == noone or obj_factory_id == undefined) return;
-	var _top = get_array_spin(obj_factory_id.origin_index[0], obj_factory_id.origin_index[1],image_angle, obj_factory_id);
+	var _top = get_factory_spined_array(obj_factory_id.origin_index[0], obj_factory_id.origin_index[1],image_angle, obj_factory_id);
 	left_top_x = x - _top[0] * 32 - 16;
 	left_top_y = y - _top[1] * 32 - 16;
 	item_type = obj_factory_id.output_item[0];
 	if (!is_array(obj_factory_id.input_index[0])) {
-		input_tile = get_array_spin(obj_factory_id.input_index[0], obj_factory_id.input_index[1], image_angle, obj_factory_id);
+		input_tile = get_factory_spined_array(obj_factory_id.input_index[0], obj_factory_id.input_index[1], image_angle, obj_factory_id);
 	}
 	if (!is_array(obj_factory_id.output_index[0])) {
-		output_tile = get_array_spin(obj_factory_id.output_index[0], obj_factory_id.output_index[1], image_angle, obj_factory_id);
+		output_tile = get_factory_spined_array(obj_factory_id.output_index[0], obj_factory_id.output_index[1], image_angle, obj_factory_id);
 		output_tile_x = get_output_x(output_tile[0]);
 		output_tile_y = get_output_y(output_tile[1]);
 		check_linked_obj(output_tile_x, output_tile_y);

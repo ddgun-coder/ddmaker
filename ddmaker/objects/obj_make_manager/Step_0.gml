@@ -49,7 +49,7 @@ if (make_state != State.NONE) {
 			}
 			break;
 		case State.FACTORY :
-			factory_placeable = ds_grid_get_sum(place_grid, mouse_grid_x, mouse_grid_y, mouse_grid_x + obj_factory_id.width - 1, mouse_grid_y + obj_factory_id.height - 1) == 0;
+			factory_placeable = get_factory_placeable2(obj_factory_id, current_valible_dir * 90 mod 360);
 			break;
 		case State.WAY_MAGNIFIER :
 			check_obj();

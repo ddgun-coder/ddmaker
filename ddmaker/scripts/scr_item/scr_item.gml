@@ -48,7 +48,7 @@ function Factory(spr, input_item, output_item, name, input_index, output_index, 
 	self.output_index = output_index;
 	width = floor(sprite_get_width(spr) / 32);
 	height = floor(sprite_get_height(spr) / 32);
-	origin_index= _origin_index;
+	origin_index = _origin_index;
 	array_push(global.factory_array, self);
 	function is_output_index(_x, _y) {
 		if (is_array(output_index[0])) {
@@ -79,6 +79,29 @@ function Factory(spr, input_item, output_item, name, input_index, output_index, 
 		if (is_input_index(_x, _y)) return Io.INPUT;
 		return noone;
 	}
+	function get_origin_array_spin(_angle) {
+	_result = [];
+	switch (_angle) {
+		case 0:	
+			_result[0] = origin_index[0];
+			_result[1] = origin_index[1];
+			break;
+		case 90:
+			_result[0] = origin_index[1];
+			_result[1] = width - origin_index[0] - 1;
+			break;
+		case 180:	
+			_result[0] = width - origin_index[0] - 1;
+			_result[1] = height - origin_index[1] - 1;
+			break;
+		case 270	:	
+			_result[0] = height - origin_index[1] - 1; 
+			_result[1] = origin_index[0];
+			break;
+		
+	}
+	return _result;
+}
 }
 
 global.furniture_factory = new Factory(spr_furniture_fac, [global.wood, global.wood], [global.furniture], "furniture_factory", [0, 1], [1, 1]);

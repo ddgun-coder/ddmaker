@@ -1,5 +1,6 @@
-/// @description Insert description here
+	/// @description Insert description here
 // You can write your code in this editor
+
 enum State {
 	NONE,
 	RAIL,
@@ -33,6 +34,131 @@ function set_make_type(_type) {
 	}
 }
 
+function get_factory_placeable2(_obj_factory_id, _dir) {
+	var _result = get_place_grid_origin(_obj_factory_id.width, obj_factory_id.height, mouse_grid_x, mouse_grid_y, obj_factory_id.origin_index[0], obj_factory_id.origin_index[1], _dir);
+	return ds_grid_get_sum(place_grid, _result[0], _result[1], _result[0] + _result[2] - 1, _result[1] + _result[3] - 1) == 0;
+}
+
+function get_factory_placeable(_obj_factory_id, _dir) {
+	var dx, dy, w, h;
+	switch (_dir) {
+	    case 0: // 오른쪽(0도)
+	        dx = mouse_grid_x;
+	        dy = mouse_grid_y;
+	        w = _obj_factory_id.width;
+	        h = _obj_factory_id.height;
+	        break;
+        
+	    case 270: // 아래쪽(90도)
+	        dx = mouse_grid_x - _obj_factory_id.height + 1;
+	        dy = mouse_grid_y;
+	        w = _obj_factory_id.height;
+	        h = _obj_factory_id.width;
+	        break;
+        
+	    case 180: // 왼쪽(180도)
+	        dx = mouse_grid_x - _obj_factory_id.width + 1;
+	        dy = mouse_grid_y - _obj_factory_id.height + 1;
+	        w = _obj_factory_id.width;
+	        h = _obj_factory_id.height;
+	        break;
+        
+	    case 90: // 위쪽(270도)
+	        dx = mouse_grid_x;
+	        dy = mouse_grid_y - _obj_factory_id.width + 1;
+	        w = _obj_factory_id.height;
+	        h = _obj_factory_id.width;
+	        break;
+        
+	    default:
+	        dx = mouse_grid_x;
+	        dy = mouse_grid_y;
+	        w = _obj_factory_id.width;
+	        h = _obj_factory_id.height;
+	        break;
+	}
+	return ds_grid_get_sum(place_grid, dx, dy, dx + w - 1, dy + h - 1) == 0;
+}
+
+function get_spined_array_index(_x, _y, _angle, _array_width, _array_height) {
+	var _result;
+	switch (_angle) {
+		case 0:	
+			_result[0] = _x;
+			_result[1] = _y;
+			break;
+		case 90:
+			_result[0] = _y;
+			_result[1] = _array_width - _x - 1;
+			break;
+		case 180:	
+			_result[0] = _array_width - _x - 1;
+			_result[1] = _array_height - _y - 1;
+			break;
+		case 270:	
+			_result[0] = _array_height - _y - 1; 
+			_result[1] = _x;
+			break;
+		default :
+			_result = [-1, -1];
+			break;
+	}
+	return _result = [];
+}
+
+
+
+function get_place_grid_origin(_width, _height, _x, _y, _origin_x, _origin_y, _dir) {
+	var dx, dy, w, h;
+	switch(_dir) {
+		case 0:
+		case 180:
+			w = _width;
+	        h = _height;
+			break;
+		case 90:
+		case 270:
+			w = _height;
+	        h = _width;
+			break;
+	}
+	var spined_origin = get_spined_array_index(_origin_x, _origin_y, _dir, _width, _height);
+	dx = _x + _origin_x - spined_origin[0];
+	dy = _y + _origin_y - spined_origin[1];
+	return [dx, dy, w, h];
+}
+
+function get_place_grid_normal(_width, _height, _x, _y, _dir) {
+	var dx, dy, w, h;
+	switch (_dir) {
+		  case 0: // 오른쪽(0도)
+	            dx = _x;
+	            dy = _y;
+	            w = _width;
+	            h = _height;
+	            break;
+			case 90 :
+				dx = _x;
+	            dy = _y - _width + 1;
+	            w = _height;
+	            h = _width;
+	            break;
+			case 180:
+				dx = _x - _width + 1;
+	            dy = _y - _height + 1;
+	            w = _width;
+	            h = _height;
+				break;
+			case 270:
+				dx = _x - _height + 1;
+	            dy = _y;
+	            w = _height;
+	            h = _width;
+				break;
+	}
+	return [dx, dy, w, h];
+}
+
 function set_place_grid(_id, val = 1, dir = 0) {
 	var dx, dy, w, h;
 	with (_id) {
@@ -44,7 +170,7 @@ function set_place_grid(_id, val = 1, dir = 0) {
 	            h = ceil(sprite_height / 32) - 1;
 	            break;
         
-	        case 270: // 아래쪽(90도)
+	        case 270:
 	            dx = floor((_id.x - 16) / 32) - ceil(sprite_height / 32) + 1;
 	            dy = floor((_id.y - 16) / 32);
 	            w = ceil(sprite_height / 32) - 1;
@@ -58,7 +184,7 @@ function set_place_grid(_id, val = 1, dir = 0) {
 	            h = ceil(sprite_height / 32) - 1;
 	            break;
         
-	        case 90: // 위쪽(270도)
+	        case 90: 
 	            dx = floor((_id.x - 16) / 32);
 	            dy = floor((_id.y - 16) / 32) - ceil(sprite_width / 32) + 1;
 	            w = ceil(sprite_height / 32) - 1;
@@ -126,20 +252,19 @@ function rail_end_action() {
 }
 
 function delete_obj() {
-	switch (make_state) {
-		case State.RAIL :
-			if (current_obj_id != noone and current_obj_id.object_index == obj_rail) {
-				current_obj_id.delete_obj_with_box();	
-			}
+	if (!instance_exists(current_obj_id)) return;
+	switch (current_obj_id.object_index) {
+		case obj_rail :
+			current_obj_id.delete_obj_with_box();	
 			break;	
 		default :
-			instance_destroy()
+			instance_destroy(current_obj_id)
 			break;
 	}
 }
 
 function check_obj() {
-	if (current_obj_id == noone) {
+	if (!instance_exists(current_obj_id)) {
 		magnifier_time = 0;
 		return;
 	}
@@ -165,7 +290,7 @@ function make_obj() {
 		current_valible_dir = current_dir;
 	}
 	else {
-		if (previous_rail_id == noone) { 
+		if (!instance_exists(previous_rail_id)) { 
 			var _dir = get_linked_output_way(mouse_floor_x, mouse_floor_y, true);
 			if (_dir[0] != Direct.NONE and _dir[1] == Io.OUTPUT) {
 				current_dir = _dir[0];
@@ -215,13 +340,13 @@ function make_obj() {
 					//Reorient rail from previous location 
 					_id.set_one_way_direction(current_dir);
 					//클릭해서 이어준 경우는 변경이 아닌 추가 형태
-					if (clicked_id != noone and clicked_id.object_index == obj_rail) {
+					if (instance_exists(clicked_id) and clicked_id.object_index == obj_rail) {
 						clicked_id.add_output(current_dir);
 						clicked_id = noone;
 					}
 				
 					//꺾을때 마다 방향 변경
-					if (previous_rail_id != noone) {
+					if (instance_exists(previous_rail_id)) {
 						if (start_smae_shape) {
 							start_smae_shape = false;
 							previous_rail_id.set_one_way_direction(current_dir);
@@ -251,6 +376,7 @@ function make_obj() {
 			}
 			else {
 				var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, rail_index.obj);
+				_id.image_angle = mouse_sprite_angle mod 360;
 			}
 			break;
 		case State.WAY_CHANGER :
