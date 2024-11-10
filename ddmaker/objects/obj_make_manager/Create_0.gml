@@ -1,7 +1,9 @@
 /// @description Insert description here
 // You can write your code in this editor
-underground_distance = 4;
+underground_distance = 6;
 matched_underground_id = noone;
+matched_distance = 0;
+matched_sign = 0; 
 current_io = Io.BOTH;
 enum State {
 	NONE,
@@ -21,12 +23,23 @@ enum Direct {
 
 function found_matched_rail() {
 	current_io = rail_index.io;
+	if (current_io == Io.INPUT) {
+		matched_sign = 1;
+	}
+	else if (current_io == Io.OUTPUT) {
+		matched_sign = -1;
+	}
+	else {
+		matched_sign = 0;
+		return;
+	}
 	var _rail_id = noone;
-	var _xy = get_direction_dxdy(init_direction, 1);
+	var _xy = get_direction_dxdy(init_direction, 32);
 	for (var i = 1; i < underground_distance; i++) {
-		_rail_id = collision_point(mouse_floor_x + _xy[0] * 32 * i, mouse_floor_y + _xy[1] * 32 * i, [obj_rail_input, obj_rail_output], false, false)
-		if (_rail_id != noone and _rail_id.connected_rail_id == noone and current_io != _rail_id.io) {
+		_rail_id = collision_point(mouse_floor_x + _xy[0] * i * matched_sign, mouse_floor_y + _xy[1] * i * matched_sign, [obj_rail_input, obj_rail_output], false, false)
+		if (_rail_id != noone and _rail_id.connected_rail_id == noone and current_io != _rail_id.io and floor(_rail_id.image_angle / 90) == init_direction) {
 			matched_underground_id = _rail_id;
+			matched_distance = i;
 			return;
 		}
 	}
@@ -300,6 +313,10 @@ function check_obj() {
 }
 
 function rotateRailToMouse() {
+	if (start_smae_shape) {
+		current_dir = current_valible_dir
+		return;
+	}
 	current_dir = cal_direction(mouse_previous_x, mouse_previous_y, mouse_floor_x, mouse_floor_y);
 	if (current_dir != Direct.NONE) {
 		current_valible_dir = current_dir;
@@ -397,8 +414,14 @@ function make_obj() {
 				}
 			}
 			else {
-				var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, rail_index.obj);
-				_id.image_angle = mouse_sprite_angle mod 360;
+				if (!instance_exists(current_obj_id)) {
+					var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, rail_index.obj);
+					_id.image_angle = mouse_sprite_angle mod 360;
+					if (instance_exists(matched_underground_id)) {
+						matched_underground_id.connected_rail_id = _id;
+						_id.connected_rail_id = matched_underground_id;
+					}
+				}
 			}
 			break;
 		case State.WAY_CHANGER :
