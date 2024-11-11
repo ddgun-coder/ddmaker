@@ -76,7 +76,7 @@ if (mouse_check_button_pressed(mb_left)) {
 		}
 	}
 	if (clicked_id != noone) {
-		start_smae_shape = false;	
+		start_same_shape = false;	
 	}
 }
 var mouse_on_ui = build_ui_id == noone or position_meeting(mouse_x, mouse_y, build_ui_id);

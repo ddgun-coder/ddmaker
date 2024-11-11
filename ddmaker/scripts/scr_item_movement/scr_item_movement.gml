@@ -42,8 +42,10 @@ function get_linked_output_way(_x, _y, _get_io = false) {
 function get_IO(_id, _dx, _dy) {
 	switch (_id.object_index) {
 		case obj_repository :
+		case obj_rail_input :
 			return Io.INPUT
 		case obj_extractor :
+		case obj_rail_output : 
 			return Io.OUTPUT
 		case obj_factory :
 			return _id.get_factory_IO(_dx, _dy);
