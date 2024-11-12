@@ -420,14 +420,15 @@ function make_obj() {
 				}
 			}
 			else {
+				//obj_rail_input, obj_rail_output 형태
 				if (!instance_exists(current_obj_id)) {			
 					var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, rail_index.obj);
 					_id.image_angle = mouse_sprite_angle mod 360;
 					if (instance_exists(matched_underground_id)) {
 						matched_underground_id.connected_rail_id = _id;
-						matched_underground_id.connected_distance = matched_distance;
+						matched_underground_id.init_rail(matched_distance);
 						_id.connected_rail_id = matched_underground_id;
-						_id.connected_distance = matched_distance;
+						_id.init_rail(matched_distance);
 					}
 				}
 			}

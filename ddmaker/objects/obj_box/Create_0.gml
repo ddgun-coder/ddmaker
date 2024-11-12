@@ -113,11 +113,14 @@ function position_meeting_next_tile() {
 function place_meeting_next_tile() {
 	if (!place_meeting(x, y, next_tile)) return;
 
-	if (next_tile.object_index == obj_repository) {
-		if (repository_id == noone and next_tile.is_array_below_limit()) {
-			repository_id = next_tile;
-			repository_id.add_item(other.item_type);
-		}
+	switch(next_tile.object_index) {
+		case obj_rail_input :
+		case obj_repository :
+			if (repository_id == noone and next_tile.is_array_below_limit()) {
+				repository_id = next_tile;
+				repository_id.add_item(other.item_type);
+			}
+			break;
 	}
 		
 	var is_completed = false;
