@@ -28,7 +28,7 @@ metting_next_tile();
 //next_tile에 도착했는지 확인
 
 if (direct == Direct.NONE) {
-	if (!instance_exists(noone)) {
+	if (!instance_exists(next_tile)) {
 		var _id = instance_position(x, y, obj_rail);
 		if (_id != noone) {
 			_id.cycle_output(id);

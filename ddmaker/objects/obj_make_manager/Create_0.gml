@@ -54,10 +54,10 @@ function set_make_type(_type) {
 		make_state = _type;
 		switch(make_state) {
 			case State.FACTORY :
-				obj_factory_id = global.factory_array[0];
+				obj_factory_id = global.factory_array[global.factory_array_index];
 				break;
 			case State.RAIL :
-				rail_index = global.rail_array[0];
+				rail_index = global.rail_array[global.rail_array_index];
 				break;
 		}
 	}
@@ -321,7 +321,7 @@ function rotateRailToMouse() {
 		current_valible_dir = current_dir;
 	}
 	else {
-		if (!instance_exists(previous_rail_id)) { 
+		if (!instance_exists(previous_rail_id) and !instance_exists(current_obj_id)) { 
 			var _dir = get_linked_output_way(mouse_floor_x, mouse_floor_y, true);
 			if (_dir[0] != Direct.NONE and _dir[1] == Io.OUTPUT) {
 				current_dir = _dir[0];
@@ -330,9 +330,9 @@ function rotateRailToMouse() {
 			}
 		}
 		else {
-			var _dir = get_linked_output_way(mouse_floor_x, mouse_floor_y, true);
-			if (_dir[0] != Direct.NONE and _dir[1] == Io.INPUT) {
-				current_dir = _dir[0];
+			var _dir = get_linked_output_way(mouse_floor_x, mouse_floor_y);
+			if (_dir != Direct.NONE) {
+				current_dir = _dir;
 				start_same_shape = false;
 				current_valible_dir = current_dir;
 			}
@@ -349,32 +349,30 @@ function make_obj() {
 	switch (make_state) {
 		case State.RAIL :
 			if (rail_index.obj == obj_rail) {
-				//변화가 없으면 return
-				if (current_obj_id != noone and current_dir == Direct.NONE) {
-					return;
+				
+				if (!instance_exists(current_obj_id)) {
+					current_obj_id = noone;	
 				}
-				//이미 존재하는 rail 기억하는 부분
-				if (previous_rail_id == noone and current_obj_id != noone) {
-					if (current_obj_id.object_index == obj_rail) {
-						previous_rail_id = current_obj_id;	
+				if (!instance_exists(previous_rail_id)) {
+					previous_rail_id = noone;	
+				}
+				
+				if (current_obj_id != noone) {
+					//변화가 없으면 return
+					if (current_dir == Direct.NONE) {
+						return;
+					}
+					//이미 존재하는 rail 기억하는 부분
+					if (previous_rail_id == noone) {
+						if (current_obj_id.object_index == obj_rail) {
+							previous_rail_id = current_obj_id;
+						}
+					}
+					else if (current_obj_id.object_index != obj_rail) {
+						 previous_rail_id.finalize_output(current_dir);
 					}
 				}
-				//변화가 없으면 return
-				if (instance_exists(current_obj_id)) {
-				    // current_dir이 NONE일 때
-				    if (current_dir == Direct.NONE) {
-				        if (current_obj_id.object_index == obj_rail and instance_exists(previous_rail_id)) {
-				            start_same_shape = false;
-				        }
-				        return; // 더 이상 처리할 게 없으니 return
-				    }
 
-				    // current_dir이 NONE이 아닐 때
-				    if (current_obj_id.object_index != obj_rail && previous_rail_id != noone) {
-				        previous_rail_id.finalize_output(current_dir);
-				    }
-				}
-			
 				if (current_obj_id == noone) {
 					if (is_first_rail) {
 						is_first_rail = false;
@@ -405,10 +403,11 @@ function make_obj() {
 					//이전의 레일을 기억
 					previous_rail_id = _id;
 				}
-				else if (current_obj_id != previous_rail_id and previous_rail_id != noone) {
+				
+				if (previous_rail_id != noone and current_obj_id != noone and current_obj_id != previous_rail_id) {
 					//마지막 끝맺음을 완벽하게 만들기 위한 부분
 					if (current_obj_id.object_index == obj_rail) {
-						current_obj_id.add_input((current_dir + 2) % 4);
+						current_obj_id.add_input(direction_reverse(current_dir));
 						if (previous_rail_id.is_completed) {
 							previous_rail_id.add_output(current_dir);
 						}

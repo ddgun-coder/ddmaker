@@ -19,6 +19,8 @@ function create_item(_x, _y, _depth, _dir, _next_tile_id, _item_type) {
 
 global.factory_array = [];
 global.rail_array = [];
+global.factory_array_index = 0;
+global.rail_array_index = 0;
 new Rail(spr_one_way_rail, spr_one_way_rail_show, obj_rail, Io.BOTH);
 new Rail(spr_rail_input, spr_rail_input_show, obj_rail_input, Io.INPUT);
 new Rail(spr_rail_output, spr_rail_output_show, obj_rail_output, Io.OUTPUT);

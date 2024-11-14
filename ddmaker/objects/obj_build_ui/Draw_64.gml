@@ -9,7 +9,7 @@ switch (cur_state) {
 		_dy = y + 16;
 		_num = array_length(cur_array);
 		for (var i = 0; i < _num; i++) {
-			if (cur_index == i){
+			if (global.factory_array_index == i){
 				draw_sprite(spr_fac_2x2_glow, 0, _dx, _dy);	
 			}
 			draw_sprite(cur_array[i].spr, 0, _dx, _dy);
@@ -22,7 +22,7 @@ switch (cur_state) {
 		_num = array_length(cur_array);
 		var _spr;
 		for (var i = 0; i < _num; i++) {
-			if (cur_index == i){
+			if (global.rail_array_index == i){
 				draw_sprite(spr_fac_1x1_glow, 0, _dx, _dy);	
 			}
 			_spr = cur_array[i].spr;

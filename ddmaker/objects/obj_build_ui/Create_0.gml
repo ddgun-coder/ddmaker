@@ -1,7 +1,6 @@
 /// @description Insert description here
 // You can write your code in this editor
 image_xscale = 5;
-cur_index = array_get_index(global.factory_array, obj_make_manager.obj_factory_id);
 cur_array = [];
 spr_width = 64;
 cur_state = State.NONE;

@@ -77,20 +77,26 @@ function set_next_tile(_id, exception = false) {
 		return;
 	}
 	
-	
-	if (next_tile.object_index == obj_rail and next_tile.is_opposite_input) {
-		var _dxy = get_direction_dxdy(direction_reverse(direct), 17);
-		next_tile_x = _id.x + _dxy[0];
-		next_tile_y = _id.y + _dxy[1];
-		opposite_in = true;
-		return;
-	}
-	
-	if (next_tile.object_index == obj_factory) {
-		var _dxy = get_direction_dxdy(direct, 32);
-		next_tile_x = pre_tile_id.x + _dxy[0];
-		next_tile_y = pre_tile_id.y + _dxy[1];
-		return;
+	switch(next_tile.object_index) {
+		case obj_rail :
+			if (next_tile.is_opposite_input) {
+				var _dxy = get_direction_dxdy(direction_reverse(direct), 17);
+				next_tile_x = _id.x + _dxy[0];
+				next_tile_y = _id.y + _dxy[1];
+				opposite_in = true;
+				return;
+			}
+			break;
+		case obj_factory :
+			var _dxy = get_direction_dxdy(direct, 32);
+			next_tile_x = pre_tile_id.x + _dxy[0];
+			next_tile_y = pre_tile_id.y + _dxy[1];
+			return;
+		case obj_rail_input :
+			if (!is_opposite_direction(next_tile.input_dir, direct)) {
+				return;	
+			}
+			break;
 	}
 	
 	next_tile_x = _id.x;
@@ -160,7 +166,7 @@ function place_meeting_next_tile() {
 }
 
 function metting_next_tile() {
-	if (next_tile == noone) return;
+	if (!instance_exists(next_tile)) return;
 	
 	switch (next_tile.object_index) {
 		case obj_factory :
