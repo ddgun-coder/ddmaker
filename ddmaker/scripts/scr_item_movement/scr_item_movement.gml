@@ -12,7 +12,7 @@ function get_linked_output_way(_x, _y, _get_io = false) {
 		_xy = get_direction_dxdy(i);
 		_id = instance_position(_x + _xy[0], _y + _xy[1], obj_abs_component);
 		if (_id != noone) {
-			var _io = get_IO(_id, _x + _xy[0], _y + _xy[1]);
+			var _io = get_IO(_id, _x + _xy[0], _y + _xy[1], i);
 			if (_io == Io.INPUT) {
 				if (_get_io) {
 					return [i, Io.INPUT];
@@ -39,14 +39,37 @@ function get_linked_output_way(_x, _y, _get_io = false) {
 	}
 }
 
-function get_IO(_id, _dx, _dy) {
+function get_IO(_id, _dx, _dy, _dir) {
 	switch (_id.object_index) {
+		case obj_rail :
+			if (_id.in_build)  return Io.BOTH;
+			
+			var d_dir = direction_reverse(_dir);
+			if (_id.way[d_dir] == Way.OUTPUT) {
+				return Io.OUTPUT;
+			}
+			else if (_id.way[d_dir] == Way.INPUT) {
+				return Io.INPUT;
+			}
+			return Io.BOTH;
 		case obj_repository :
+			return Io.INPUT;
 		case obj_rail_input :
-			return Io.INPUT
+			if (is_opposite_direction(_id.input_dir, _dir)) {
+				return Io.INPUT;	
+			}
+			else {
+				return Io.BOTH;	
+			}
+		case obj_rail_output :
+			if (is_opposite_direction(_id.output_dir, _dir)) {
+				return Io.OUTPUT;
+			}
+			else {
+				return Io.BOTH;	
+			}
 		case obj_extractor :
-		case obj_rail_output : 
-			return Io.OUTPUT
+			return Io.OUTPUT;
 		case obj_factory :
 			return _id.get_factory_IO(_dx, _dy);
 	}

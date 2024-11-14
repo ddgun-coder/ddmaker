@@ -13,7 +13,7 @@ function create_item(_x, _y, _depth, _dir, _next_tile_id, _item_type) {
 	_id = instance_create_depth(_x, _y, _depth, obj_box);
 	_id.direct = _dir;
 	_id.set_next_tile(id);
-	_id.item_type = other.item_type;
+	_id.item_type = _item_type;
 	_id.sprite_index = _id.item_type.spr;
 }
 

@@ -9,6 +9,7 @@ io = Io.INPUT;
 show_info = false;
 item_queue_ready = [];
 item_array = [];
+input_dir = direction_reverse(floor(image_angle / 90));
 
 function item_info(type) constructor{
 	self.type = type;
@@ -25,6 +26,12 @@ function item_info(type) constructor{
 function init_rail(_dis) {
 	connected_distance = _dis;
 	item_queue_ready = [];
+	input_dir = direction_reverse(floor(image_angle / 90));
+	check_linked_obj_one_way(input_dir);
+	var _id = linked_obj[input_dir];
+	if (instance_exists(_id) and _id.object_index == obj_rail) {
+		_id.check_output_connected();
+	}	
 }
 
 function is_array_below_limit() {
@@ -34,3 +41,4 @@ function is_array_below_limit() {
 function add_item(_type) {
 	array_push(item_queue_ready, new item_info(_type));
 }
+

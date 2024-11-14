@@ -280,6 +280,7 @@ function rail_end_action() {
 	previous_rail_id = noone;
 	start_same_shape = true;
 	is_first_rail = true;
+	obj_rail.in_build = false;
 }
 
 function delete_obj() {
@@ -429,6 +430,10 @@ function make_obj() {
 						matched_underground_id.init_rail(matched_distance);
 						_id.connected_rail_id = matched_underground_id;
 						_id.init_rail(matched_distance);
+						matched_underground_id = noone;
+					}
+					else {
+						_id.init_rail(0);	
 					}
 				}
 			}

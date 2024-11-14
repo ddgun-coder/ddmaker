@@ -8,12 +8,23 @@ item_extract_max_time = 60;
 item_extract_time = 0;
 cur_output = 0;
 
+function is_avaliable(_id) {
+	if (_id == noone) return false; 
+	
+	switch(_id.object_index) {
+		case obj_rail :
+		case obj_repository :
+			return true;
+	}
+	return false;
+}
+
 function cycle_output() {
 	var _cur_order = 0;
 	var _id = noone;
 	for (var i = 0; i < way_number; i++) {
 		_id = linked_obj[i];
-		if (_id != noone and (_id.object_index == obj_rail or _id.object_index == obj_repository)) {
+		if (is_avaliable(_id)) {
 			if (_cur_order < cur_output) {
 				_cur_order++;
 				continue;

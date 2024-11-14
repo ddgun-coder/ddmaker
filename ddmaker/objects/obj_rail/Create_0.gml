@@ -11,6 +11,7 @@ way_number = 4;
 input_number = 1;
 output_number = 1;
 is_completed = false;
+in_build = true;
 current_direction = Direct.NONE;
 connected_output = array_create(4, noone);
 connected_output_number = 0;

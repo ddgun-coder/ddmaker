@@ -20,7 +20,7 @@ else {
 	is_moved = false;
 }
 
-if (next_tile != noone and !instance_exists(next_tile)) {
+if (!instance_exists(next_tile)) {
 	direct = Direct.NONE;
 	set_next_tile(noone); 
 }
@@ -28,7 +28,7 @@ metting_next_tile();
 //next_tile에 도착했는지 확인
 
 if (direct == Direct.NONE) {
-	if (next_tile == noone) {
+	if (!instance_exists(noone)) {
 		var _id = instance_position(x, y, obj_rail);
 		if (_id != noone) {
 			_id.cycle_output(id);
@@ -47,9 +47,18 @@ if (direct == Direct.NONE) {
 //다음 tile 찾기
 
 if (repository_id != noone) {
-	image_xscale -= 0.03;
-	image_yscale -= 0.03;
-	if (image_xscale <= 0) {
+	show_xscale -= 0.03;
+	show_yscale -= 0.03;
+	if (show_xscale <= 0) {
 		instance_destroy();
+	}
+}
+else if (is_first) {
+	show_xscale += 0.03;	
+	show_yscale += 0.03;	
+	if (show_yscale >= 1) {
+		show_yscale = 1;
+		show_xscale = 1;
+		is_first = false;
 	}
 }

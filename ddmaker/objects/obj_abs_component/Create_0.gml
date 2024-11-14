@@ -16,7 +16,7 @@ function check_linked_obj(_x = x, _y = y) {
 
 function check_linked_obj_one_way(_dir, _x = x, _y = y) {
 	var _xy = get_direction_dxdy(_dir, 32);
-	linked_obj[_dir] = collision_point(_x + _xy[0], _y = _xy[1], obj_abs_component, false, true);
+	linked_obj[_dir] = collision_point(_x + _xy[0], _y + _xy[1], obj_abs_component, false, true);
 	check_is_linked_one_way(_dir);
 }
 

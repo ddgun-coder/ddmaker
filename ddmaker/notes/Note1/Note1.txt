@@ -1,0 +1,2 @@
+1. 2개가 겹친상태에서의 input/output 추가
+2. obj_aril_input 방향추가 확인

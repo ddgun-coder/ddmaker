@@ -35,6 +35,7 @@
   "name":"ddmaker",
   "resources":[
     {"id":{"name":"ani_incre1","path":"animcurves/ani_incre1/ani_incre1.yy",},},
+    {"id":{"name":"Note1","path":"notes/Note1/Note1.yy",},},
     {"id":{"name":"obj_abs_component","path":"objects/obj_abs_component/obj_abs_component.yy",},},
     {"id":{"name":"obj_box","path":"objects/obj_box/obj_box.yy",},},
     {"id":{"name":"obj_build_ui","path":"objects/obj_build_ui/obj_build_ui.yy",},},

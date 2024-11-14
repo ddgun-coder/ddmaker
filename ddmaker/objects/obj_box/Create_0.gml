@@ -14,6 +14,9 @@ opposite_in = false;
 pre_tile_id = noone;
 moved = false;
 moved_frame = 0;
+is_first = true;
+show_xscale = 0;
+show_yscale = 0;
 
 function box_movement() {
 	var _is_stop = false;
@@ -64,7 +67,7 @@ function box_movement() {
 }
 
 function set_next_tile(_id, exception = false) {
-	//direct 를먼저 할 것 또한 이 _id는 자신의 밑에 있는 obj_rail을 의미
+	//direct 를먼저 할 것, 또한 이 _id는 자신의 밑에 있는 obj_rail을 의미
 	next_tile = _id;
 	if (_id == noone) return;
 	
@@ -110,15 +113,18 @@ function position_meeting_next_tile() {
 	}	
 }
 
+function go_and_add_item(_id, _type) {
+	repository_id = _id;
+	_id.add_item(other.item_type);
+}
+
 function place_meeting_next_tile() {
 	if (!place_meeting(x, y, next_tile)) return;
-
 	switch(next_tile.object_index) {
 		case obj_rail_input :
 		case obj_repository :
 			if (repository_id == noone and next_tile.is_array_below_limit()) {
-				repository_id = next_tile;
-				repository_id.add_item(other.item_type);
+				go_and_add_item(next_tile, item_type);
 			}
 			break;
 	}
