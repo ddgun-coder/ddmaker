@@ -6,6 +6,24 @@ enum Io {
 	BOTH
 }
 
+function check_extractable(_id, _dir) {
+	if (_id == noone) return false;
+
+	switch(_id.object_index) {
+		case obj_rail :
+			if (_id.way[direction_reverse(_dir)] == Way.INPUT) {
+				return true;
+			}	
+			break;
+		case obj_rail_input :
+			if (_id.input_dir == _dir) {
+				return true;
+			}	
+			break;
+	}
+	return false;
+}
+
 function get_linked_output_way(_x, _y, _get_io = false) {
 	var _id, _xy;
 	for (var i = 0; i < 4; i++) {

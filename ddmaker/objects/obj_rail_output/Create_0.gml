@@ -32,16 +32,18 @@ function get_item() {
 function extract_obj() {
 	var _dir = output_dir;
 	var _is_created = false;
+	var _available = false;
+	if (!instance_exists(linked_obj[_dir])) linked_obj[_dir] = noone;
+	
 
 	with (linked_obj[_dir]) {
-		if (way[direction_reverse(_dir)] == Way.INPUT) {
-			if (!place_meeting(other.x, other.y, obj_box)) {
-				var _type = other.get_item();
-				create_item(other.x, other.y, depth - 1, _dir, id, _type);
-				_is_created = true;
-			}
+		if (!place_meeting(other.x, other.y, obj_box)) {
+			var _type = other.get_item();
+			create_item(other.x, other.y, depth - 1, _dir, id, _type);
+			_is_created = true;
 		}
 	}
+	
 	if (_is_created) {
 		item_maked = false;
 	}

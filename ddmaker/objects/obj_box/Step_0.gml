@@ -54,8 +54,8 @@ if (repository_id != noone) {
 	}
 }
 else if (is_first) {
-	show_xscale += 0.03;	
-	show_yscale += 0.03;	
+	show_xscale += 0.05;	
+	show_yscale += 0.05;	
 	if (show_yscale >= 1) {
 		show_yscale = 1;
 		show_xscale = 1;

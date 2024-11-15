@@ -41,13 +41,12 @@ function extract_obj() {
 	if (_dir == noone) return;
 	
 	var _is_created = false;
-
+	if (!check_extractable(linked_obj[_dir], _dir)) return;
+	
 	with (linked_obj[_dir]) {
-		if (way[direction_reverse(_dir)] == Way.INPUT) {
-			if (!place_meeting(other.x, other.y, obj_box)) {
-				create_item(other.x, other.y, depth - 1, _dir, id, other.item_type);
-				_is_created = true;
-			}
+		if (!place_meeting(other.x, other.y, obj_box)) {
+			create_item(other.x, other.y, depth - 1, _dir, id, other.item_type);
+			_is_created = true;
 		}
 	}
 	if (_is_created) {

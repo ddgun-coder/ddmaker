@@ -4,7 +4,7 @@
 // Inherit the parent event
 event_inherited();
 item_array = [];
-repository_limit = 100;
+repository_limit = 250;
 item_hash = {};
 
 function item_stock(num, _type) constructor {

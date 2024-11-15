@@ -15,8 +15,8 @@ pre_tile_id = noone;
 moved = false;
 moved_frame = 0;
 is_first = true;
-show_xscale = 0;
-show_yscale = 0;
+show_xscale = 0.4;
+show_yscale = 0.4;
 
 function box_movement() {
 	var _is_stop = false;
