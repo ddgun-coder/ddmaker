@@ -51,6 +51,7 @@
     {"id":{"name":"scr_item_movement","path":"scripts/scr_item_movement/scr_item_movement.yy",},},
     {"id":{"name":"scr_item","path":"scripts/scr_item/scr_item.yy",},},
     {"id":{"name":"spr_box","path":"sprites/spr_box/spr_box.yy",},},
+    {"id":{"name":"spr_brakets","path":"sprites/spr_brakets/spr_brakets.yy",},},
     {"id":{"name":"spr_cross_way_normal","path":"sprites/spr_cross_way_normal/spr_cross_way_normal.yy",},},
     {"id":{"name":"spr_cross_way_rail1","path":"sprites/spr_cross_way_rail1/spr_cross_way_rail1.yy",},},
     {"id":{"name":"spr_cross_way_rail2","path":"sprites/spr_cross_way_rail2/spr_cross_way_rail2.yy",},},

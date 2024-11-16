@@ -8,7 +8,6 @@ connected_distance = 0;
 io = Io.INPUT;
 show_info = false;
 item_queue_ready = [];
-item_array = [];
 input_dir = direction_reverse(floor(image_angle / 90));
 
 function item_info(type) constructor{

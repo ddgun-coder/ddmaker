@@ -76,24 +76,14 @@ switch (_id.object_index) {
 		draw_stock(_id.cur_item_stock, _draw_x, _draw_y + 128);
 		break;
 	case obj_rail_input :
+		if (!instance_exists(_id.connected_rail_id)) break;
+		draw_rail_connection(_id);
+		draw_item_array(_id.item_queue_ready, x + 8, _draw_y + 48);
+		break;
 	case obj_rail_output :
 		if (!instance_exists(_id.connected_rail_id)) break;
-		var _dir = floor(_id.image_angle / 90);
-		var _sign;
-		if (_id.io == Io.INPUT) {
-			_sign = 1;
-		}
-		else if (_id.io == Io.OUTPUT) {
-			_sign = -1;
-		}
-		else {
-			_sign = 0;
-			return;
-		}
-		var _xy = get_direction_dxdy(_dir, 32);
-		for (var i = 1; i < _id.connected_distance; i++) {
-			draw_sprite_ext(spr_rail_line, 0, _id.x + _xy[0] * _sign * i, _id.y + _xy[1] * _sign * i, 1, 1, _id.image_angle, c_white, 1);
-		}
+		draw_rail_connection(_id);
+		draw_item_array(_id.connected_rail_id.item_queue_ready, x + 8, _draw_y + 48);
 		break;
 }
 draw_set_alpha(1);
