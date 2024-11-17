@@ -89,12 +89,25 @@ function set_next_tile(_id, exception = false) {
 			break;
 		case obj_factory :
 			var _dxy = get_direction_dxdy(direct, 32);
-			next_tile_x = pre_tile_id.x + _dxy[0];
-			next_tile_y = pre_tile_id.y + _dxy[1];
+			if (instance_exists(pre_tile_id)) {
+				next_tile_x = pre_tile_id.x + _dxy[0];
+				next_tile_y = pre_tile_id.y + _dxy[1];
+			}
+			else {
+				var _cur_tile = instance_position(x, y, obj_rail);
+				if (_cur_tile == noone) {
+					next_tile_x = x + _dxy[0];
+					next_tile_y = y + _dxy[1];
+				}
+				else {
+					next_tile_x = _cur_tile.x + _dxy[0];
+					next_tile_y = _cur_tile.y + _dxy[1];
+				}
+			}
 			return;
 		case obj_rail_input :
 			if (!is_opposite_direction(next_tile.input_dir, direct)) {
-				return;	
+				return;
 			}
 			break;
 	}

@@ -27,6 +27,21 @@ output_number = 0;
 item_type = noone;
 cur_output = 0;
 
+function get_exit_directions(_x, _y) {
+    var _dir = [];
+
+    if _y == 0
+        array_push(_dir, Direct.UP);
+    if _y == obj_factory_id.height - 1
+		array_push(_dir, Direct.DOWN);
+    if _x == 0
+       array_push(_dir, Direct.LEFT);
+    if _x == obj_factory_id.width - 1
+        array_push(_dir, Direct.RIGHT);
+
+    return _dir;
+}
+
 function is_output_tile(_x, _y) {
 	if (is_array(output_tile[0])) {
 			
@@ -230,6 +245,18 @@ function init_factory(_obj_factory_id) {
 	item_type = obj_factory_id.output_item[0];
 	if (!is_array(obj_factory_id.input_index[0])) {
 		input_tile = get_factory_spined_array(obj_factory_id.input_index[0], obj_factory_id.input_index[1], image_angle, obj_factory_id);
+		var _directs = get_exit_directions(obj_factory_id.input_index[0], obj_factory_id.input_index[1]);
+		var _num = array_length(_directs);
+		var _xy, _x, _y, _id;
+		for (var i = 0; i < _num; i++) {
+			_xy = get_direction_dxdy(_directs[i], 1);
+			_x = get_output_x(obj_factory_id.input_index[0] + _xy[0]);
+			_y = get_output_y(obj_factory_id.input_index[1] + _xy[1]);
+			_id = instance_position(_x, _y, obj_rail);
+			if (_id != noone and _id.object_index == obj_rail) {
+				_id.check_output_connected();
+			}
+		}
 	}
 	if (!is_array(obj_factory_id.output_index[0])) {
 		output_tile = get_factory_spined_array(obj_factory_id.output_index[0], obj_factory_id.output_index[1], image_angle, obj_factory_id);
