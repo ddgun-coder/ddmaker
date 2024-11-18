@@ -59,6 +59,7 @@
     {"id":{"name":"spr_cur","path":"sprites/spr_cur/spr_cur.yy",},},
     {"id":{"name":"spr_debug_cur_pos","path":"sprites/spr_debug_cur_pos/spr_debug_cur_pos.yy",},},
     {"id":{"name":"spr_debug_previous_pos","path":"sprites/spr_debug_previous_pos/spr_debug_previous_pos.yy",},},
+    {"id":{"name":"spr_debug_rail","path":"sprites/spr_debug_rail/spr_debug_rail.yy",},},
     {"id":{"name":"spr_extractor","path":"sprites/spr_extractor/spr_extractor.yy",},},
     {"id":{"name":"spr_fac_1x1_glow","path":"sprites/spr_fac_1x1_glow/spr_fac_1x1_glow.yy",},},
     {"id":{"name":"spr_fac_2x2_glow","path":"sprites/spr_fac_2x2_glow/spr_fac_2x2_glow.yy",},},

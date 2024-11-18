@@ -10,6 +10,12 @@ if (make_state != State.NONE and mouse_sprite != noone) {
 	}
 }
 
+if (instance_exists(current_maked_rail_id)) {
+	draw_sprite(spr_debug_rail, 0, current_maked_rail_id.x, current_maked_rail_id.y);	
+}
+if (instance_exists(previous_maked_rail_id)) {
+	draw_sprite(spr_debug_rail, 1, previous_maked_rail_id.x, previous_maked_rail_id.y);	
+} 
 
 /*
 //place_grid 확인용

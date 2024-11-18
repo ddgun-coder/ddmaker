@@ -5,6 +5,9 @@ matched_underground_id = noone;
 matched_distance = 0;
 matched_sign = 0; 
 current_io = Io.BOTH;
+previous_maked_rail_id = noone;
+current_maked_rail_id = noone;
+temp_rail_ids = [];
 enum State {
 	NONE,
 	RAIL,
@@ -281,6 +284,9 @@ function rail_end_action() {
 	start_same_shape = true;
 	is_first_rail = true;
 	obj_rail.in_build = false;
+	previous_maked_rail_id = noone;
+	current_maked_rail_id = noone;
+	temp_rail_ids = [];
 }
 
 function delete_obj() {
@@ -340,6 +346,22 @@ function rotateRailToMouse() {
 	}
 }
 
+function set_maked_rail() {
+	var _num = array_length(temp_rail_ids);
+	if (_num >= 2) {
+		current_maked_rail_id = temp_rail_ids[_num - 1];
+		previous_maked_rail_id = temp_rail_ids[_num - 2];
+	}
+}
+
+function rollback_rail() {					
+	if (current_obj_id == previous_maked_rail_id) {
+		instance_destroy(previous_rail_id);
+		previous_rail_id = current_obj_id;
+		array_pop(temp_rail_ids);
+	}
+}
+
 function make_obj() {
 	//get direction
 	if (rail_index.obj == obj_rail and make_state == State.RAIL) {
@@ -349,19 +371,19 @@ function make_obj() {
 	switch (make_state) {
 		case State.RAIL :
 			if (rail_index.obj == obj_rail) {
-				
 				if (!instance_exists(current_obj_id)) {
 					current_obj_id = noone;	
 				}
 				if (!instance_exists(previous_rail_id)) {
 					previous_rail_id = noone;	
 				}
-				
+				set_maked_rail();
 				if (current_obj_id != noone) {
 					//변화가 없으면 return
 					if (current_dir == Direct.NONE) {
 						return;
 					}
+					
 					//이미 존재하는 rail 기억하는 부분
 					if (previous_rail_id == noone) {
 						if (current_obj_id.object_index == obj_rail) {
@@ -370,6 +392,9 @@ function make_obj() {
 					}
 					else if (current_obj_id.object_index != obj_rail) {
 						 previous_rail_id.finalize_output(current_dir);
+					}
+					else if (current_obj_id.in_build and previous_rail_id.in_build) {
+						rollback_rail()
 					}
 				}
 
@@ -380,6 +405,7 @@ function make_obj() {
 					}
 					//Create rail at current location
 					var _id =instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_rail);
+					array_push(temp_rail_ids, _id);
 					set_place_grid(_id);
 					//Reorient rail from previous location 
 					_id.set_one_way_direction(current_dir);
