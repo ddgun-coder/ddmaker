@@ -6,7 +6,7 @@ draw_self();
 switch (cur_state) {
 	case State.FACTORY : 
 		_dx = xstart;
-		_dy = y + 16;
+		_dy = obj_make_manager.buil_ui_y + 16;
 		_num = array_length(cur_array);
 		for (var i = 0; i < _num; i++) {
 			if (global.factory_array_index == i){
@@ -18,7 +18,7 @@ switch (cur_state) {
 		break;
 	case State.RAIL :
 		_dx = xstart;
-		_dy = y + 32;
+		_dy = obj_make_manager.buil_ui_y + 32;
 		_num = array_length(cur_array);
 		var _spr;
 		for (var i = 0; i < _num; i++) {

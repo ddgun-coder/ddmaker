@@ -79,7 +79,9 @@ if (mouse_check_button_pressed(mb_left)) {
 		start_same_shape = false;	
 	}
 }
-var mouse_on_ui = build_ui_id == noone or position_meeting(mouse_x, mouse_y, build_ui_id);
+var display_x =	window_mouse_get_x();
+var display_y = window_mouse_get_y();
+var mouse_on_ui = build_ui_id == noone or position_meeting(display_x, display_y, build_ui_id);
 if (mouse_check_button(mb_left)) {
 	if (!mouse_on_ui) {
 		make_obj();

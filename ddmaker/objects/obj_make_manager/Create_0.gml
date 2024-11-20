@@ -8,6 +8,9 @@ current_io = Io.BOTH;
 previous_maked_rail_id = noone;
 current_maked_rail_id = noone;
 temp_rail_ids = [];
+camera_movement_speed = 8;
+camera_size_scale = 1;
+camera_size_limit = min(floor(room_width / global.camera_width), floor(room_height / global.camera_height));
 enum State {
 	NONE,
 	RAIL,
@@ -24,6 +27,32 @@ enum Direct {
 	NONE
 }
 
+function control_camera() {
+	var cx = camera_get_view_x(view_camera[0]);
+	var cy = camera_get_view_y(view_camera[0]);
+	var cw = camera_get_view_width(view_camera[0]);
+	var ch = camera_get_view_height(view_camera[0]);
+	if (keyboard_check(vk_left)) {
+		cx = max(0, cx - camera_movement_speed);
+	}
+	if (keyboard_check(vk_right)) {
+		cx = min(room_width - cw, cx + camera_movement_speed);
+	}
+	if (keyboard_check(vk_down)) {
+		cy = min(room_height - ch, cy + camera_movement_speed);
+	}
+	if (keyboard_check(vk_up)) {
+		cy = max(0, cy - camera_movement_speed); 
+	}
+	if (mouse_wheel_up()) {
+		camera_size_scale = min(camera_size_limit, camera_size_scale + 0.1);
+	}
+	else if (mouse_wheel_down()) {
+		camera_size_scale = max(1, camera_size_scale - 0.1);
+	}
+	camera_set_view_pos(view_camera[0], cx, cy);
+	camera_set_view_size(view_camera[0], camera_size_scale * global.camera_width, camera_size_scale * global.camera_height);
+}
 function found_matched_rail() {
 	current_io = rail_index.io;
 	if (current_io == Io.INPUT) {
@@ -236,7 +265,7 @@ function set_place_grid(_id, val = 1, dir = 0) {
 
 init_direction = Direct.RIGHT;
 rail_array_index = 0;
-place_grid = ds_grid_create(150, 150);
+place_grid = ds_grid_create(250, 250);
 mouse_sprite = noone;
 mouse_sprite_angle = 0;
 current_valible_dir = Direct.RIGHT;
