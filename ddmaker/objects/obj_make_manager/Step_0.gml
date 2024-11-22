@@ -1,5 +1,6 @@
 /// @description Insert description here
 // You can write your code in this editor
+show_debug_message(window_view_mouse_get_x(0));
 if (!is_set) exit;
 
 var _pre_make_state = make_state;
@@ -79,8 +80,8 @@ if (mouse_check_button_pressed(mb_left)) {
 		start_same_shape = false;	
 	}
 }
-var display_x =	window_mouse_get_x();
-var display_y = window_mouse_get_y();
+var display_x =	device_mouse_x(0);
+var display_y = device_mouse_y(0);
 var mouse_on_ui = build_ui_id == noone or position_meeting(display_x, display_y, build_ui_id);
 if (mouse_check_button(mb_left)) {
 	if (!mouse_on_ui) {

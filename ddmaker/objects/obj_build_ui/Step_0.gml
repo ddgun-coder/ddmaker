@@ -13,8 +13,10 @@ set_cur_array();
 x = xstart;
 y = obj_make_manager.buil_ui_y;
 
-var display_x =	window_mouse_get_x();
-var display_y = window_mouse_get_y();
+
+
+var display_x =	device_mouse_x(0);
+var display_y = device_mouse_y(0);
 if (mouse_check_button_pressed(mb_left) and position_meeting(display_x, display_y, id)) {
 	var _dx;
 	var _cur_index;

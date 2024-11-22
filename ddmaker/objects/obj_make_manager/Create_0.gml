@@ -10,7 +10,7 @@ current_maked_rail_id = noone;
 temp_rail_ids = [];
 camera_movement_speed = 8;
 camera_size_scale = 1;
-camera_size_limit = min(floor(room_width / global.camera_width), floor(room_height / global.camera_height));
+camera_size_limit = floor(min(room_width / global.camera_width, room_height / global.camera_height));
 enum State {
 	NONE,
 	RAIL,
@@ -27,31 +27,44 @@ enum Direct {
 	NONE
 }
 
-function control_camera() {
-	var cx = camera_get_view_x(view_camera[0]);
-	var cy = camera_get_view_y(view_camera[0]);
+function control_camera() {	
+	//set camera size
 	var cw = camera_get_view_width(view_camera[0]);
 	var ch = camera_get_view_height(view_camera[0]);
-	if (keyboard_check(vk_left)) {
-		cx = max(0, cx - camera_movement_speed);
-	}
-	if (keyboard_check(vk_right)) {
-		cx = min(room_width - cw, cx + camera_movement_speed);
-	}
-	if (keyboard_check(vk_down)) {
-		cy = min(room_height - ch, cy + camera_movement_speed);
-	}
-	if (keyboard_check(vk_up)) {
-		cy = max(0, cy - camera_movement_speed); 
-	}
+	var dx = 0;
+	var dy = 0;
 	if (mouse_wheel_up()) {
 		camera_size_scale = min(camera_size_limit, camera_size_scale + 0.1);
 	}
 	else if (mouse_wheel_down()) {
 		camera_size_scale = max(1, camera_size_scale - 0.1);
 	}
+	dx = cw - round(camera_size_scale * global.camera_width);
+	dy = ch - round(camera_size_scale * global.camera_height);
+	cw = round(camera_size_scale * global.camera_width);
+	ch = round(camera_size_scale * global.camera_height);
+	camera_set_view_size(view_camera[0], cw, ch);
+	
+	//set camera xy
+	var cx = camera_get_view_x(view_camera[0]) + dx / 2;
+	var cy = camera_get_view_y(view_camera[0]) + dy / 2;
+	if (keyboard_check(vk_left)) {
+		cx -= camera_movement_speed;
+	}
+	if (keyboard_check(vk_right)) {
+		cx += camera_movement_speed;
+	}
+	if (keyboard_check(vk_down)) {
+		cy += camera_movement_speed;
+	}
+	if (keyboard_check(vk_up)) {
+		cy -= camera_movement_speed;
+	}
+	
+	cx = median(0, cx, room_width - cw);
+	cy = median(0, cy, room_height - ch);
+
 	camera_set_view_pos(view_camera[0], cx, cy);
-	camera_set_view_size(view_camera[0], camera_size_scale * global.camera_width, camera_size_scale * global.camera_height);
 }
 function found_matched_rail() {
 	current_io = rail_index.io;
