@@ -54,7 +54,7 @@ function delete_obj_with_box() {
 }
 
 function finalize_output(_Direct) {
-	 if (is_completed and !in_build) {
+	 if (is_completed) {
 		add_output(_Direct);
 	}
 	else {

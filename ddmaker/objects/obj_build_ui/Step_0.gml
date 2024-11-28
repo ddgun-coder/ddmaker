@@ -8,6 +8,10 @@ else {
 	visible = true;	
 }
 
+if (keyboard_check_pressed(ord("E"))) {
+	set_next_item();
+}
+
 if (obj_make_manager.make_state != State.NONE) cur_state = obj_make_manager.make_state;
 set_cur_array();
 x = xstart;
@@ -15,22 +19,20 @@ y = obj_make_manager.buil_ui_y;
 
 
 
-var display_x =	device_mouse_x(0);
-var display_y = device_mouse_y(0);
+var display_x =	device_mouse_x_to_gui(0);
+var display_y = device_mouse_y_to_gui(0);
 if (mouse_check_button_pressed(mb_left) and position_meeting(display_x, display_y, id)) {
 	var _dx;
-	var _cur_index;
 	_dx = floor((display_x - x + 16) / (spr_width + 10));
 	if (0 <= _dx and _dx < array_length(cur_array)) {
-		_cur_index = _dx;
 		switch (obj_make_manager.make_state) {
 			case State.FACTORY :
 				global.factory_array_index = _dx;
-				obj_make_manager.obj_factory_id = cur_array[_cur_index];
+				obj_make_manager.obj_factory_id = cur_array[_dx];
 				break;
 			case State.RAIL :
 				global.rail_array_index = _dx;
-				obj_make_manager.rail_index = cur_array[_cur_index];
+				obj_make_manager.rail_index = cur_array[_dx];
 				break;
 		}
 	}

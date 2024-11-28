@@ -28,15 +28,15 @@ enum Direct {
 }
 
 function control_camera() {	
-	//set camera size
+	//set camera sizeq
 	var cw = camera_get_view_width(view_camera[0]);
 	var ch = camera_get_view_height(view_camera[0]);
 	var dx = 0;
 	var dy = 0;
-	if (mouse_wheel_up()) {
+	if (mouse_wheel_down()) {
 		camera_size_scale = min(camera_size_limit, camera_size_scale + 0.1);
 	}
-	else if (mouse_wheel_down()) {
+	else if (mouse_wheel_up()) {
 		camera_size_scale = max(1, camera_size_scale - 0.1);
 	}
 	dx = cw - round(camera_size_scale * global.camera_width);
@@ -48,16 +48,16 @@ function control_camera() {
 	//set camera xy
 	var cx = camera_get_view_x(view_camera[0]) + dx / 2;
 	var cy = camera_get_view_y(view_camera[0]) + dy / 2;
-	if (keyboard_check(vk_left)) {
+	if (keyboard_check(ord("A"))) {
 		cx -= camera_movement_speed;
 	}
-	if (keyboard_check(vk_right)) {
+	if (keyboard_check(ord("D"))) {
 		cx += camera_movement_speed;
 	}
-	if (keyboard_check(vk_down)) {
+	if (keyboard_check(ord("S"))) {
 		cy += camera_movement_speed;
 	}
-	if (keyboard_check(vk_up)) {
+	if (keyboard_check(ord("W"))) {
 		cy -= camera_movement_speed;
 	}
 	
@@ -400,6 +400,7 @@ function rollback_rail() {
 	if (current_obj_id == previous_maked_rail_id) {
 		instance_destroy(previous_rail_id);
 		previous_rail_id = current_obj_id;
+		if (instance_exists(current_obj_id)) current_obj_id.is_completed = false;
 		array_pop(temp_rail_ids);
 	}
 }
@@ -433,7 +434,7 @@ function make_obj() {
 						}
 					}
 					else if (current_obj_id.object_index != obj_rail) {
-						 previous_rail_id.finalize_output(current_dir);
+						previous_rail_id.finalize_output(current_dir);
 					}
 					else if (current_obj_id.in_build and previous_rail_id.in_build) {
 						rollback_rail()

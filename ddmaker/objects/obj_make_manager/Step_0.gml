@@ -5,7 +5,7 @@ var _pre_make_state = make_state;
 if (keyboard_check_pressed(ord("Q"))) {
 	set_make_type(State.RAIL);
 }
-else if (keyboard_check_pressed(ord("S"))) {
+else if (keyboard_check_pressed(ord("X"))) {
 	set_make_type(State.WAY_CHANGER);
 }
 else if (keyboard_check_pressed(ord("C"))) {
@@ -78,8 +78,8 @@ if (mouse_check_button_pressed(mb_left)) {
 		start_same_shape = false;	
 	}
 }
-var display_x =	device_mouse_x(0);
-var display_y = device_mouse_y(0);
+var display_x =	device_mouse_x_to_gui(0);
+var display_y = device_mouse_y_to_gui(0);
 var mouse_on_ui = build_ui_id == noone or position_meeting(display_x, display_y, build_ui_id);
 if (mouse_check_button(mb_left)) {
 	if (!mouse_on_ui) {

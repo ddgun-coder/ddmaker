@@ -16,3 +16,17 @@ function set_cur_array() {
 			break;
 	}	
 }
+
+function set_next_item() {
+	var _num = array_length(cur_array);
+	switch (obj_make_manager.make_state) {
+		case State.FACTORY :
+			global.factory_array_index = (global.factory_array_index + 1) mod _num;
+			obj_make_manager.obj_factory_id = cur_array[global.factory_array_index];
+			break;
+		case State.RAIL :
+			global.rail_array_index = (global.rail_array_index + 1) mod _num;
+			obj_make_manager.rail_index = cur_array[global.rail_array_index];
+			break;
+	}	
+}
