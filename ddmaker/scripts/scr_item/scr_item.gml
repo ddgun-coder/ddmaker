@@ -18,6 +18,7 @@ function create_item(_x, _y, _depth, _dir, _next_tile_id, _item_type) {
 }
 
 global.factory_array = [];
+global.generator_array = [];
 global.rail_array = [];
 global.factory_array_index = 0;
 global.rail_array_index = 0;
@@ -35,8 +36,9 @@ global.box = new Item(spr_box, "box");
 global.wool = new Item(spr_wool, "wool");
 global.furniture = new Item(spr_furniture, "furniture");
 global.furniture2 = new Item(spr_furniture2, "furniture2");
+global.coal = new Item(spr_coal, "coal");
 
-function Factory(spr, input_item, output_item, name, input_index, output_index, _show_spr = noone, _origin_index = [0, 0]) constructor  {
+function Facility(spr, input_item, output_item, name, input_index, output_index, _show_spr = noone, _origin_index = [0, 0]) constructor  {
 	self.spr = spr;
 	if (_show_spr == noone) {
 		show_spr = asset_get_index(sprite_get_name(spr) + "_frame");
@@ -52,8 +54,7 @@ function Factory(spr, input_item, output_item, name, input_index, output_index, 
 	width = floor(sprite_get_width(spr) / 32);
 	height = floor(sprite_get_height(spr) / 32);
 	origin_index = _origin_index;
-	array_push(global.factory_array, self);
-	function is_output_index(_x, _y) {
+		function is_output_index(_x, _y) {
 		if (is_array(output_index[0])) {
 			
 		}	
@@ -83,29 +84,38 @@ function Factory(spr, input_item, output_item, name, input_index, output_index, 
 		return noone;
 	}
 	function get_origin_array_spin(_angle) {
-	_result = [];
-	switch (_angle) {
-		case 0:	
-			_result[0] = origin_index[0];
-			_result[1] = origin_index[1];
-			break;
-		case 90:
-			_result[0] = origin_index[1];
-			_result[1] = width - origin_index[0] - 1;
-			break;
-		case 180:	
-			_result[0] = width - origin_index[0] - 1;
-			_result[1] = height - origin_index[1] - 1;
-			break;
-		case 270	:	
-			_result[0] = height - origin_index[1] - 1; 
-			_result[1] = origin_index[0];
-			break;
+		_result = [];
+		switch (_angle) {
+			case 0:	
+				_result[0] = origin_index[0];
+				_result[1] = origin_index[1];
+				break;
+			case 90:
+				_result[0] = origin_index[1];
+				_result[1] = width - origin_index[0] - 1;
+				break;
+			case 180:	
+				_result[0] = width - origin_index[0] - 1;
+				_result[1] = height - origin_index[1] - 1;
+				break;
+			case 270	:	
+				_result[0] = height - origin_index[1] - 1; 
+				_result[1] = origin_index[0];
+				break;
 		
+		}
+		return _result;
 	}
-	return _result;
 }
+
+function Generator(spr, input_item, output_item, name, input_index, output_index, _show_spr = noone, _origin_index = [0, 0]) : Facility(spr, input_item, output_item, name, input_index, output_index, _show_spr, _origin_index) constructor {
+	array_push(global.generator_array, self);
+}
+
+function Factory(spr, input_item, output_item, name, input_index, output_index, _show_spr = noone, _origin_index = [0, 0]) : Facility(spr, input_item, output_item, name, input_index, output_index, _show_spr, _origin_index) constructor  {
+	array_push(global.factory_array, self);
 }
 
 global.furniture_factory = new Factory(spr_furniture_fac, [global.wood, global.wood], [global.furniture], "furniture_factory", [0, 1], [1, 1]);
 global.furniture_factory2 = new Factory(spr_furniture_fac2, [global.furniture, global.wool, global.wool, global.wool], [global.furniture2], "furniture_factory2", [0, 0], [1, 1], spr_furniture_fac_frame);
+global.coal_generator = new Generator(spr_coal_generator, [global.coal], [], "coal_generator", [0, 1], []);
