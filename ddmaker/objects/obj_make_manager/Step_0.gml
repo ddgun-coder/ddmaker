@@ -18,6 +18,9 @@ else if (keyboard_check_pressed(ord("R"))) {
 	init_direction = (init_direction + 3) mod 4;
 	current_valible_dir = init_direction; 
 }
+else if (keyboard_check_pressed(ord("G"))) {
+	set_make_type(State.GENERATOR);
+}
 
 if (_pre_make_state != make_state) {
 	if (_pre_make_state == State.RAIL) {

@@ -22,6 +22,7 @@ global.generator_array = [];
 global.rail_array = [];
 global.factory_array_index = 0;
 global.rail_array_index = 0;
+global.generator_index = 0;
 new Rail(spr_one_way_rail, spr_one_way_rail_show, obj_rail, Io.BOTH);
 new Rail(spr_rail_input, spr_rail_input_show, obj_rail_input, Io.INPUT);
 new Rail(spr_rail_output, spr_rail_output_show, obj_rail_output, Io.OUTPUT);
@@ -118,4 +119,4 @@ function Factory(spr, input_item, output_item, name, input_index, output_index, 
 
 global.furniture_factory = new Factory(spr_furniture_fac, [global.wood, global.wood], [global.furniture], "furniture_factory", [0, 1], [1, 1]);
 global.furniture_factory2 = new Factory(spr_furniture_fac2, [global.furniture, global.wool, global.wool, global.wool], [global.furniture2], "furniture_factory2", [0, 0], [1, 1], spr_furniture_fac_frame);
-global.coal_generator = new Generator(spr_coal_generator, [global.coal], [], "coal_generator", [0, 1], []);
+global.coal_generator = new Generator(spr_coal_generator_big, [global.coal], [], "coal_generator", [0, 1], []);

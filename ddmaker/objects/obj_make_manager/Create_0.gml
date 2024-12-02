@@ -11,12 +11,14 @@ temp_rail_ids = [];
 camera_movement_speed = 8;
 camera_size_scale = 1;
 camera_size_limit = floor(min(room_width / global.camera_width, room_height / global.camera_height));
+generator_id = noone;
 enum State {
 	NONE,
 	RAIL,
 	WAY_CHANGER,
 	WAY_MAGNIFIER,
-	FACTORY
+	FACTORY,
+	GENERATOR
 }
 
 enum Direct {
@@ -103,6 +105,9 @@ function set_make_type(_type) {
 				break;
 			case State.RAIL :
 				rail_index = global.rail_array[global.rail_array_index];
+				break;
+			case State.GENERATOR :
+				generator_id = global.generator_array[global.generator_index];
 				break;
 		}
 	}
