@@ -107,7 +107,7 @@ function set_make_type(_type) {
 				rail_index = global.rail_array[global.rail_array_index];
 				break;
 			case State.GENERATOR :
-				generator_id = global.generator_array[global.generator_index];
+				generator_id = global.generator_array[global.generator_array_index];
 				break;
 		}
 	}

@@ -30,4 +30,23 @@ switch (cur_state) {
 			_dx += sprite_get_width(_spr) + 10;	
 		}
 		break;
+	case State.GENERATOR : 
+		_dx = xstart - 16;
+		_dy = obj_make_manager.buil_ui_y + 40;
+		_num = array_length(cur_array);
+		var _xoffset, _yoffset, _width, _height, _spr;
+		for (var i = 0; i < _num; i++) {
+			_spr = cur_array[i].spr;
+			_xoffset = sprite_get_xoffset(_spr);
+			_yoffset = sprite_get_yoffset(_spr);
+			_width = sprite_get_width(_spr)
+			_height = sprite_get_height(_spr)
+			draw_sprite(_spr, 0, _dx + _xoffset, _dy + _yoffset - _height / 2);
+			if (global.generator_array_index == i){
+				draw_sprite(get_glowspr(_width, _height), 0, _dx + _xoffset, _dy + _yoffset - _height / 2);	
+			}
+			_dx += _width + 10;	
+		}	
+		break;
 }	
+		draw_sprite(spr_cursor, 0, mouse_x, mouse_y);
