@@ -114,7 +114,7 @@ function set_make_type(_type) {
 }
 
 function get_factory_placeable2(_obj_factory_id, _dir) {
-	var _result = get_place_grid_origin(_obj_factory_id.width, obj_factory_id.height, mouse_grid_x, mouse_grid_y, obj_factory_id.origin_index[0], obj_factory_id.origin_index[1], _dir);
+	var _result = get_place_grid_origin(_obj_factory_id.width, _obj_factory_id.height, mouse_grid_x, mouse_grid_y, _obj_factory_id.origin_index[0], _obj_factory_id.origin_index[1], _dir);
 	return ds_grid_get_sum(place_grid, _result[0], _result[1], _result[0] + _result[2] - 1, _result[1] + _result[3] - 1) == 0;
 }
 
@@ -521,14 +521,23 @@ function make_obj() {
 			break;
 		case State.FACTORY :
 			if (factory_placeable) {
-				var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, obj_factory);
-				_id.sprite_index = obj_factory_id.spr;
-				_id.image_angle = mouse_sprite_angle mod 360;
-				set_place_grid(_id, , mouse_sprite_angle);
-				_id.init_factory(obj_factory_id);
+				make_Facility(obj_factory_id, obj_factory)
+			}
+			break;
+		case State.GENERATOR :
+			if (factory_placeable) {
+				make_Facility(generator_id, obj_generaotr)
 			}
 			break;
 	}
+}
+
+function make_Facility(_str, _obj) {
+	var _id = instance_create_depth(mouse_floor_x, mouse_floor_y, depth, _obj);
+	_id.sprite_index = _str.spr;
+	_id.image_angle = mouse_sprite_angle mod 360;
+	set_place_grid(_id, , mouse_sprite_angle);
+	_id.init_factory(_str);
 }
 
 mouse_grid_x = 0;

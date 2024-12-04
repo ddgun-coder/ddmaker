@@ -252,13 +252,7 @@ function init_factory(_obj_factory_id) {
 }
 
 function set_output() {
-	item_type = obj_factory_id.output_item[0];
-	if (!is_array(obj_factory_id.output_index[0])) {
-		output_tile = get_factory_spined_array(obj_factory_id.output_index[0], obj_factory_id.output_index[1], image_angle, obj_factory_id);
-		output_tile_x = get_output_x(output_tile[0]);
-		output_tile_y = get_output_y(output_tile[1]);
-		check_linked_obj(output_tile_x, output_tile_y);
-	}
+	
 }
 
 function set_input() {

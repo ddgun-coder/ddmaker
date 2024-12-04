@@ -11,15 +11,15 @@ if (!instance_exists(_id) or obj_make_manager.make_state != State.WAY_MAGNIFIER)
 var _switch_obj = noone;
 
 var _spr = noone;
-if (_id.object_index == obj_factory) {
+if (_id.object_index == obj_factory or _id.object_index == obj_generaotr) {
 	_spr = _id.obj_factory_id.show_spr;
 }
 else {
-	_spr = _id.sprite_index;	
+	_spr = _id.sprite_index;
 }
 
-var _draw_x = x + 64;
-var _draw_y = y + 48;
+var _draw_x = x + 64 - sprite_get_xoffset(_spr) + sprite_get_width(_spr) / 2;
+var _draw_y = y + 64 - sprite_get_yoffset(_spr) + sprite_get_height(_spr) / 2;
 
 draw_sprite_ext(_spr, _id.image_index, _draw_x, _draw_y, _id.image_xscale, _id.image_yscale, _id.image_angle, _id.image_blend, image_alpha);
 draw_set_halign(fa_center);
@@ -51,29 +51,10 @@ switch (_id.object_index) {
 		draw_stock(_id.item_hash, _draw_x, _draw_y + 64);
 		break;
 	case obj_factory :
-		var _str = _id.obj_factory_id;
-		var _tilex = 0;
-		var _tiley = 0;
-		
-		for (var i = 0; i < _str.width; i++) {
-			for (var j = 0; j < _str.height; j++) {
-				_tilex = _draw_x + (i - 1) * 32 + 16;
-				_tiley = _draw_y + (j - 1) * 32 + 16;
-				if (_id.is_output_tile(i, j)) {
-					draw_sprite(spr_rail_check_ui, 2, _tilex, _tiley);
-				}
-				else if(_id.is_input_tile(i, j)) {
-					draw_sprite(spr_rail_check_ui, 1, _tilex, _tiley);
-				}
-				else {
-					draw_sprite(spr_rail_check_ui, 0, _tilex, _tiley);
-				}
-			}
-		}
-		draw_sprite(spr_need, 0,_draw_x, _draw_y + 48);
-		draw_stock(_id.need_item_stock, _draw_x, _draw_y + 64);
-		draw_sprite(spr_cur, 0, _draw_x, _draw_y + 112);
-		draw_stock(_id.cur_item_stock, _draw_x, _draw_y + 128);
+		draw_inOut_put(_id, _draw_x, _draw_y);
+		break;
+	case obj_generaotr :
+		draw_inOut_put(_id, _draw_x, _draw_y);
 		break;
 	case obj_rail_input :
 		if (!instance_exists(_id.connected_rail_id)) break;

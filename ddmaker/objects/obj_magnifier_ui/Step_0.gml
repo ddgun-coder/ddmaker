@@ -12,7 +12,3 @@ if (obj_make_manager.make_state == State.WAY_MAGNIFIER) {
 else {
 	image_alpha = 0;
 }
-
-if (visible) {
-		
-}

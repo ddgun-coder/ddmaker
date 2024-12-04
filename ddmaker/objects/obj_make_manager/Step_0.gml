@@ -58,6 +58,9 @@ if (make_state != State.NONE) {
 		case State.FACTORY :
 			factory_placeable = get_factory_placeable2(obj_factory_id, current_valible_dir * 90);
 			break;
+		case State.GENERATOR :
+			factory_placeable = get_factory_placeable2(generator_id, current_valible_dir * 90);
+			break;
 		case State.WAY_MAGNIFIER :
 			check_obj();
 			break;
@@ -121,6 +124,11 @@ else {
 		case State.FACTORY :
 			if(!factory_placeable) mouse_blend =  c_red;
 			mouse_sprite = obj_factory_id.spr;
+			mouse_sprite_angle = current_valible_dir * 90;
+			break;
+		case State.GENERATOR :
+			if(!factory_placeable) mouse_blend =  c_red;
+			mouse_sprite = generator_id.spr;
 			mouse_sprite_angle = current_valible_dir * 90;
 			break;
 	

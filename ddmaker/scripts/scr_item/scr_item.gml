@@ -39,14 +39,17 @@ global.furniture = new Item(spr_furniture, "furniture");
 global.furniture2 = new Item(spr_furniture2, "furniture2");
 global.coal = new Item(spr_coal, "coal");
 
-function Facility(spr, input_item, output_item, name, input_index, output_index, _show_spr = noone, _origin_index = [0, 0]) constructor  {
+function get_frame_spr(_width, _height) {
+	if (_width == 2 and _height == 2) {
+		return 	spr_furniture_fac_frame2x2;
+	}
+	if (_width == 3 and _height == 3) {
+		return 	spr_furniture_fac_frame3x3;
+	}
+}
+
+function Facility(spr, input_item, output_item, name, input_index, output_index, _origin_index = [0, 0]) constructor  {
 	self.spr = spr;
-	if (_show_spr == noone) {
-		show_spr = asset_get_index(sprite_get_name(spr) + "_frame");
-	}
-	else {
-		show_spr = _show_spr;	
-	}
 	self.input_item = input_item;
 	self.output_item = output_item;
 	hash = variable_get_hash(name);
@@ -54,8 +57,9 @@ function Facility(spr, input_item, output_item, name, input_index, output_index,
 	self.output_index = output_index;
 	width = floor(sprite_get_width(spr) / 32);
 	height = floor(sprite_get_height(spr) / 32);
+	show_spr = get_frame_spr(width, height);
 	origin_index = _origin_index;
-		function is_output_index(_x, _y) {
+	function is_output_index(_x, _y) {
 		if (is_array(output_index[0])) {
 			
 		}	
@@ -109,20 +113,15 @@ function Facility(spr, input_item, output_item, name, input_index, output_index,
 	}
 }
 
-function Generator(spr, input_item, output_item, name, input_index, output_index, _show_spr = noone, _origin_index = [0, 0]) : Facility(spr, input_item, output_item, name, input_index, output_index, _show_spr, _origin_index) constructor {
+function Generator(spr, input_item, output_item, name, input_index, output_index, _origin_index = [0, 0]) : Facility(spr, input_item, output_item, name, input_index, output_index, _origin_index) constructor {
 	array_push(global.generator_array, self);
 }
 
-function Factory(spr, input_item, output_item, name, input_index, output_index, _show_spr = noone, _origin_index = [0, 0]) : Facility(spr, input_item, output_item, name, input_index, output_index, _show_spr, _origin_index) constructor  {
+function Factory(spr, input_item, output_item, name, input_index, output_index, _origin_index = [0, 0]) : Facility(spr, input_item, output_item, name, input_index, output_index, _origin_index) constructor  {
 	array_push(global.factory_array, self);
 }
 
 global.furniture_factory = new Factory(spr_furniture_fac, [global.wood, global.wood], [global.furniture], "furniture_factory", [0, 1], [1, 1]);
-global.furniture_factory2 = new Factory(spr_furniture_fac2, [global.furniture, global.wool, global.wool, global.wool], [global.furniture2], "furniture_factory2", [0, 0], [1, 1], spr_furniture_fac_frame);
+global.furniture_factory2 = new Factory(spr_furniture_fac2, [global.furniture, global.wool, global.wool, global.wool], [global.furniture2], "furniture_factory2", [0, 0], [1, 1]);
 global.coal_generator = new Generator(spr_coal_generator_small, [global.coal], [], "coal_generator", [0, 1], []);
-global.coal_generator = new Generator(spr_coal_generator_big, [global.coal, global.coal, global.coal], [], "coal_generator", [0, 1], []);
-global.coal_generator = new Generator(spr_coal_generator_small, [global.coal], [], "coal_generator", [0, 1], []);
-global.coal_generator = new Generator(spr_coal_generator_big, [global.coal, global.coal, global.coal], [], "coal_generator", [0, 1], []);
-global.coal_generator = new Generator(spr_coal_generator_big, [global.coal, global.coal, global.coal], [], "coal_generator", [0, 1], []);
-global.coal_generator = new Generator(spr_coal_generator_small, [global.coal], [], "coal_generator", [0, 1], []);
-global.coal_generator = new Generator(spr_coal_generator_small, [global.coal], [], "coal_generator", [0, 1], []);
+global.coal_generator_big = new Generator(spr_coal_generator_big, [global.coal, global.coal, global.coal], [], "coal_generator", [0, 1], []);

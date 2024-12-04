@@ -45,7 +45,7 @@ function check_button_size(_dx) {
 		_right = _left + _width;
 		if (median(_left, _dx, _right) == _dx) {
 			global.generator_array_index = i;
-			obj_make_manager.obj_factory_id = cur_array[i];
+			obj_make_manager.generator_id = cur_array[i];
 			return;
 		}
 		_left += _width + 10;
