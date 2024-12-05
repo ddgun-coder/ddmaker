@@ -1,6 +1,7 @@
 /// @description Insert description here
 // You can write your code in this editor
 image_xscale = 5;
+image_yscale = 2;
 cur_array = [];
 spr_width = 64;
 cur_state = State.NONE;
@@ -31,6 +32,12 @@ function get_glowspr(_width, _height) {
 	if (_width == 96 and _height == 96) {
 		return 	spr_fac_3x3_glow;
 	}
+	if (_width == 32 * 4 and _height == 32 * 4) {
+		return 	spr_fac_4x4_glow;
+	}
+	if (_width == 32 * 5 and _height == 32 * 5) {
+		return 	spr_fac_5x5_glow;
+	}
 }
 
 function check_button_size(_dx) {
@@ -58,6 +65,10 @@ function set_next_item() {
 		case State.FACTORY :
 			global.factory_array_index = (global.factory_array_index + 1) mod _num;
 			obj_make_manager.obj_factory_id = cur_array[global.factory_array_index];
+			break;
+		case State.GENERATOR :
+			global.generator_array_index = (global.generator_array_index + 1) mod _num;
+			obj_make_manager.generator_id = cur_array[global.generator_array_index];
 			break;
 		case State.RAIL :
 			global.rail_array_index = (global.rail_array_index + 1) mod _num;

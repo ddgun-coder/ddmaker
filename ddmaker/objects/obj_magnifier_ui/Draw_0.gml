@@ -18,9 +18,11 @@ else {
 	_spr = _id.sprite_index;
 }
 
-var _draw_x = x + 64 - sprite_get_xoffset(_spr) + sprite_get_width(_spr) / 2;
-var _draw_y = y + 64 - sprite_get_yoffset(_spr) + sprite_get_height(_spr) / 2;
-
+var _width = sprite_get_width(_spr);
+var _height = sprite_get_height(_spr);
+image_xscale = max(1, (_width + 32) / 128);
+var _draw_x = x + sprite_width / 2 - sprite_get_xoffset(_spr) + _width / 2;
+var _draw_y = y + _height / 2 + 16 - sprite_get_yoffset(_spr) + _height / 2;
 draw_sprite_ext(_spr, _id.image_index, _draw_x, _draw_y, _id.image_xscale, _id.image_yscale, _id.image_angle, _id.image_blend, image_alpha);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);

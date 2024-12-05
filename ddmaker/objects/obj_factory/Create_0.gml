@@ -23,9 +23,10 @@ need_item_stock = {};
 obj_making = false;
 making_process = 0;
 making_process_max = 60 * 2;
-output_number = 0;
 item_type = noone;
+item_output_array = [];
 cur_output = 0;
+
 
 function get_exit_directions(_x, _y) {
     var _dir = [];
@@ -95,15 +96,15 @@ function extract_obj() {
 	
 	var _is_created = false;
 	if (!check_extractable(linked_obj[_dir], _dir)) return;
-
+	var _type = array_first(cur_item_array);
 	with (linked_obj[_dir]) {
 		if (!place_meeting(other.output_tile_x, other.output_tile_y, obj_box)) {
-			create_item(other.output_tile_x, other.output_tile_y, depth - 1, _dir, id, other.item_type);
+			create_item(other.output_tile_x, other.output_tile_y, depth - 1, _dir, id, _type);
 			_is_created = true;
 		}
 	}
 	if (_is_created) {
-		output_number--;
+		array_pop(cur_item_array);
 	}
 }
 
@@ -140,7 +141,7 @@ function make_output() {
 	for (var i = 0; i < _num; i++) {
 		cur_item_stock[$ _names[i]].number -= need_item_stock[$ _names[i]].number;
 	}
-	output_number++;
+	cur_item_array =  array_concat(cur_item_array, item_output_array);
 	obj_making = false;
 }
 
@@ -252,6 +253,7 @@ function init_factory(_obj_factory_id) {
 }
 
 function set_output() {
+	item_output_array = obj_factory_id.output_item;
 	item_type = obj_factory_id.output_item[0];
 	if (!is_array(obj_factory_id.output_index[0])) {
 		output_tile = get_factory_spined_array(obj_factory_id.output_index[0], obj_factory_id.output_index[1], image_angle, obj_factory_id);

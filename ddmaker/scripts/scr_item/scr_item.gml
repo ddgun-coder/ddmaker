@@ -46,6 +46,12 @@ function get_frame_spr(_width, _height) {
 	if (_width == 3 and _height == 3) {
 		return 	spr_furniture_fac_frame3x3;
 	}
+	if (_width == 4 and _height == 4) {
+		return 	spr_furniture_fac_frame4x4;
+	}
+	if (_width == 5 and _height == 5) {
+		return 	spr_furniture_fac_frame5x5;
+	}
 }
 
 function Facility(spr, input_item, output_item, name, input_index, output_index, _origin_index = [0, 0]) constructor  {
@@ -123,5 +129,9 @@ function Factory(spr, input_item, output_item, name, input_index, output_index, 
 
 global.furniture_factory = new Factory(spr_furniture_fac, [global.wood, global.wood], [global.furniture], "furniture_factory", [0, 1], [1, 1]);
 global.furniture_factory2 = new Factory(spr_furniture_fac2, [global.furniture, global.wool, global.wool, global.wool], [global.furniture2], "furniture_factory2", [0, 0], [1, 1]);
+global.coal_factory = new Factory(spr_coal_maker, [global.wood], array_create(4, global.coal), "coal_maker", [0, 0], [1, 1]);
 global.coal_generator = new Generator(spr_coal_generator_small, [global.coal], [], "coal_generator", [0, 1], []);
 global.coal_generator_big = new Generator(spr_coal_generator_big, [global.coal, global.coal, global.coal], [], "coal_generator", [0, 1], []);
+global.coal_generator_xl = new Generator(spr_coal_generator_xl, array_create(6, global.coal), [], "coal_generator", [0, 1], []);
+global.coal_generator_xxl = new Generator(spr_coal_generator_xxl, array_create(15, global.coal), [], "coal_generator", [0, 1], []);
+

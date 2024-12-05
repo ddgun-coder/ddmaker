@@ -30,6 +30,7 @@ function draw_inOut_put(_id, _draw_x, _draw_y) {
 	draw_stock(_id.need_item_stock, _draw_x, _draw_y + 64);
 	draw_sprite(spr_cur, 0, _draw_x, _draw_y + 112);
 	draw_stock(_id.cur_item_stock, _draw_x, _draw_y + 128);
+	image_yscale = max(1, (_draw_y + 150 - y) / 256);
 }
 
 function draw_stock(_str, _draw_x, _draw_y) {
