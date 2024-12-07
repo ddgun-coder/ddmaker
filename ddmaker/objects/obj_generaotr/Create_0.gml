@@ -3,6 +3,7 @@
 
 // Inherit the parent event
 event_inherited();
+alarm[0] = 8;
 obj_factory_id = noone;
 show_sprite_index = noone;
 
@@ -24,8 +25,13 @@ obj_making = false;
 making_process = 0;
 making_process_max = 60 * 2;
 output_number = 0;
-item_type = noone;
+fuel_item_type = noone;
 cur_output = 0;
+electric_cap = 100;
+electric = 0;
+fuel_tank = 0;
+fuel_speed = 0;
+fuel_max_cap = 0;
 
 function get_exit_directions(_x, _y) {
     var _dir = [];
@@ -113,14 +119,8 @@ function item_stock(num, _type) constructor {
 }
 
 function can_add_item(_item) {
-	var _names = struct_get_names(need_item_stock);
-	var _num = array_length(_names);
-	for (var i = 0; i < _num; i++) {
-		if (_names[i] == _item.item_name and need_item_stock[$ _names[i]].number > cur_item_stock[$ _names[i]].number) {
-			return true;
-		}
-	}
-	return false;
+	show_debug_message(_item == fuel_item_type);
+	return _item == fuel_item_type and fuel_max_cap >= fuel_tank + 1;
 }
 
 function can_make_output() {
@@ -145,8 +145,11 @@ function make_output() {
 }
 
 function add_item(_item) {
+	fuel_tank += 1;
+	/*
 	cur_item_stock[$ _item.item_name].number += 1;
 	if (can_make_output()) obj_making = true;
+	*/
 }
 
 function array_to_stock(_array) {
@@ -252,7 +255,10 @@ function init_factory(_obj_factory_id) {
 }
 
 function set_output() {
-	
+	fuel_item_type = obj_factory_id.fuel_type;
+	fuel_max_cap = obj_factory_id.fuel_max_cap;
+	fuel_speed = obj_factory_id.fuel_speed;
+	electric_cap = obj_factory_id.electric_cap;
 }
 
 function set_input() {

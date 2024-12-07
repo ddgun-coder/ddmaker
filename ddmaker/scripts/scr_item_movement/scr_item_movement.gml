@@ -89,6 +89,7 @@ function get_IO(_id, _dx, _dy, _dir) {
 		case obj_extractor :
 			return Io.OUTPUT;
 		case obj_factory :
+		case obj_generaotr :
 			return _id.get_factory_IO(_dx, _dy);
 	}
 }

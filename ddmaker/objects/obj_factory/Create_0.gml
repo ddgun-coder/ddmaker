@@ -114,6 +114,7 @@ function item_stock(num, _type) constructor {
 }
 
 function can_add_item(_item) {
+	if (obj_making) return false;
 	var _names = struct_get_names(need_item_stock);
 	var _num = array_length(_names);
 	for (var i = 0; i < _num; i++) {

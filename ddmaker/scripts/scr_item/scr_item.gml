@@ -26,9 +26,10 @@ global.generator_array_index = 0;
 new Rail(spr_one_way_rail, spr_one_way_rail_show, obj_rail, Io.BOTH);
 new Rail(spr_rail_input, spr_rail_input_show, obj_rail_input, Io.INPUT);
 new Rail(spr_rail_output, spr_rail_output_show, obj_rail_output, Io.OUTPUT);
-function Item(spr, item_name) constructor  {
+function Item(spr, item_name, fuel_efficiency = 0) constructor  {
 	self.spr = spr;
 	self.item_name = item_name;
+	self.fuel_efficiency = fuel_efficiency;
 	hash = variable_get_hash(item_name);
 }
 
@@ -37,7 +38,7 @@ global.box = new Item(spr_box, "box");
 global.wool = new Item(spr_wool, "wool");
 global.furniture = new Item(spr_furniture, "furniture");
 global.furniture2 = new Item(spr_furniture2, "furniture2");
-global.coal = new Item(spr_coal, "coal");
+global.coal = new Item(spr_coal, "coal", 0.5);
 
 function get_frame_spr(_width, _height) {
 	if (_width == 2 and _height == 2) {
@@ -119,7 +120,11 @@ function Facility(spr, input_item, output_item, name, input_index, output_index,
 	}
 }
 
-function Generator(spr, input_item, output_item, name, input_index, output_index, _origin_index = [0, 0]) : Facility(spr, input_item, output_item, name, input_index, output_index, _origin_index) constructor {
+function Generator(spr, fuel_type, fuel_max_cap, fuel_speed, electric_cap, name, input_index, output_index, _origin_index = [0, 0]) : Facility(spr, [], [], name, input_index, output_index, _origin_index) constructor {
+	self.fuel_type = fuel_type;
+	self.fuel_max_cap = fuel_max_cap;
+	self.fuel_speed = fuel_speed;
+	self.electric_cap = electric_cap;
 	array_push(global.generator_array, self);
 }
 
@@ -130,8 +135,9 @@ function Factory(spr, input_item, output_item, name, input_index, output_index, 
 global.furniture_factory = new Factory(spr_furniture_fac, [global.wood, global.wood], [global.furniture], "furniture_factory", [0, 1], [1, 1]);
 global.furniture_factory2 = new Factory(spr_furniture_fac2, [global.furniture, global.wool, global.wool, global.wool], [global.furniture2], "furniture_factory2", [0, 0], [1, 1]);
 global.coal_factory = new Factory(spr_coal_maker, [global.wood], array_create(4, global.coal), "coal_maker", [0, 0], [1, 1]);
-global.coal_generator = new Generator(spr_coal_generator_small, [global.coal], [], "coal_generator", [0, 1], []);
-global.coal_generator_big = new Generator(spr_coal_generator_big, [global.coal, global.coal, global.coal], [], "coal_generator", [0, 1], []);
-global.coal_generator_xl = new Generator(spr_coal_generator_xl, array_create(6, global.coal), [], "coal_generator", [0, 1], []);
-global.coal_generator_xxl = new Generator(spr_coal_generator_xxl, array_create(15, global.coal), [], "coal_generator", [0, 1], []);
+
+global.coal_generator = new Generator(spr_coal_generator_small, global.coal, 5, 0.01, 1, "coal_generator", [0, 1], []);
+global.coal_generator_big = new Generator(spr_coal_generator_big, global.coal, 20, 0.04, 4, "coal_generator", [0, 1], []);
+global.coal_generator_xl = new Generator(spr_coal_generator_xl, global.coal, 50, 0.1, 10, "coal_generator", [0, 1], []);
+global.coal_generator_xxl = new Generator(spr_coal_generator_xxl,global.coal, 150, 0.3, 30, "coal_generator", [0, 1], []);
 

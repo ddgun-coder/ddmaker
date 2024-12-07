@@ -23,6 +23,7 @@ var _height = sprite_get_height(_spr);
 image_xscale = max(1, (_width + 32) / 128);
 var _draw_x = x + sprite_width / 2 - sprite_get_xoffset(_spr) + _width / 2;
 var _draw_y = y + _height / 2 + 16 - sprite_get_yoffset(_spr) + _height / 2;
+if (_id.object_index == obj_rail) _draw_y += 32;
 draw_sprite_ext(_spr, _id.image_index, _draw_x, _draw_y, _id.image_xscale, _id.image_yscale, _id.image_angle, _id.image_blend, image_alpha);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
@@ -53,10 +54,14 @@ switch (_id.object_index) {
 		draw_stock(_id.item_hash, _draw_x, _draw_y + 64);
 		break;
 	case obj_factory :
-		draw_inOut_put(_id, _draw_x, _draw_y);
+		_draw_y = draw_inOut_put(_id, _draw_x, _draw_y);
+		_draw_y = draw_factory_item_state(_id, _draw_x, _draw_y);
+		set_image_yscale(_draw_y);
 		break;
 	case obj_generaotr :
-		draw_inOut_put(_id, _draw_x, _draw_y);
+		_draw_y = draw_inOut_put(_id, _draw_x, _draw_y);
+		draw_generator_item_state(_id, _draw_x, _draw_y);
+		set_image_yscale(_draw_y);
 		break;
 	case obj_rail_input :
 		if (!instance_exists(_id.connected_rail_id)) break;

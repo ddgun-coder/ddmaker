@@ -21,7 +21,10 @@ show_yscale = 0.4;
 function box_movement() {
 	var _is_stop = false;
 	with (next_tile) {
-		if (object_index == obj_factory and obj_making) {
+		if (object_index == obj_generaotr and fuel_max_cap < fuel_tank + 1) {
+			_is_stop = true;
+		}
+		else if (object_index == obj_factory and obj_making){
 			_is_stop = true;
 		}
 	}
@@ -88,6 +91,7 @@ function set_next_tile(_id, exception = false) {
 			}
 			break;
 		case obj_factory :
+		case obj_generaotr :
 			var _dxy = get_direction_dxdy(direct, 32);
 			if (instance_exists(pre_tile_id)) {
 				next_tile_x = pre_tile_id.x + _dxy[0];
@@ -118,10 +122,9 @@ function set_next_tile(_id, exception = false) {
 
 function position_meeting_next_tile() {
 	if (!position_meeting(x, y, next_tile)) return;
-	
-	if (next_tile.object_index == obj_factory and repository_id == noone) {
+	if (repository_id == noone) {
 		var _io = next_tile.get_factory_IO(x, y, false);
-		if (_io == Io.INPUT and next_tile.obj_making == false and next_tile.can_add_item(item_type)) {
+		if (_io == Io.INPUT and next_tile.can_add_item(item_type)) {
 			next_tile.add_item(item_type);
 			repository_id = next_tile;
 		}
@@ -183,6 +186,7 @@ function metting_next_tile() {
 	
 	switch (next_tile.object_index) {
 		case obj_factory :
+		case obj_generaotr :
 			position_meeting_next_tile();
 			break ;
 		default: 
