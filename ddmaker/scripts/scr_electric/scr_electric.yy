@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_factory",
+  "%Name":"scr_electric",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_factory",
+  "name":"scr_electric",
   "parent":{
     "name":"스크립트",
     "path":"folders/스크립트.yy",
