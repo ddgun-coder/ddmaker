@@ -2,8 +2,8 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 global.electric_network_array = [];
 function electric_network() constructor {
+	ids = [];
 	array_push(global.electric_network_array, self);
-
 	
 	function get_rand_hsv() {
 		var _num = array_length(global.electric_network_array)

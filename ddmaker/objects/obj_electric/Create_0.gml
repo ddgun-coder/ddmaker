@@ -3,6 +3,7 @@
 event_inherited();
 image_speed = 0;
 network = noone;
+disconnect_checker = false;
 
 function direction_to_bit(_way_array) {
 	var bit = 0;
@@ -43,26 +44,90 @@ function init_connection() {
 	}
 	image_index = direction_to_bit(linked_obj);
 	if (linked_number == 0) {
-		network = new electric_network();
-		image_blend = network.my_color;
+		set_network(new electric_network());
 	}
 }
 
 function set_network_recursion() {
 	var new_network = new electric_network();
-	network = new_network;
-	image_blend = network.my_color;
+	set_network(new_network);
 	
-	set_network(network);
+	recursive_add(new_network);
 }
 
-function set_network(newtwork) {
+function recursive_add(new_network) {
 	for (var i = 0; i < 4; i++) {
 		if (instance_exists(linked_obj[i]) and linked_obj[i].object_index == obj_electric and linked_obj[i].network == noone) {
 			with (linked_obj[i]) {
-				network = newtwork;
-				image_blend = network.my_color;
-				set_network(newtwork);
+				set_network(new_network);
+				recursive_add(new_network);
+			}
+		}
+	}
+}
+
+function set_network(new_network) {
+	network = new_network;
+	image_blend = new_network.my_color;
+	array_push(new_network.ids, id);  
+}
+
+function set_near_network() {
+	static reset_network = function() {
+		array_foreach(network.ids, function(_element, _index) {
+			if (instance_exists(_element)) _element.disconnect_checker = true;
+		});
+		disconnect_checker = false;
+	}
+	
+	if (network == noone) return;
+	reset_network();
+	
+	var new_id_group;
+	for (var i = 0; i < 4; i++) {
+		new_id_group[i] = [];
+	}
+	var new_id_group_number = 0;
+	for (var i = 0; i < 4; i++) {
+		check_area(new_id_group[i], linked_obj[i]);
+		if (array_length(new_id_group[i]) > 0) new_id_group_number++; 
+	}
+	//4방향 id를 조사
+	
+	if (new_id_group_number > 1) {
+		var _num;
+		var _ids, new_network;
+		var count = 0;
+		for (var i = 0; i < 4; i++) {
+			_ids = new_id_group[i];
+			if (array_length(_ids) == 0) continue;
+			if (count > 0) {
+				_num = array_length(_ids);
+				new_network = new electric_network();
+				for (var j = 0; j < _num; j++) {
+					with (_ids[j]) {
+						set_network(new_network);
+					}
+				}
+			}
+			count++;
+		}
+	} //2개 이상 쪼개지면 새로운 network 만들기 (첫번째는 기존으로 감)
+	else if (new_id_group_number == 0) {
+		var _ind = array_get_index(global.electric_network_array, network);
+		array_delete(global.electric_network_array, _ind, 1);
+		delete network;
+	} //아무것도 없으면 해당 network 삭제
+	
+}
+
+function check_area(_array, _id) {
+	if (instance_exists(_id) and _id.object_index == obj_electric and _id.network == network and _id.disconnect_checker == true) {
+		with (_id) {
+			disconnect_checker = false;
+			array_push(_array, id);
+			for (var i = 0; i < 4; i++) {
+				check_area(_array, linked_obj[i]);
 			}
 		}
 	}
