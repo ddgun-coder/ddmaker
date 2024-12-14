@@ -5,6 +5,13 @@ function electric_network() constructor {
 	ids = [];
 	array_push(global.electric_network_array, self);
 	
+	function add_network(_network_array) {
+		var _num = array_length(_network_array);
+		for (var i = 0; i < _num; i++) {
+				
+		}
+	}
+	
 	function get_rand_hsv() {
 		var _num = array_length(global.electric_network_array)
 		if (_num == 1) return make_color_hsv(irandom(255), irandom_range(255 * 0.7, 255), irandom_range(255 * 0.8, 255));

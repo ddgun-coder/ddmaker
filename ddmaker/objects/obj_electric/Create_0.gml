@@ -72,6 +72,39 @@ function set_network(new_network) {
 	array_push(new_network.ids, id);  
 }
 
+function add_electirc() {
+	var check = array_create(4, false);
+	var count = 0;
+	for (var i = 0; i < 4; i++) {
+		if (instance_exists(linked_obj[i]) and linked_obj[i].object_index == obj_electric and linked_obj[i].network != noone) {
+			check[i] = true;
+			count++;
+		}
+	}
+	if (count == 0) {
+		set_network(new electric_network());
+	}
+	else if (count == 1) {
+		var _ind = array_get_index(check, true);
+		set_network(linked_obj[_ind].network);
+	}
+	else {
+		var remain_network = noone;
+		var network_array = [];
+		for (var i = 0; i < 4; i++) {
+			if (check[i]) {
+				if (remain_network == noone) {
+					remain_network = linked_obj[i].network;
+				}
+				else {
+					array_push(network_array, linked_obj[i].network);
+				}
+			}
+		}
+		remain_network.add_network(network_array);
+	}	
+}
+
 function set_near_network() {
 	static reset_network = function() {
 		array_foreach(network.ids, function(_element, _index) {
@@ -110,6 +143,9 @@ function set_near_network() {
 					}
 				}
 			}
+			else {
+				network.ids = _ids;
+			}
 			count++;
 		}
 	} //2개 이상 쪼개지면 새로운 network 만들기 (첫번째는 기존으로 감)
@@ -118,7 +154,6 @@ function set_near_network() {
 		array_delete(global.electric_network_array, _ind, 1);
 		delete network;
 	} //아무것도 없으면 해당 network 삭제
-	
 }
 
 function check_area(_array, _id) {
